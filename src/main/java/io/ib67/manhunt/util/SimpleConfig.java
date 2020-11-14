@@ -220,12 +220,12 @@ import java.nio.file.Path;
  */
 public class SimpleConfig<C> {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private String root;
+    private final String root;
     private C configObj;
     @Setter
     @Getter
     private String configFileName = "config.json";
-    private Class<C> clazz;
+    private final Class<C> clazz;
 
     @SneakyThrows
     public SimpleConfig(File rootDir, Class<C> configClass) {

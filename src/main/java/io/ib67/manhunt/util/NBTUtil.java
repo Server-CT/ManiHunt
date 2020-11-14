@@ -22,8 +22,7 @@ public class NBTUtil {
     private static MethodHandle conNBTTagByte;
     private static MethodHandle conNBTTagString;
     private static MethodHandle conNBTTagInt;
-    public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(
-            ",")[3];
+    public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
     static {
         try {
@@ -136,7 +135,7 @@ public class NBTUtil {
     }
 
     public static class NBTValue {
-        private boolean canEdit;
+        private final boolean canEdit;
         private Object base;
 
         public NBTValue() {

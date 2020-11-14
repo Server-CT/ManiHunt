@@ -4,15 +4,20 @@ import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.setting.I18N;
 import lombok.Getter;
-import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 
 public class Game implements Listener {
@@ -37,22 +42,29 @@ public class Game implements Listener {
     public void start(Player runner) {
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();
-        Bukkit.broadcastMessage(ManHunt.get().getLanguage().gaming.VOTE_START); //todo move
         I18N i18n = ManHunt.get().getLanguage();
+        Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
         inGamePlayers.forEach(e -> {
             e.getPlayer().sendMessage(i18n.gaming.gameIntroduction);
-            if (e.getPlayer().getUniqueId().equals(runner)) {
+            if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
-                e.getPlayer().sendTitle(i18n.gaming.hunter.TITLE_MAIN, i18n.gaming.hunter.TITLE_SUB, 10 * 20, 20 * 20, 10 * 20);
+                e.getPlayer().sendTitle(i18n.gaming.hunter.TITLE_MAIN,
+                                        i18n.gaming.hunter.TITLE_SUB,
+                                        10 * 20,
+                                        20 * 20,
+                                        10 * 20);
                 airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
-                e.getPlayer().sendTitle(i18n.gaming.hunter.TITLE_MAIN, i18n.gaming.hunter.TITLE_SUB, 10 * 20, 20 * 20, 10 * 20);
+                e.getPlayer().sendTitle(i18n.gaming.hunter.TITLE_MAIN,
+                                        i18n.gaming.hunter.TITLE_SUB,
+                                        10 * 20,
+                                        20 * 20,
+                                        10 * 20);
             }
         });
         gameStart.accept(this);
         phase = GamePhase.STARTED;
-
     }
 
     private void airDrop(Player runner) {
@@ -108,17 +120,11 @@ public class Game implements Listener {
                 if (p.getRole() == GamePlayer.Role.RUNNER)
                     stop(GameResult.HUNTER_WIN);
             });
-            return;
         } else if (e.getEntityType() == EntityType.ENDER_DRAGON)
             stop(GameResult.RUNNER_WIN);
     }
 
     public Optional<GamePlayer> isInGame(String name) {
         return inGamePlayers.stream().filter(s -> s.getPlayer().getName().equals(name)).findFirst();
-    }
-
-    private String vote() {
-        //todo
-        return null;
     }
 }

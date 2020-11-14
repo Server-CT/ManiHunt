@@ -10,12 +10,13 @@ import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ManHunt extends JavaPlugin {
     public static boolean debug = false;
-    private SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class);
-    private SimpleConfig<I18N> language = new SimpleConfig<>(getDataFolder(), I18N.class);
+    private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class);
+    private final SimpleConfig<I18N> language = new SimpleConfig<>(getDataFolder(), I18N.class);
     @Getter
     private Game game;
 
@@ -35,14 +36,11 @@ public final class ManHunt extends JavaPlugin {
         language.saveDefault();
         language.reloadConfig();
         debug = mainConfig.get().verbose;
-        game = new Game(mainConfig.get().maxPlayers, g -> {
-            Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g));
-        }, g -> {
-            Bukkit.getPluginManager().callEvent(new HuntEndEvent(g));
-        });
-        new Vote(Bukkit.getOnlinePlayers().stream(), v -> {
-            game.start(v.getResult());
-        }).startVote();
+        game = new Game(mainConfig.get().maxPlayers,
+                        g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
+                        g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
+        new Vote(Bukkit.getOnlinePlayers().stream().map(Player::getUniqueId),
+                 v -> game.start(v.getResult())).startVote();
         loadAdditions();
         loadListeners();
     }

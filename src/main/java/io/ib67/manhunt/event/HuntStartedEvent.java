@@ -13,7 +13,7 @@ public class HuntStartedEvent extends Event {
         this.runningGame = g;
     }
 
-    private HandlerList handlerList = new HandlerList();
+    private final HandlerList handlerList = new HandlerList();
 
     @Override
     public HandlerList getHandlers() {
