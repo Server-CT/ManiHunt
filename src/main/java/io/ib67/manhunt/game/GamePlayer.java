@@ -1,12 +1,13 @@
 package io.ib67.manhunt.game;
 
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.Objects;
 
 /**

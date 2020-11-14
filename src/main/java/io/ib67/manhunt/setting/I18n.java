@@ -2,11 +2,11 @@ package io.ib67.manhunt.setting;
 
 import org.bukkit.ChatColor;
 
-public class I18N {
+public class I18n {
     public Gaming gaming = new Gaming();
 
     public static class Gaming {
-        public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%s/%s)";
+        public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
         public String VOTE_START = ChatColor.GREEN + "人数满足 正在进行投票！" + ChatColor.GRAY + "如果不小心关闭界面，请使用 /vote 再次打开。";
         public Hunter hunter = new Hunter();
         public Runner runner = new Runner();
@@ -24,15 +24,16 @@ public class I18N {
         };
 
         public static class Hunter {
+            public String WON = ChatColor.RED + "游戏结束   猎人 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "找到逃亡者并杀死他";
         }
 
         public static class Runner {
+            public String WON = ChatColor.GREEN + "游戏结束   逃亡者 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
             public String COMPASS_HINT_SAFE = ChatColor.GREEN + "半径 %sM 内无猎人";
-
         }
     }
 }

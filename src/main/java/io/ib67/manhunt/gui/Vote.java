@@ -1,42 +1,39 @@
 package io.ib67.manhunt.gui;
 
+import io.ib67.manhunt.ManHunt;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.UUID;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.function.Consumer;
-
-import io.ib67.manhunt.ManHunt;
 
 public class Vote implements Listener, InventoryHolder {
-    private LinkedList<UUID> shouldVote;
-    private LinkedList<UUID> voted = new LinkedList<>();
-    private TreeMap<UUID, Integer> voteMap = new TreeMap<>();
-    private Inventory voteInv;
-    private Consumer<Vote> callback;
+    private final LinkedList<UUID> shouldVote;
+    private final LinkedList<UUID> voted = new LinkedList<>();
+    private final TreeMap<UUID, Integer> voteMap = new TreeMap<>();
+    private final Inventory voteInv;
+    private final Consumer<Vote> callback;
 
     public Vote(List<UUID> shouldVote, Consumer<Vote> callback) {
-        this.shouldVote = new LinkedList(shouldVote);
+        this.shouldVote = new LinkedList<>(shouldVote);
         this.callback = callback;
-        this.voteInv = Bukkit.createInventory(this, (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) * 9);
+        this.voteInv = Bukkit.createInventory(this,
+                (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
+                        9);
     }
 
     public Vote(Stream<UUID> shouldVote, Consumer<Vote> callback) {
-        this.shouldVote = shouldVote.collect(Collectors.toCollection(LinkedList::new));
+        this.shouldVote = shouldVote.collect(Collectors.toCollection(LinkedList<UUID>::new));
         this.callback = callback;
         this.voteInv = Bukkit.createInventory(this, (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) * 9);
     }
@@ -46,8 +43,8 @@ public class Vote implements Listener, InventoryHolder {
     }
 
     public void startVote() {
-        Bukkit.getPluginManager().registerEvents(this, ManHunt.get());
-        shouldVote.stream().map(Bukkit::getPlayer).forEach(p -> p.openInventory(voteInv));
+        Bukkit.getPluginManager().registerEvents(this, ManHunt.getInstance());
+        shouldVote.stream().map(Bukkit::getPlayer).filter(Objects::nonNull).forEach(p -> p.openInventory(voteInv));
     }
 
     public void endVote() {
@@ -73,12 +70,18 @@ public class Vote implements Listener, InventoryHolder {
     }
 
     public Player getResult() {
-        return Bukkit.getPlayer(voteMap.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).orElseThrow(() -> new IllegalStateException("Impossible null")).getKey());
+        return Bukkit.getPlayer(voteMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow(() -> new IllegalStateException("Impossible null"))
+                .getKey());
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player && event.getInventory().getHolder() instanceof Vote))
+        if (!(event.getWhoClicked() instanceof Player &&
+                event.getCurrentItem() != null &&
+                event.getInventory().getHolder() instanceof Vote))
             return;
         Player p = (Player) event.getWhoClicked();
         ItemStack itemClicked = event.getCurrentItem();
@@ -87,6 +90,6 @@ public class Vote implements Listener, InventoryHolder {
             return;
 
         SkullMeta meta = (SkullMeta) itemClicked.getItemMeta();
-        vote(p.getUniqueId(), meta.getOwningPlayer().getUniqueId());
+        vote(p.getUniqueId(), Objects.requireNonNull(Objects.requireNonNull(meta).getOwningPlayer()).getUniqueId());
     }
 }

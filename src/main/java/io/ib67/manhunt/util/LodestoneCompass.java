@@ -28,6 +28,6 @@ public class LodestoneCompass {
             case NETHER:
                 return "minecraft:the_nether";
         }
-        throw new IllegalArgumentException("Invaild env: " + env);
+        throw new IllegalArgumentException("Invalid env: " + env);
     }
 }

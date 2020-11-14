@@ -3,9 +3,10 @@ package io.ib67.manhunt;
 import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
-import io.ib67.manhunt.gui.Vote;
+import io.ib67.manhunt.listener.Chat;
+import io.ib67.manhunt.listener.Death;
 import io.ib67.manhunt.listener.JoinAndLeave;
-import io.ib67.manhunt.setting.I18N;
+import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
@@ -13,42 +14,43 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ManHunt extends JavaPlugin {
+    private static ManHunt instance;
     public static boolean debug = false;
-    private SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class);
-    private SimpleConfig<I18N> language = new SimpleConfig<>(getDataFolder(), I18N.class);
+    private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class);
+    private final SimpleConfig<I18n> language = new SimpleConfig<>(getDataFolder(), I18n.class);
     @Getter
     private Game game;
 
-    public static ManHunt get() {
-        return ManHunt.getPlugin(ManHunt.class);
+    public static ManHunt getInstance() {
+        return instance;
     }
 
-    public I18N getLanguage() {
+    public I18n getLanguage() {
         return language.get();
     }
 
     @Override
     public void onEnable() {
+        instance = this;
         mainConfig.saveDefault();
         mainConfig.reloadConfig();
         language.setConfigFileName("lang.json");
         language.saveDefault();
         language.reloadConfig();
         debug = mainConfig.get().verbose;
-        game = new Game(mainConfig.get().maxPlayers, g -> {
-            Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g));
-        }, g -> {
-            Bukkit.getPluginManager().callEvent(new HuntEndEvent(g));
-        });
-        //new Vote(Bukkit.getOnlinePlayers().stream(), v -> {
-        //  v.endVote();
-        //}).startVote();
+        game = new Game(mainConfig.get().maxPlayers,
+                g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
+                g -> {
+                    Bukkit.getPluginManager().callEvent(new HuntEndEvent(g));
+                });
         loadAdditions();
         loadListeners();
     }
 
     private void loadListeners() {
+        Bukkit.getPluginManager().registerEvents(new Chat(), this);
         Bukkit.getPluginManager().registerEvents(new JoinAndLeave(), this);
+        Bukkit.getPluginManager().registerEvents(new Death(), this);
     }
 
     private void loadAdditions() {
