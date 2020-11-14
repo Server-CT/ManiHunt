@@ -1,11 +1,12 @@
 package io.ib67.manhunt.game;
 
 import io.ib67.manhunt.ManHunt;
+import io.ib67.manhunt.game.stat.GameStat;
+import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.setting.I18N;
 import lombok.Getter;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,6 +28,7 @@ public class Game implements Listener {
     private long startTime;
     @Getter
     private GamePhase phase = GamePhase.WAITING_FOR_PLAYER;
+    private final GameStat gameStat = new GameStat();
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
         this.gameStart = gameStart;
@@ -40,6 +42,7 @@ public class Game implements Listener {
         Bukkit.broadcastMessage(ManHunt.get().getLanguage().gaming.VOTE_START); //todo move
         I18N i18n = ManHunt.get().getLanguage();
         inGamePlayers.forEach(e -> {
+            gameStat.addPlayer(e);
             e.getPlayer().sendMessage(i18n.gaming.gameIntroduction);
             if (e.getPlayer().getUniqueId().equals(runner)) {
                 e.setRole(GamePlayer.Role.RUNNER);
@@ -68,6 +71,7 @@ public class Game implements Listener {
 
     public void stop(GameResult result) {
         //TODO
+        gameStat.setTotalTime(System.currentTimeMillis() - startTime);
         this.result = result;
         phase = GamePhase.END;
         gameEnd.accept(this);

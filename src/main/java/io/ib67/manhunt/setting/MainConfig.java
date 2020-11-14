@@ -5,4 +5,5 @@ public class MainConfig {
     public String overworldName;
     public boolean verbose;
     public boolean muteSpectatorInGlobalChannel = false;
+    public String serverLanguage = "zh_CN";
 }

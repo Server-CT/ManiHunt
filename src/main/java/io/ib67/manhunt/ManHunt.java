@@ -40,9 +40,9 @@ public final class ManHunt extends JavaPlugin {
         }, g -> {
             Bukkit.getPluginManager().callEvent(new HuntEndEvent(g));
         });
-        new Vote(Bukkit.getOnlinePlayers().stream(), v -> {
-            game.start(v.getResult());
-        }).startVote();
+        //new Vote(Bukkit.getOnlinePlayers().stream(), v -> {
+        //  v.endVote();
+        //}).startVote();
         loadAdditions();
         loadListeners();
     }
