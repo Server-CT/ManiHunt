@@ -16,11 +16,11 @@ import java.util.Optional;
 public class Chat implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        if (ManHunt.get().getGame().getPhase() != GamePhase.STARTED)
+        if (ManHunt.getInstance().getGame().getPhase() != GamePhase.STARTED)
             return;
 
         Player player = event.getPlayer();
-        Optional<GamePlayer> og = ManHunt.get().getGame().isInGame(player);
+        Optional<GamePlayer> og = ManHunt.getInstance().getGame().isInGame(player);
         if (og.isPresent()) {
             GamePlayer.Role role = og.orElse(null).getRole();
             event.setFormat((role == GamePlayer.Role.HUNTER ?
@@ -29,7 +29,7 @@ public class Chat implements Listener {
             if (role == GamePlayer.Role.HUNTER && event.getMessage().startsWith("#")) {
                 event.setCancelled(true);
                 event.setFormat(ChatColor.WHITE + "[TEAM]" + event.getFormat());
-                ManHunt.get()
+                ManHunt.getInstance()
                         .getGame()
                         .getInGamePlayers()
                         .stream()
@@ -40,7 +40,7 @@ public class Chat implements Listener {
         } else {
             event.setFormat(ChatColor.GRAY + "[SPECTATOR] " + ChatColor.RESET + event.getFormat());
             event.setCancelled(true);
-            Game game = ManHunt.get().getGame();
+            Game game = ManHunt.getInstance().getGame();
             Bukkit.getOnlinePlayers().stream().filter(p -> !game.isInGame(p).isPresent()).forEach(p -> p.sendMessage(
                     event.getFormat()));
         }

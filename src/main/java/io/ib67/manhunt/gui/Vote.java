@@ -43,7 +43,7 @@ public class Vote implements Listener, InventoryHolder {
     }
 
     public void startVote() {
-        Bukkit.getPluginManager().registerEvents(this, ManHunt.get());
+        Bukkit.getPluginManager().registerEvents(this, ManHunt.getInstance());
         shouldVote.stream().map(Bukkit::getPlayer).filter(Objects::nonNull).forEach(p -> p.openInventory(voteInv));
     }
 

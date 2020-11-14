@@ -14,7 +14,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class Death implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
-        Game game = ManHunt.get().getGame();
+        Game game = ManHunt.getInstance().getGame();
 
         if (game.getPhase() != GamePhase.STARTED)
             return;

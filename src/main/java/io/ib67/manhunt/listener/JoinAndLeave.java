@@ -10,13 +10,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class JoinAndLeave implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        ManHunt.get().getGame().joinPlayer(event.getPlayer());
+        ManHunt.getInstance().getGame().joinPlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        if (ManHunt.get().getGame().getPhase() == GamePhase.WAITING_FOR_PLAYER) {
-            ManHunt.get().getGame().kickPlayer(event.getPlayer().getName());
+        if (ManHunt.getInstance().getGame().getPhase() == GamePhase.WAITING_FOR_PLAYER) {
+            ManHunt.getInstance().getGame().kickPlayer(event.getPlayer().getName());
         }
     }
 }

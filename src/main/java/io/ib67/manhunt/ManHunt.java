@@ -14,14 +14,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ManHunt extends JavaPlugin {
+    private static ManHunt instance;
     public static boolean debug = false;
     private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class);
     private final SimpleConfig<I18n> language = new SimpleConfig<>(getDataFolder(), I18n.class);
     @Getter
     private Game game;
 
-    public static ManHunt get() {
-        return ManHunt.getPlugin(ManHunt.class);
+    public static ManHunt getInstance() {
+        return instance;
     }
 
     public I18n getLanguage() {
@@ -30,6 +31,7 @@ public final class ManHunt extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         mainConfig.saveDefault();
         mainConfig.reloadConfig();
         language.setConfigFileName("lang.json");
@@ -40,7 +42,7 @@ public final class ManHunt extends JavaPlugin {
                         g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
                         g -> {
                             Bukkit.getPluginManager().callEvent(new HuntEndEvent(g));
-                            Bukkit.getScheduler().runTaskLater(ManHunt.get(), Bukkit::shutdown, 1200);
+                            Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, 1200);
                         });
         loadAdditions();
         loadListeners();

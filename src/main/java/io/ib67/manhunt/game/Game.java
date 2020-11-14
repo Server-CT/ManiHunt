@@ -38,7 +38,7 @@ public class Game {
     public void start(Player runner) {
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();
-        I18n i18n = ManHunt.get().getLanguage();
+        I18n i18n = ManHunt.getInstance().getLanguage();
         Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
         inGamePlayers.forEach(e -> {
             e.getPlayer().sendMessage(i18n.gaming.gameIntroduction);
@@ -78,8 +78,8 @@ public class Game {
         this.result = result;
         phase = GamePhase.END;
         String title = result == GameResult.HUNTER_WIN ?
-                       ManHunt.get().getLanguage().gaming.hunter.WON :
-                       ManHunt.get().getLanguage().gaming.runner.WON;
+                       ManHunt.getInstance().getLanguage().gaming.hunter.WON :
+                       ManHunt.getInstance().getLanguage().gaming.runner.WON;
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
@@ -95,11 +95,11 @@ public class Game {
     public boolean joinPlayer(Player player) {
         if (isStarted()) {
             player.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(ManHunt.get().getLanguage().gaming.SPECTATOR_RULE);
+            player.sendMessage(ManHunt.getInstance().getLanguage().gaming.SPECTATOR_RULE);
             return false;
         }
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
-        Bukkit.broadcastMessage(String.format(ManHunt.get().getLanguage().gaming.WAITING_FOR_PLAYERS,
+        Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().gaming.WAITING_FOR_PLAYERS,
                                               inGamePlayers.size(),
                                               playersToStart));
         if (inGamePlayers.size() >= playersToStart)
