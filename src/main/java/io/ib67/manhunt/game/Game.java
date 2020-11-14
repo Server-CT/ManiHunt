@@ -2,7 +2,7 @@ package io.ib67.manhunt.game;
 
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.gui.Vote;
-import io.ib67.manhunt.setting.I18N;
+import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -42,7 +42,7 @@ public class Game implements Listener {
     public void start(Player runner) {
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();
-        I18N i18n = ManHunt.get().getLanguage();
+        I18n i18n = ManHunt.get().getLanguage();
         Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
         inGamePlayers.forEach(e -> {
             e.getPlayer().sendMessage(i18n.gaming.gameIntroduction);
@@ -79,9 +79,16 @@ public class Game implements Listener {
     }
 
     public void stop(GameResult result) {
-        //TODO
         this.result = result;
         phase = GamePhase.END;
+        String title = result == GameResult.HUNTER_WIN ?
+                       ManHunt.get().getLanguage().gaming.hunter.WON :
+                       ManHunt.get().getLanguage().gaming.runner.WON;
+        inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
+            p.setGameMode(GameMode.SPECTATOR);
+            p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            p.sendTitle(title, "", 10 * 20, 20 * 20, 10 * 20);
+        });
         gameEnd.accept(this);
     }
 
@@ -96,19 +103,20 @@ public class Game implements Listener {
             return false;
         }
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
-        Bukkit.broadcastMessage(
-                ManHunt.get().getLanguage().gaming.WAITING_FOR_PLAYERS
-                        .replaceAll("%s", inGamePlayers.size() + "")
-                        .replaceAll("%s", playersToStart + "")
-        );
-        if (inGamePlayers.size() >= playersToStart) {
-            new Vote(inGamePlayers.stream().map(e -> e.getPlayer().getUniqueId()), v -> start(v.getResult())).startVote();
-        }
+        Bukkit.broadcastMessage(String.format(ManHunt.get().getLanguage().gaming.WAITING_FOR_PLAYERS,
+                                              inGamePlayers.size(),
+                                              playersToStart));
+        if (inGamePlayers.size() >= playersToStart)
+            new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
+                     v -> start(v.getResult())).startVote();
         return true;
     }
 
     public void kickPlayer(String player) {
-        inGamePlayers.stream().filter(e -> e.getPlayer().getName().equals(player)).findFirst().ifPresent(inGamePlayers::remove);
+        inGamePlayers.stream()
+                .filter(e -> e.getPlayer().getName().equals(player))
+                .findFirst()
+                .ifPresent(inGamePlayers::remove);
     }
 
     @EventHandler
@@ -116,7 +124,7 @@ public class Game implements Listener {
         if (e.getEntityType() == EntityType.PLAYER) {
             //Player Died Event
             Player player = (Player) e.getEntity();
-            isInGame(player.getName()).ifPresent(p -> {
+            isInGame(player).ifPresent(p -> {
                 if (p.getRole() == GamePlayer.Role.RUNNER)
                     stop(GameResult.HUNTER_WIN);
             });
@@ -124,7 +132,11 @@ public class Game implements Listener {
             stop(GameResult.RUNNER_WIN);
     }
 
-    public Optional<GamePlayer> isInGame(String name) {
-        return inGamePlayers.stream().filter(s -> s.getPlayer().getName().equals(name)).findFirst();
+    public Optional<GamePlayer> isInGame(Player player) {
+        return inGamePlayers.stream().filter(s -> s.getPlayer().equals(player)).findFirst();
+    }
+
+    public List<GamePlayer> getInGamePlayers() {
+        return inGamePlayers;
     }
 }
