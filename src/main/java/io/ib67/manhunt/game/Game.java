@@ -8,11 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +16,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 
-public class Game implements Listener {
+public class Game {
     protected List<GamePlayer> inGamePlayers = new LinkedList<>();
     private final int playersToStart;
     @Getter
@@ -119,18 +115,6 @@ public class Game implements Listener {
                 .ifPresent(inGamePlayers::remove);
     }
 
-    @EventHandler
-    public void onEntityDeath(EntityDeathEvent e) {
-        if (e.getEntityType() == EntityType.PLAYER) {
-            //Player Died Event
-            Player player = (Player) e.getEntity();
-            isInGame(player).ifPresent(p -> {
-                if (p.getRole() == GamePlayer.Role.RUNNER)
-                    stop(GameResult.HUNTER_WIN);
-            });
-        } else if (e.getEntityType() == EntityType.ENDER_DRAGON)
-            stop(GameResult.RUNNER_WIN);
-    }
 
     public Optional<GamePlayer> isInGame(Player player) {
         return inGamePlayers.stream().filter(s -> s.getPlayer().equals(player)).findFirst();

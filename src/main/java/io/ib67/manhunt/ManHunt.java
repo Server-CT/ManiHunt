@@ -4,6 +4,7 @@ import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.listener.Chat;
+import io.ib67.manhunt.listener.Death;
 import io.ib67.manhunt.listener.JoinAndLeave;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
@@ -48,6 +49,7 @@ public final class ManHunt extends JavaPlugin {
     private void loadListeners() {
         Bukkit.getPluginManager().registerEvents(new Chat(), this);
         Bukkit.getPluginManager().registerEvents(new JoinAndLeave(), this);
+        Bukkit.getPluginManager().registerEvents(new Death(), this);
     }
 
     private void loadAdditions() {
