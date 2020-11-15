@@ -16,16 +16,18 @@ import java.util.Optional;
 public class Chat implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        if (ManHunt.getInstance().getGame().getPhase() != GamePhase.STARTED)
+        Game game = ManHunt.getInstance().getGame();
+
+        if (game.getPhase() != GamePhase.STARTED)
             return;
 
         Player player = event.getPlayer();
-        Optional<GamePlayer> og = ManHunt.getInstance().getGame().isInGame(player);
+        Optional<GamePlayer> og = game.isInGame(player);
         if (og.isPresent()) {
             GamePlayer.Role role = og.orElse(null).getRole();
             event.setFormat((role == GamePlayer.Role.HUNTER ?
-                    ChatColor.RED + "[HUNTER] " :
-                    ChatColor.GREEN + "[RUNNER] ") + ChatColor.RESET + event.getFormat());
+                             ChatColor.RED + "[HUNTER] " :
+                             ChatColor.GREEN + "[RUNNER] ") + ChatColor.RESET + event.getFormat());
             if (role == GamePlayer.Role.HUNTER && event.getMessage().startsWith("#")) {
                 event.setCancelled(true);
                 event.setFormat(ChatColor.WHITE + "[TEAM]" + event.getFormat());
@@ -38,9 +40,8 @@ public class Chat implements Listener {
                         .forEach(p -> p.sendMessage(event.getFormat()));
             }
         } else {
-            event.setFormat(ChatColor.GRAY + "[SPECTATOR] " + ChatColor.RESET + event.getFormat());
             event.setCancelled(true);
-            Game game = ManHunt.getInstance().getGame();
+            event.setFormat(ChatColor.GRAY + "[SPECTATOR] " + ChatColor.RESET + event.getFormat());
             Bukkit.getOnlinePlayers().stream().filter(p -> !game.isInGame(p).isPresent()).forEach(p -> p.sendMessage(
                     event.getFormat()));
         }

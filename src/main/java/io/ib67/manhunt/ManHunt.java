@@ -3,9 +3,7 @@ package io.ib67.manhunt;
 import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
-import io.ib67.manhunt.listener.Chat;
-import io.ib67.manhunt.listener.Death;
-import io.ib67.manhunt.listener.JoinAndLeave;
+import io.ib67.manhunt.listener.*;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
@@ -39,18 +37,19 @@ public final class ManHunt extends JavaPlugin {
         language.reloadConfig();
         debug = mainConfig.get().verbose;
         game = new Game(mainConfig.get().maxPlayers,
-                g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
-                g -> {
-                    Bukkit.getPluginManager().callEvent(new HuntEndEvent(g));
-                });
+                        g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
+                        g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
         loadAdditions();
         loadListeners();
     }
 
     private void loadListeners() {
         Bukkit.getPluginManager().registerEvents(new Chat(), this);
+        Bukkit.getPluginManager().registerEvents(new Craft(), this);
         Bukkit.getPluginManager().registerEvents(new JoinAndLeave(), this);
         Bukkit.getPluginManager().registerEvents(new Death(), this);
+        Bukkit.getPluginManager().registerEvents(new Interact(), this);
+        Bukkit.getPluginManager().registerEvents(new Respawn(), this);
     }
 
     private void loadAdditions() {

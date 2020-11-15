@@ -5,6 +5,7 @@ import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.game.GamePhase;
 import io.ib67.manhunt.game.GamePlayer;
 import io.ib67.manhunt.game.GameResult;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +26,8 @@ public class Death implements Listener {
             game.isInGame(player).ifPresent(p -> {
                 if (p.getRole() == GamePlayer.Role.RUNNER)
                     game.stop(GameResult.HUNTER_WIN);
+                else if (p.getRole() == GamePlayer.Role.HUNTER)
+                    e.getDrops().removeIf(i -> i.getType() == Material.COMPASS);
             });
         } else if (e.getEntityType() == EntityType.ENDER_DRAGON)
             game.stop(GameResult.RUNNER_WIN);

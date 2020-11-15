@@ -15,8 +15,7 @@ public class JoinAndLeave implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        if (ManHunt.getInstance().getGame().getPhase() == GamePhase.WAITING_FOR_PLAYER) {
+        if (ManHunt.getInstance().getGame().getPhase() == GamePhase.WAITING_FOR_PLAYER)
             ManHunt.getInstance().getGame().kickPlayer(event.getPlayer().getName());
-        }
     }
 }

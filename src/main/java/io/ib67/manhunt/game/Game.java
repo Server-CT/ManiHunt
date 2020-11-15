@@ -5,6 +5,7 @@ import io.ib67.manhunt.game.stat.GameStat;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -25,11 +26,14 @@ public class Game {
     private final Consumer<Game> gameEnd;
     private final Consumer<Game> gameStart;
     @Getter
-    private String runner;
+    private Player runner;
     private long startTime;
     @Getter
     private GamePhase phase = GamePhase.WAITING_FOR_PLAYER;
     private final GameStat gameStat = new GameStat();
+    @Getter
+    @Setter
+    private boolean compassEnabled = false;
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
         this.gameStart = gameStart;
@@ -40,6 +44,7 @@ public class Game {
     public void start(Player runner) {
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();
+        this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
         Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
         inGamePlayers.forEach(e -> {
