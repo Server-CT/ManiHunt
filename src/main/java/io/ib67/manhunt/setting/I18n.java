@@ -13,7 +13,7 @@ public class I18n {
         public String SPECTATOR_RULE = ChatColor.GREEN + "游戏已开始，请保持安静。";
         public String[] GAME_INTRODUCTION = new String[]{
                 ChatColor.AQUA + "欢迎来到 " + ChatColor.RED + "ManHunt!",
-                ChatColor.WHITE + "在本游戏中，将有 %s 名玩家扮演" + ChatColor.RED + "猎人" + ChatColor.WHITE + "，1 名玩家扮演" + ChatColor.RED + "逃亡者" + ChatColor.WHITE + "。",
+                ChatColor.WHITE + "在本游戏中，将有多名玩家扮演" + ChatColor.RED + "猎人" + ChatColor.WHITE + "，1 名玩家扮演" + ChatColor.RED + "逃亡者" + ChatColor.WHITE + "。",
                 ChatColor.WHITE + "游戏规则:",
                 ChatColor.WHITE + "- " + ChatColor.GREEN + "猎人杀死逃亡者时，猎人胜利。",
                 ChatColor.WHITE + "- " + ChatColor.GREEN + "逃亡者杀死末影龙时，逃亡者胜利",
