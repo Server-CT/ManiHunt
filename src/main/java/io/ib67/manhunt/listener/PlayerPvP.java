@@ -12,6 +12,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class PlayerPvP implements Listener {
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e) {
+        if (!ManHunt.getInstance().getGame().isStarted()) {
+            e.setCancelled(true);
+        }
         if (e.getDamager().getType() == EntityType.PLAYER && e.getEntity().getType() == EntityType.PLAYER) {
             Player runner = ManHunt.getInstance().getGame().getRunner();
             Player damager = (Player) e.getDamager();
