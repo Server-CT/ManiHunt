@@ -31,6 +31,7 @@ public class Vote implements Listener, InventoryHolder {
         this.voteInv = Bukkit.createInventory(this,
                                               (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
                                               9);
+        initInventory();
     }
 
     public Vote(Stream<UUID> shouldVote, Consumer<Vote> callback) {
@@ -39,6 +40,17 @@ public class Vote implements Listener, InventoryHolder {
         this.voteInv = Bukkit.createInventory(this,
                                               (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
                                               9);
+        initInventory();
+    }
+
+    private void initInventory() {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) Objects.requireNonNull(head.getItemMeta());
+        for (UUID uuid : shouldVote) {
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+            head.setItemMeta(meta);
+            voteInv.addItem(head.clone());
+        }
     }
 
     public Inventory getInventory() {
