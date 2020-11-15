@@ -2,6 +2,7 @@ package io.ib67.manhunt.rador;
 
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.setting.I18n;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -29,10 +30,10 @@ public class SimpleRador implements Rador {
             I18n i18n = ManHunt.getInstance().getLanguage();
             if (nearbyPlayers.size() != 0) {
                 TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.NEAR, setAsStr(), warnDistance));
-                player.spigot().sendMessage(textComponent);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
             } else {
                 TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.SAFE, warnDistance));
-                player.spigot().sendMessage(textComponent);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, textComponent);
             }
 
         }, 0L, 10L); //0.5s
