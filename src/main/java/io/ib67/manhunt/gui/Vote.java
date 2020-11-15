@@ -2,6 +2,7 @@ package io.ib67.manhunt.gui;
 
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.setting.I18n;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,9 +20,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Vote implements Listener, InventoryHolder {
+    @Getter
     private final LinkedList<UUID> shouldVote;
     private final LinkedList<UUID> voted = new LinkedList<>();
     private final TreeMap<UUID, Integer> voteMap = new TreeMap<>();
+    @Getter
     private final Inventory voteInv;
     private final Consumer<Vote> callback;
 

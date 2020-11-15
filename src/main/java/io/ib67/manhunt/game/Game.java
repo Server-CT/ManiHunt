@@ -35,6 +35,7 @@ public class Game {
     public boolean runnerNether = false;
     public boolean runnerEnd = false;
     private Rador rador;
+    public Vote vote;
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
         this.gameStart = gameStart;
@@ -54,6 +55,7 @@ public class Game {
     }
 
     public void start(Player runner) {
+        vote = null;
         Bukkit.getWorld("world").setDifficulty(Difficulty.valueOf(ManHunt.getInstance().getMainConfig().difficulty));
         Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         phase = GamePhase.STARTING;
@@ -133,8 +135,8 @@ public class Game {
                                               playersToStart));
         if (inGamePlayers.size() >= playersToStart) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
-            new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
-                     v -> start(v.getResult())).startVote();
+            (vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
+                             v -> start(v.getResult()))).startVote();
         }
         return true;
     }
