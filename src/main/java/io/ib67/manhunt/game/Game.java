@@ -12,7 +12,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 
 public class Game {
@@ -47,22 +50,22 @@ public class Game {
         Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
-            e.getPlayer().sendMessage(i18n.gaming.gameIntroduction);
+            e.getPlayer().sendMessage(i18n.gaming.GAME_INTRODUCTION);
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
-                e.getPlayer().sendTitle(i18n.gaming.hunter.TITLE_MAIN,
-                        i18n.gaming.hunter.TITLE_SUB,
-                        10 * 20,
-                        20 * 20,
-                        10 * 20);
+                e.getPlayer().sendTitle(i18n.gaming.HUNTER.TITLE_MAIN,
+                                        i18n.gaming.HUNTER.TITLE_SUB,
+                                        10 * 20,
+                                        20 * 20,
+                                        10 * 20);
                 airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
-                e.getPlayer().sendTitle(i18n.gaming.hunter.TITLE_MAIN,
-                        i18n.gaming.hunter.TITLE_SUB,
-                        10 * 20,
-                        20 * 20,
-                        10 * 20);
+                e.getPlayer().sendTitle(i18n.gaming.HUNTER.TITLE_MAIN,
+                                        i18n.gaming.HUNTER.TITLE_SUB,
+                                        10 * 20,
+                                        20 * 20,
+                                        10 * 20);
             }
         });
         gameStart.accept(this);
@@ -86,8 +89,8 @@ public class Game {
         this.result = result;
         phase = GamePhase.END;
         String title = result == GameResult.HUNTER_WIN ?
-                ManHunt.getInstance().getLanguage().gaming.hunter.WON :
-                ManHunt.getInstance().getLanguage().gaming.runner.WON;
+                       ManHunt.getInstance().getLanguage().gaming.HUNTER.WON :
+                       ManHunt.getInstance().getLanguage().gaming.RUNNER.WON;
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
