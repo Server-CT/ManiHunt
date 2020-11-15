@@ -54,7 +54,7 @@ public class Game {
     }
 
     public void start(Player runner) {
-        Bukkit.getWorld("world").setDifficulty(Difficulty.NORMAL);
+        Bukkit.getWorld("world").setDifficulty(Difficulty.valueOf(ManHunt.getInstance().getMainConfig().difficulty));
         Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();

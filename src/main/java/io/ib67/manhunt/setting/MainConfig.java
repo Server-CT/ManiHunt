@@ -5,6 +5,7 @@ public class MainConfig {
     public boolean verbose = false;
     public boolean muteSpectatorInGlobalChannel = false;
     public String serverLanguage = "zh_CN";
+    public String difficulty = "NORMAL";
     public int radorWarnDistance = 30;
     public Scores playerScores = new Scores();
     public boolean blockCompassWhenDifferentWorld = false;

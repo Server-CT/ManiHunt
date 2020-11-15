@@ -24,6 +24,7 @@ public class I18n {
         };
         public String ARCHIVE_TARGET = ChatColor.GOLD + "达成成就: +%dXP";
         public String CRITICAL_TARGET = ChatColor.GOLD + "重拳出击！: +%dXP";
+        public String DONT_RUN_AWAY = ChatColor.RED + "请不要跑出出生点。";
         public SimpleRador SIMPLE_RADOR = new SimpleRador();
 
         public static class SimpleRador {
