@@ -11,6 +11,8 @@ public class Move implements Listener {
                 e.getPlayer().teleport(e.getPlayer().getWorld().getSpawnLocation());
                 e.getPlayer().sendMessage(ManHunt.getInstance().getLanguage().GAMING.DONT_RUN_AWAY);
             }
+            return;
         }
+        ManHunt.getInstance().getGame().getRador().onMove(e.getPlayer());
     }
 }

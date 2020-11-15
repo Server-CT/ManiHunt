@@ -18,7 +18,7 @@ public class I18n {
                 ChatColor.WHITE + "- " + ChatColor.GREEN + "猎人杀死逃亡者时，猎人胜利。",
                 ChatColor.WHITE + "- " + ChatColor.GREEN + "逃亡者杀死末影龙时，逃亡者胜利",
                 ChatColor.WHITE + "当猎人第一次造出指南针后，" + ChatColor.RED + "将会开启无限指南针，并通过右键交互定位逃亡者位置",
-                ChatColor.WHITE + "并且每个人每完成一个成就后，" + ChatColor.GREEN + "将有 %s 的机率拿到一样加成物品。 " + ChatColor.GRAY
+                ChatColor.WHITE + "并且每个人每完成一个成就后，" + ChatColor.GREEN + "将有机率拿到一样加成物品。 " + ChatColor.GRAY
                         + "前提：服务器开启加成模式",
                 ChatColor.WHITE + "游戏通过 投票 选举逃亡者。"
         };

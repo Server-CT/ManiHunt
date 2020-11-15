@@ -34,6 +34,7 @@ public class Game {
     private boolean compassEnabled = false;
     public boolean runnerNether = false;
     public boolean runnerEnd = false;
+    @Getter
     private Rador rador;
     public Vote vote;
 
