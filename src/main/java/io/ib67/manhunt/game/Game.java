@@ -110,14 +110,16 @@ public class Game {
         phase = GamePhase.END;
         rador.stop();
         String title = result == GameResult.HUNTER_WIN ?
-                       ManHunt.getInstance().getLanguage().GAMING.HUNTER.WON :
-                       ManHunt.getInstance().getLanguage().GAMING.RUNNER.WON;
+                ManHunt.getInstance().getLanguage().GAMING.HUNTER.WON :
+                ManHunt.getInstance().getLanguage().GAMING.RUNNER.WON;
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
             p.sendTitle(title, "", 10 * 20, 20 * 20, 10 * 20);
         });
         gameEnd.accept(this);
+        Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.SHUTDOWN);
+        Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, 30 * 20L);
     }
 
     public boolean isStarted() {

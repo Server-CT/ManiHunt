@@ -15,10 +15,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class PlayerStat {
     private final GamePlayer player;
-    private final static List<String> mentionedNormal = Arrays.asList("story.upgrade_tools", "story.smelt_iron", "story.lava_bucket",
-            "story.enter_the_nether", "nether.obtain_blaze_rod", "story.follow_ender_eye", "story.enter_the_end");
-    private final static List<String> mentionedSpecial = Arrays.asList("story.mine_diamond", "story.enchant_item"
-            , "story.form_obsidian", "nether.return_to_sender", "nether.brew_potion", "nether.distract_piglin", "adventure.trade");
+    private final static List<String> mentionedNormal = Arrays.asList("story/upgrade_tools", "story/smelt_iron", "story/lava_bucket",
+            "story/enter_the_nether", "nether/obtain_blaze_rod", "story/follow_ender_eye", "story/enter_the_end");
+    private final static List<String> mentionedSpecial = Arrays.asList("story/mine_diamond", "story/enchant_item"
+            , "story/form_obsidian", "nether/return_to_sender", "nether/brew_potion", "nether/distract_piglin", "adventure/trade");
 
     public PlayerStat(GamePlayer p) {
         player = p;
