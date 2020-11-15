@@ -40,6 +40,10 @@ public class I18n {
             public String TITLE_SUB = "找到逃亡者并杀死他";
             public String UNLIMITED_COMPASS_UNLOCKED = ChatColor.RED + "猎人已解锁无限指南针";
             public String UNLIMITED_COMPASS_LOCKED = ChatColor.RED + "无限指南针已被销毁！猎人需要重新制作指南针";
+            public String FAILED_TO_TRACK = ChatColor.RED + "无法追踪逃亡者！";
+            public String WARN_RUNNER_NOT_ENTERED = ChatColor.RED + "逃亡者尚未到达这个世界";
+            public String ACTION_BAR_RADOR = ChatColor.AQUA + "TRACKING: %d";
+            public String ACTION_BAR_RADOR_PART_FAR = ChatColor.RED + "DISTANCE >> %d";
         }
 
         public static class Runner {
@@ -48,7 +52,6 @@ public class I18n {
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
             public String ARRIVE_NETHER = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 地狱";
             public String ARRIVE_END = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 末地";
-            public String COMPASS_HINT_SAFE = ChatColor.GREEN + "半径 %sM 内无猎人";
         }
 
         public static class Vote {

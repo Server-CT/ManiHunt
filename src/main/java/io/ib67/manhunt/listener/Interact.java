@@ -48,27 +48,27 @@ public class Interact implements Listener {
                     .map(Player::getInventory)
                     .ifPresent(i -> {
                         Player runner = game.getRunner();
-                        TextComponent actBarMsg = new TextComponent(String.format(ManHunt.getInstance().getLanguage().gaming.HUNTER.ACTION_BAR_RADOR, runner.getDisplayName()));
+                        TextComponent actBarMsg = new TextComponent(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR, runner.getDisplayName()));
                         if (event.getPlayer().getWorld() == runner.getLocation().getWorld()) {
                             if (runner.getLocation().distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
-                                actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().gaming.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
+                                actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                             }
                             setItem.accept(i, LodestoneCompass.allocate(runner.getLocation()));
                             event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, actBarMsg);
                         } else {
                             if (ManHunt.getInstance().getMainConfig().blockCompassWhenDifferentWorld) {
-                                event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ManHunt.getInstance().getLanguage().gaming.HUNTER.FAILED_TO_TRACK));
+                                event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ManHunt.getInstance().getLanguage().GAMING.HUNTER.FAILED_TO_TRACK));
                                 setItem.accept(i, new ItemStack(Material.COMPASS));
                             } else {
                                 if (lastLoc.containsKey(event.getPlayer().getWorld().getName())) {
                                     Location loc = lastLoc.get(event.getPlayer().getWorld().getName());
                                     setItem.accept(i, LodestoneCompass.allocate(loc));
                                     if (loc.distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
-                                        actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().gaming.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
+                                        actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                                     }
                                     event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, actBarMsg);
                                 } else {
-                                    event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ManHunt.getInstance().getLanguage().gaming.HUNTER.WARN_RUNNER_NOT_ENTERED));
+                                    event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ManHunt.getInstance().getLanguage().GAMING.HUNTER.WARN_RUNNER_NOT_ENTERED));
                                 }
                             }
                         }
