@@ -25,6 +25,12 @@ public final class ManHunt extends JavaPlugin {
         return instance;
     }
 
+    public MainConfig getMainConfig() {
+        return mainConfig.get();
+    }
+
+    ;
+
     public I18n getLanguage() {
         return language.get();
     }
