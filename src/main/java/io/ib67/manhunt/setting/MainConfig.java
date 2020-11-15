@@ -6,6 +6,7 @@ public class MainConfig {
     public boolean verbose;
     public boolean muteSpectatorInGlobalChannel = false;
     public String serverLanguage = "zh_CN";
+    public int radorWarnDistance = 30;
     public Scores playerScores = new Scores();
 
     public static class Scores {

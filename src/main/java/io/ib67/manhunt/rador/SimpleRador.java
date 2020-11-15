@@ -26,11 +26,15 @@ public class SimpleRador implements Rador {
     public void start() {
         stop();
         keeper = Bukkit.getScheduler().runTaskTimer(ManHunt.getInstance(), () -> {
+            I18n i18n = ManHunt.getInstance().getLanguage();
             if (nearbyPlayers.size() != 0) {
-                I18n i18n = ManHunt.getInstance().getLanguage();
-                TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.NEAR, setAsStr()));
+                TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.NEAR, setAsStr(), warnDistance));
+                player.spigot().sendMessage(textComponent);
+            } else {
+                TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.SAFE, warnDistance));
                 player.spigot().sendMessage(textComponent);
             }
+
         }, 0L, 10L); //0.5s
     }
 

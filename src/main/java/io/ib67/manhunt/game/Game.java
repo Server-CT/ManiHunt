@@ -3,6 +3,8 @@ package io.ib67.manhunt.game;
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.stat.GameStat;
 import io.ib67.manhunt.gui.Vote;
+import io.ib67.manhunt.rador.Rador;
+import io.ib67.manhunt.rador.SimpleRador;
 import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +37,7 @@ public class Game {
     @Getter
     @Setter
     private boolean compassEnabled = false;
+    private Rador rador;
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
         this.gameStart = gameStart;
@@ -62,14 +65,15 @@ public class Game {
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
                 e.getPlayer().sendTitle(i18n.gaming.HUNTER.TITLE_MAIN,
-                                        i18n.gaming.HUNTER.TITLE_SUB,
-                                        10 * 20,
-                                        20 * 20,
-                                        10 * 20);
+                        i18n.gaming.HUNTER.TITLE_SUB,
+                        10 * 20,
+                        20 * 20,
+                        10 * 20);
             }
         });
-        gameStart.accept(this);
+        initRador();
         phase = GamePhase.STARTED;
+        gameStart.accept(this);
     }
 
     private void airDrop(Player runner) {
@@ -83,14 +87,20 @@ public class Game {
         runner.teleport(loc);
     }
 
+    private void initRador() {
+        rador = new SimpleRador(runner, ManHunt.getInstance().getMainConfig().radorWarnDistance);
+        rador.start();
+    }
+
     public void stop(GameResult result) {
         //TODO
         gameStat.setTotalTime(System.currentTimeMillis() - startTime);
         this.result = result;
         phase = GamePhase.END;
+        rador.stop();
         String title = result == GameResult.HUNTER_WIN ?
-                       ManHunt.getInstance().getLanguage().gaming.HUNTER.WON :
-                       ManHunt.getInstance().getLanguage().gaming.RUNNER.WON;
+                ManHunt.getInstance().getLanguage().gaming.HUNTER.WON :
+                ManHunt.getInstance().getLanguage().gaming.RUNNER.WON;
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
