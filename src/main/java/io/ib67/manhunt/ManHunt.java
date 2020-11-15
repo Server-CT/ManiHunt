@@ -50,6 +50,7 @@ public final class ManHunt extends JavaPlugin {
     }
 
     private void loadListeners() {
+        Bukkit.getPluginManager().registerEvents(new AdvancementAndPhase(), this);
         Bukkit.getPluginManager().registerEvents(new Chat(), this);
         Bukkit.getPluginManager().registerEvents(new Craft(), this);
         Bukkit.getPluginManager().registerEvents(new JoinAndLeave(), this);
