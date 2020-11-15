@@ -37,13 +37,14 @@ public class I18n {
             public String WON = ChatColor.RED + "游戏结束！猎人 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "找到逃亡者并杀死他";
+            public String UNLIMITED_COMPASS_UNLOCKED = ChatColor.RED + "猎人已解锁无限指南针";
+            public String UNLIMITED_COMPASS_LOCKED = ChatColor.RED + "无限指南针已被销毁！猎人需要重新制作指南针";
         }
 
         public static class Runner {
             public String WON = ChatColor.GREEN + "游戏结束！逃亡者 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
-            public String COMPASS_HINT_SAFE = ChatColor.GREEN + "半径 %sM 内无猎人";
         }
     }
 }

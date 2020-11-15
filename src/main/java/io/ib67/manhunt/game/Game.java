@@ -7,7 +7,6 @@ import io.ib67.manhunt.rador.Rador;
 import io.ib67.manhunt.rador.SimpleRador;
 import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -35,7 +34,6 @@ public class Game {
     @Getter
     private final GameStat gameStat = new GameStat();
     @Getter
-    @Setter
     private boolean compassEnabled = false;
     private Rador rador;
 
@@ -43,6 +41,15 @@ public class Game {
         this.gameStart = gameStart;
         this.gameEnd = gameEnd;
         this.playersToStart = playersToStart;
+    }
+
+    public void setCompassEnabled(boolean status) {
+        this.compassEnabled = status;
+        if (status) {
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
+        } else {
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_LOCKED);
+        }
     }
 
     public void start(Player runner) {
