@@ -56,11 +56,11 @@ public class Game {
             e.getPlayer().sendMessage(i18n.gaming.GAME_INTRODUCTION);
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
-                e.getPlayer().sendTitle(i18n.gaming.HUNTER.TITLE_MAIN,
-                                        i18n.gaming.HUNTER.TITLE_SUB,
-                                        10 * 20,
-                                        20 * 20,
-                                        10 * 20);
+                e.getPlayer().sendTitle(i18n.gaming.RUNNER.TITLE_MAIN,
+                        i18n.gaming.RUNNER.TITLE_SUB,
+                        10 * 20,
+                        20 * 20,
+                        10 * 20);
                 airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
@@ -93,7 +93,6 @@ public class Game {
     }
 
     public void stop(GameResult result) {
-        //TODO
         gameStat.setTotalTime(System.currentTimeMillis() - startTime);
         this.result = result;
         phase = GamePhase.END;
