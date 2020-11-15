@@ -7,10 +7,7 @@ import io.ib67.manhunt.rador.Rador;
 import io.ib67.manhunt.rador.SimpleRador;
 import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
@@ -43,6 +40,8 @@ public class Game {
         this.gameStart = gameStart;
         this.gameEnd = gameEnd;
         this.playersToStart = playersToStart;
+        Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
     }
 
     public void setCompassEnabled(boolean status) {
@@ -55,6 +54,8 @@ public class Game {
     }
 
     public void start(Player runner) {
+        Bukkit.getWorld("world").setDifficulty(Difficulty.NORMAL);
+        Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();
         this.runner = runner;
