@@ -126,9 +126,13 @@ public class Game {
 
     public boolean joinPlayer(Player player) {
         if (isStarted()) {
-            player.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(ManHunt.getInstance().getLanguage().GAMING.SPECTATOR_RULE);
-            return false;
+            if (!isInGame(player).isPresent()) {
+                player.setGameMode(GameMode.SPECTATOR);
+                player.sendMessage(ManHunt.getInstance().getLanguage().GAMING.SPECTATOR_RULE);
+                return false;
+            } else {
+                return true;
+            }
         }
         player.setGameMode(GameMode.ADVENTURE);
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());

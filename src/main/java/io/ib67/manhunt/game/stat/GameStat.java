@@ -27,8 +27,11 @@ public class GameStat {
      */
     public int addAdvancement(Player player, Advancement advancement) {
         if (playerStats.containsKey(player.getUniqueId())) {
-            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0F, 1.0F);
-            return playerStats.get(player.getUniqueId()).achieve(advancement);
+            int score = playerStats.get(player.getUniqueId()).achieve(advancement);
+            if (score > 0) {
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0F, 1.0F);
+            }
+            return score;
         } else {
             return -1; //Not Found
         }
