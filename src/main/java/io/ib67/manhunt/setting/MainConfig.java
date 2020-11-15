@@ -1,8 +1,8 @@
 package io.ib67.manhunt.setting;
 
 public class MainConfig {
-    public int maxPlayers;
-    public boolean verbose;
+    public int maxPlayers = 3;
+    public boolean verbose = false;
     public boolean muteSpectatorInGlobalChannel = false;
     public String serverLanguage = "zh_CN";
     public int radorWarnDistance = 30;
