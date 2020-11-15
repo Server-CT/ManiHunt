@@ -12,13 +12,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class JoinAndLeave implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        ManHunt.getInstance().getGame().joinPlayer(event.getPlayer());
-        Vote vote = ManHunt.getInstance().getGame().vote;
-        if (vote != null && vote.getShouldVote().contains(event.getPlayer().getUniqueId())) {
-            Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(),
-                                               () -> event.getPlayer().openInventory(vote.getVoteInv()),
-                                               10);
-        }
+        Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), () -> {
+            ManHunt.getInstance().getGame().joinPlayer(event.getPlayer());
+            Vote vote = ManHunt.getInstance().getGame().vote;
+            if (vote != null && vote.getShouldVote().contains(event.getPlayer().getUniqueId())) {
+                Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(),
+                                                   () -> event.getPlayer().openInventory(vote.getVoteInv()),
+                                                   10);
+            }
+        }, 10);
     }
 
     @EventHandler

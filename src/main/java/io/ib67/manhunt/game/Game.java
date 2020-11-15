@@ -141,8 +141,9 @@ public class Game {
                                               playersToStart));
         if (inGamePlayers.size() >= playersToStart) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
-            (vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
-                             v -> start(v.getResult()))).startVote();
+            vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
+                            v -> start(v.getResult()));
+            Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), () -> vote.startVote(), 10);
         }
         return true;
     }
