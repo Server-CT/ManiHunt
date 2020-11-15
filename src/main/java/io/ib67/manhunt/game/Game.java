@@ -48,9 +48,9 @@ public class Game {
     public void setCompassEnabled(boolean status) {
         this.compassEnabled = status;
         if (status) {
-            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
         } else {
-            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_LOCKED);
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_LOCKED);
         }
     }
 
@@ -59,10 +59,10 @@ public class Game {
         startTime = System.currentTimeMillis();
         this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
-        Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
+        Bukkit.broadcastMessage(i18n.GAMING.VOTE_START);
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
-            e.getPlayer().sendMessage(i18n.gaming.GAME_INTRODUCTION);
+            e.getPlayer().sendMessage(i18n.GAMING.GAME_INTRODUCTION);
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
                 e.getPlayer().sendTitle(i18n.GAMING.RUNNER.TITLE_MAIN,

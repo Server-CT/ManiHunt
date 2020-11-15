@@ -28,10 +28,13 @@ public class SimpleRador implements Rador {
         keeper = Bukkit.getScheduler().runTaskTimer(ManHunt.getInstance(), () -> {
             I18n i18n = ManHunt.getInstance().getLanguage();
             if (nearbyPlayers.size() != 0) {
-                TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.NEAR, setAsStr(), warnDistance));
+                TextComponent textComponent = new TextComponent(String.format(i18n.GAMING.SIMPLE_RADOR.NEAR,
+                                                                              setAsStr(),
+                                                                              warnDistance));
                 player.spigot().sendMessage(textComponent);
             } else {
-                TextComponent textComponent = new TextComponent(String.format(i18n.gaming.SIMPLE_RADOR.SAFE, warnDistance));
+                TextComponent textComponent = new TextComponent(String.format(i18n.GAMING.SIMPLE_RADOR.SAFE,
+                                                                              warnDistance));
                 player.spigot().sendMessage(textComponent);
             }
 
@@ -60,12 +63,12 @@ public class SimpleRador implements Rador {
         if (distance <= warnDistance) {
             if (!nearbyPlayers.contains(p)) {
                 nearbyPlayers.add(p);
-                player.sendMessage(String.format(i18n.gaming.SIMPLE_RADOR.HINT_CHAT_COMING, p.getName()));
+                player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADOR.HINT_CHAT_COMING, p.getName()));
             }
         } else {
             if (nearbyPlayers.contains(p)) {
                 nearbyPlayers.add(p);
-                player.sendMessage(String.format(i18n.gaming.SIMPLE_RADOR.HINT_CHAT_LEAVE, p.getName()));
+                player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADOR.HINT_CHAT_LEAVE, p.getName()));
             }
         }
     }
