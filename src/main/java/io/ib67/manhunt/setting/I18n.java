@@ -29,10 +29,10 @@ public class I18n {
         public SimpleRador SIMPLE_RADOR = new SimpleRador();
 
         public static class SimpleRador {
-            public String NEAR = ChatColor.RED + "%d 正在靠近! (<=%dM)";
+            public String NEAR = ChatColor.RED + "%s 正在靠近! (<=%dM)";
             public String SAFE = ChatColor.GREEN + "半径 %dM 内无猎人出现。";
-            public String HINT_CHAT_COMING = "猎人 %d 正在接近。";
-            public String HINT_CHAT_LEAVE = "猎人 %d 离开雷达范围之外。";
+            public String HINT_CHAT_COMING = "猎人 %s 正在接近。";
+            public String HINT_CHAT_LEAVE = "猎人 %s 离开雷达范围之外。";
         }
 
         public static class Hunter {
@@ -43,7 +43,7 @@ public class I18n {
             public String UNLIMITED_COMPASS_LOCKED = ChatColor.RED + "无限指南针已被销毁！猎人需要重新制作指南针";
             public String FAILED_TO_TRACK = ChatColor.RED + "无法追踪逃亡者！";
             public String WARN_RUNNER_NOT_ENTERED = ChatColor.RED + "逃亡者尚未到达这个世界";
-            public String ACTION_BAR_RADOR = ChatColor.AQUA + "TRACKING: %d";
+            public String ACTION_BAR_RADOR = ChatColor.AQUA + "TRACKING: %s";
             public String ACTION_BAR_RADOR_PART_FAR = ChatColor.RED + "DISTANCE >> %d";
         }
 
