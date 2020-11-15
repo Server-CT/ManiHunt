@@ -1,10 +1,11 @@
 package io.ib67.manhunt.game.stat;
 
+import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.GamePlayer;
+import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.AdvancementTranslator;
 import org.bukkit.Statistic;
 import org.bukkit.advancement.Advancement;
-import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -23,8 +24,15 @@ public class PlayerStat {
         player = p;
     }
 
-    public static final int NORMAL_SCORE = 500;
-    public static final int SPECIAL_SCORE = 1000;//todo config
+    public int normalScore;
+    public int specialScore;
+
+    {
+        MainConfig cfg = ManHunt.getInstance().getMainConfig();
+        normalScore = cfg.playerScores.advancementNormal;
+        specialScore = cfg.playerScores.advancementSpecial;
+    }
+
     /**
      * Minute.
      */
@@ -83,14 +91,14 @@ public class PlayerStat {
         if (mentionedNormal.contains(adv.getKey().getKey())) {
             advancements.add(
                     AdvancementRecord.builder()
-                            .score(Math.round(NORMAL_SCORE / distance))
+                            .score(Math.round(normalScore / distance))
                             .usedTime(distance)
                             .advancement(AdvancementTranslator.translate(adv.getKey().getKey()))
                             .build());
             lastAdvancementTime = System.currentTimeMillis();
-            return NORMAL_SCORE; //ScoreAddition by time.
+            return normalScore; //ScoreAddition by time.
         } else if (mentionedSpecial.contains(adv.getKey().getKey())) {
-            int score = Math.round(SPECIAL_SCORE / distance);
+            int score = Math.round(specialScore / distance);
             advancements.add(
                     AdvancementRecord.builder()
                             .score(score)

@@ -3,6 +3,7 @@ package io.ib67.manhunt.game.stat;
 import io.ib67.manhunt.game.GamePlayer;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Sound;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,7 @@ public class GameStat {
     private Map<UUID, PlayerStat> playerStats = new LinkedHashMap<>();
     @Getter
     @Setter
-    private Phase gamePhase;
+    private Phase gamePhase = Phase.GETTING_STARTED;
     @Getter
     @Setter
     private long totalTime;
@@ -26,6 +27,7 @@ public class GameStat {
      */
     public int addAdvancement(Player player, Advancement advancement) {
         if (playerStats.containsKey(player.getUniqueId())) {
+            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0F, 1.0F);
             return playerStats.get(player.getUniqueId()).achieve(advancement);
         } else {
             return -1; //Not Found
@@ -38,6 +40,7 @@ public class GameStat {
 
     public void addAdvancement(Player player, String advancement, int score) {
         if (playerStats.containsKey(player.getUniqueId())) {
+            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2.0F, 1.0F);
             playerStats.get(player.getUniqueId()).achieve(advancement, score);
         }
     }

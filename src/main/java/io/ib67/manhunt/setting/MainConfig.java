@@ -6,4 +6,11 @@ public class MainConfig {
     public boolean verbose;
     public boolean muteSpectatorInGlobalChannel = false;
     public String serverLanguage = "zh_CN";
+    public Scores playerScores = new Scores();
+
+    public static class Scores {
+        public int critical = 400;
+        public int advancementNormal = 500;
+        public int advancementSpecial = 1000;
+    }
 }

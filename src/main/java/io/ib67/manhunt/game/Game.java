@@ -12,10 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Game {
@@ -30,6 +27,7 @@ public class Game {
     private long startTime;
     @Getter
     private GamePhase phase = GamePhase.WAITING_FOR_PLAYER;
+    @Getter
     private final GameStat gameStat = new GameStat();
     @Getter
     @Setter
