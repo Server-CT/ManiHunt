@@ -23,12 +23,12 @@ public class PlayerPvP implements Listener {
                 if (e.getFinalDamage() > 7) {
                     //重拳出击！(附魔钻剑或铁，钻剑暴击)
                     gameStat.addAdvancement(damager, "CRITICAL_TO_RUNNER", score);
-                    damager.sendMessage(String.format(i18N.gaming.CRITICAL_TARGET, score));
+                    damager.sendMessage(String.format(i18N.GAMING.CRITICAL_TARGET, score));
                 }
             } else if (damager.equals(runner)) {
                 if (e.getFinalDamage() > 7) {
                     gameStat.addAdvancement(damager, "CRITICAL_TO_HUNTER", score);
-                    damager.sendMessage(String.format(i18N.gaming.CRITICAL_TARGET, score));
+                    damager.sendMessage(String.format(i18N.GAMING.CRITICAL_TARGET, score));
                 }
             }
         }

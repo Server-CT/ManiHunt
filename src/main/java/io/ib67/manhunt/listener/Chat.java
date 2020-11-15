@@ -31,20 +31,23 @@ public class Chat implements Listener {
             if (role == GamePlayer.Role.HUNTER && event.getMessage().startsWith("#")) {
                 event.setCancelled(true);
                 event.setFormat(ChatColor.WHITE + "[TEAM]" + event.getFormat());
-                ManHunt.getInstance()
-                        .getGame()
-                        .getInGamePlayers()
-                        .stream()
-                        .filter(g -> g.getRole() == GamePlayer.Role.HUNTER)
-                        .map(GamePlayer::getPlayer)
-                        .forEach(p -> p.sendMessage(event.getFormat()));
+                Bukkit.getScheduler().runTask(ManHunt.getInstance(),
+                                              () -> game.getInGamePlayers()
+                                                      .stream()
+                                                      .filter(g -> g.getRole() ==
+                                                                   GamePlayer.Role.HUNTER)
+                                                      .map(GamePlayer::getPlayer)
+                                                      .forEach(p -> p.sendMessage(event.getFormat())));
             }
         } else {
             event.setFormat(ChatColor.GRAY + "[SPECTATOR] " + ChatColor.RESET + event.getFormat());
             if (ManHunt.getInstance().getMainConfig().muteSpectatorInGlobalChannel) {
                 event.setCancelled(true);
-                Bukkit.getOnlinePlayers().stream().filter(p -> !game.isInGame(p).isPresent()).forEach(p -> p.sendMessage(
-                        event.getFormat()));
+                Bukkit.getScheduler().runTask(ManHunt.getInstance(),
+                                              () -> Bukkit.getOnlinePlayers()
+                                                      .stream()
+                                                      .filter(p -> !game.isInGame(p).isPresent())
+                                                      .forEach(p -> p.sendMessage(event.getFormat())));
             }
         }
     }

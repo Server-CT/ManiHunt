@@ -1,6 +1,7 @@
 package io.ib67.manhunt.gui;
 
 import io.ib67.manhunt.ManHunt;
+import io.ib67.manhunt.setting.I18n;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,14 +29,16 @@ public class Vote implements Listener, InventoryHolder {
         this.shouldVote = new LinkedList<>(shouldVote);
         this.callback = callback;
         this.voteInv = Bukkit.createInventory(this,
-                (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
-                        9);
+                                              (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
+                                              9);
     }
 
     public Vote(Stream<UUID> shouldVote, Consumer<Vote> callback) {
         this.shouldVote = shouldVote.collect(Collectors.toCollection(LinkedList<UUID>::new));
         this.callback = callback;
-        this.voteInv = Bukkit.createInventory(this, (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) * 9);
+        this.voteInv = Bukkit.createInventory(this,
+                                              (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
+                                              9);
     }
 
     public Inventory getInventory() {
@@ -51,14 +54,25 @@ public class Vote implements Listener, InventoryHolder {
         InventoryClickEvent.getHandlerList().unregister(this);
     }
 
-    public void vote(UUID from, UUID to) {
-        if (!shouldVote.contains(from) || voted.contains(from))
+    public void vote(Player from, UUID to) {
+        UUID fromUUID = from.getUniqueId();
+        I18n i18n = ManHunt.getInstance().getLanguage();
+        if (!shouldVote.contains(fromUUID)) {
+            from.sendMessage(i18n.GAMING.VOTE.SHOULD_NOT_VOTE);
             return;
+        }
+        if (voted.contains(fromUUID)) {
+            from.sendMessage(i18n.GAMING.VOTE.ALREADY_VOTED);
+            return;
+        }
 
         voteMap.put(to, voteMap.containsKey(to) ? voteMap.get(to) + 1 : 1);
 
-        voted.add(from);
+        voted.add(fromUUID);
+        from.sendMessage(String.format(i18n.GAMING.VOTE.VOTE_SUCCEED,
+                                       Objects.requireNonNull(Bukkit.getPlayer(to)).getName()));
 
+        Bukkit.broadcastMessage(String.format(i18n.GAMING.VOTE.VOTING, voted.size(), shouldVote.size()));
         if (allVoted()) {
             callback.accept(this);
             endVote();
@@ -71,17 +85,17 @@ public class Vote implements Listener, InventoryHolder {
 
     public Player getResult() {
         return Bukkit.getPlayer(voteMap.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue())
-                .orElseThrow(() -> new IllegalStateException("Impossible null"))
-                .getKey());
+                                        .stream()
+                                        .max(Map.Entry.comparingByValue())
+                                        .orElseThrow(() -> new IllegalStateException("Impossible null"))
+                                        .getKey());
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player &&
-                event.getCurrentItem() != null &&
-                event.getInventory().getHolder() instanceof Vote))
+              event.getCurrentItem() != null &&
+              event.getInventory().getHolder() instanceof Vote))
             return;
         Player p = (Player) event.getWhoClicked();
         ItemStack itemClicked = event.getCurrentItem();
@@ -90,6 +104,8 @@ public class Vote implements Listener, InventoryHolder {
             return;
 
         SkullMeta meta = (SkullMeta) itemClicked.getItemMeta();
-        vote(p.getUniqueId(), Objects.requireNonNull(Objects.requireNonNull(meta).getOwningPlayer()).getUniqueId());
+        vote(p, Objects.requireNonNull(Objects.requireNonNull(meta).getOwningPlayer()).getUniqueId());
+
+        p.closeInventory();
     }
 }

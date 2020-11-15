@@ -3,13 +3,14 @@ package io.ib67.manhunt.setting;
 import org.bukkit.ChatColor;
 
 public class I18n {
-    public Gaming gaming = new Gaming();
-    public Item item = new Item();
+    public Gaming GAMING = new Gaming();
+
     public static class Gaming {
         public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
         public String VOTE_START = ChatColor.GREEN + "人数满足 正在进行投票！" + ChatColor.GRAY + "如果不小心关闭界面，请使用 /vote 再次打开。";
         public Hunter HUNTER = new Hunter();
         public Runner RUNNER = new Runner();
+        public Vote VOTE = new Vote();
         public String SPECTATOR_RULE = ChatColor.GREEN + "游戏已开始，请保持安静。";
         public String[] GAME_INTRODUCTION = new String[]{
                 ChatColor.AQUA + "欢迎来到 " + ChatColor.RED + "ManHunt!",
@@ -39,19 +40,23 @@ public class I18n {
             public String TITLE_SUB = "找到逃亡者并杀死他";
             public String UNLIMITED_COMPASS_UNLOCKED = ChatColor.RED + "猎人已解锁无限指南针";
             public String UNLIMITED_COMPASS_LOCKED = ChatColor.RED + "无限指南针已被销毁！猎人需要重新制作指南针";
-            public String FAILED_TO_TRACK = ChatColor.RED + "无法追踪逃亡者！";
-            public String WARN_RUNNER_NOT_ENTERED = ChatColor.RED + "逃亡者尚未到达这个世界";
-            public String ACTION_BAR_RADOR = ChatColor.AQUA + "TRACKING: %d";
-            public String ACTION_BAR_RADOR_PART_FAR = ChatColor.RED + "DISTANCE >> %d";
         }
 
         public static class Runner {
             public String WON = ChatColor.GREEN + "游戏结束！逃亡者 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
+            public String ARRIVE_NETHER = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 地狱";
+            public String ARRIVE_END = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 末地";
+            public String COMPASS_HINT_SAFE = ChatColor.GREEN + "半径 %sM 内无猎人";
         }
-    }
 
-    public static class Item {
+        public static class Vote {
+            public String VOTE_START = ChatColor.GREEN + "人数满足 正在进行投票！" + ChatColor.GRAY + "如果不小心关闭界面，请使用 /vote 再次打开。";
+            public String ALREADY_VOTED = ChatColor.RED + "您已经投票过了";
+            public String SHOULD_NOT_VOTE = ChatColor.RED + "您没有投票的权利";
+            public String VOTE_SUCCEED = ChatColor.GREEN + "您成功投给了 %s";
+            public String VOTING = ChatColor.GOLD + "投票中: %d / %d 已投票";
+        }
     }
 }

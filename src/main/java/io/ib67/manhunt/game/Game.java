@@ -35,6 +35,8 @@ public class Game {
     private final GameStat gameStat = new GameStat();
     @Getter
     private boolean compassEnabled = false;
+    public boolean runnerNether = false;
+    public boolean runnerEnd = false;
     private Rador rador;
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
@@ -46,9 +48,9 @@ public class Game {
     public void setCompassEnabled(boolean status) {
         this.compassEnabled = status;
         if (status) {
-            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
         } else {
-            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_LOCKED);
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_LOCKED);
         }
     }
 
@@ -57,25 +59,25 @@ public class Game {
         startTime = System.currentTimeMillis();
         this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
-        Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
+        Bukkit.broadcastMessage(i18n.GAMING.VOTE.VOTE_START);
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
-            e.getPlayer().sendMessage(i18n.gaming.GAME_INTRODUCTION);
+            e.getPlayer().sendMessage(i18n.GAMING.GAME_INTRODUCTION);
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
-                e.getPlayer().sendTitle(i18n.gaming.RUNNER.TITLE_MAIN,
-                        i18n.gaming.RUNNER.TITLE_SUB,
-                        10 * 20,
-                        20 * 20,
-                        10 * 20);
+                e.getPlayer().sendTitle(i18n.GAMING.RUNNER.TITLE_MAIN,
+                                        i18n.GAMING.RUNNER.TITLE_SUB,
+                                        10 * 20,
+                                        20 * 20,
+                                        10 * 20);
                 airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
-                e.getPlayer().sendTitle(i18n.gaming.HUNTER.TITLE_MAIN,
-                        i18n.gaming.HUNTER.TITLE_SUB,
-                        10 * 20,
-                        20 * 20,
-                        10 * 20);
+                e.getPlayer().sendTitle(i18n.GAMING.HUNTER.TITLE_MAIN,
+                                        i18n.GAMING.HUNTER.TITLE_SUB,
+                                        10 * 20,
+                                        20 * 20,
+                                        10 * 20);
             }
         });
         initRador();
@@ -105,8 +107,8 @@ public class Game {
         phase = GamePhase.END;
         rador.stop();
         String title = result == GameResult.HUNTER_WIN ?
-                ManHunt.getInstance().getLanguage().gaming.HUNTER.WON :
-                ManHunt.getInstance().getLanguage().gaming.RUNNER.WON;
+                       ManHunt.getInstance().getLanguage().GAMING.HUNTER.WON :
+                       ManHunt.getInstance().getLanguage().GAMING.RUNNER.WON;
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
@@ -122,13 +124,13 @@ public class Game {
     public boolean joinPlayer(Player player) {
         if (isStarted()) {
             player.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(ManHunt.getInstance().getLanguage().gaming.SPECTATOR_RULE);
+            player.sendMessage(ManHunt.getInstance().getLanguage().GAMING.SPECTATOR_RULE);
             return false;
         }
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
-        Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().gaming.WAITING_FOR_PLAYERS,
-                inGamePlayers.size(),
-                playersToStart));
+        Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS,
+                                              inGamePlayers.size(),
+                                              playersToStart));
         if (inGamePlayers.size() >= playersToStart)
             new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
                     v -> start(v.getResult())).startVote();
