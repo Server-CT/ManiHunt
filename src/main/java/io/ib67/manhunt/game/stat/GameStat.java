@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class GameStat {
-    private Map<UUID, PlayerStat> playerStats = new LinkedHashMap<>();
+    private final Map<UUID, PlayerStat> playerStats = new LinkedHashMap<>();
     @Getter
     @Setter
     private Phase gamePhase = Phase.GETTING_STARTED;
@@ -46,6 +46,6 @@ public class GameStat {
     }
 
     public enum Phase {
-        GETTING_STARTED, IRON_ARMOR, IN_NETHER, BLAZE_ROD_GOT, FIND_STRONGHOLD, IN_END, KILLED_THE_DRAGON;
+        GETTING_STARTED, IRON_ARMOR, IN_NETHER, BLAZE_ROD_GOT, FIND_STRONGHOLD, IN_END, KILLED_THE_DRAGON
     }
 }

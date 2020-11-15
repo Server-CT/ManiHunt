@@ -2,7 +2,6 @@ package io.ib67.manhunt.game.stat;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.bukkit.advancement.Advancement;
 
 @Builder
 @Getter

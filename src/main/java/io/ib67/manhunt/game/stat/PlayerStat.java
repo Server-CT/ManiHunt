@@ -41,7 +41,7 @@ public class PlayerStat {
     private int causedDamages;
     private int walkDistance;
     private int deathCounts;
-    private List<AdvancementRecord> advancements = new LinkedList<>();
+    private final List<AdvancementRecord> advancements = new LinkedList<>();
     private int finalScore;
 
     private transient long lastAdvancementTime = System.currentTimeMillis();

@@ -59,7 +59,7 @@ public class Game {
         startTime = System.currentTimeMillis();
         this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
-        Bukkit.broadcastMessage(i18n.GAMING.VOTE_START);
+        Bukkit.broadcastMessage(i18n.GAMING.VOTE.VOTE_START);
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
             e.getPlayer().sendMessage(i18n.GAMING.GAME_INTRODUCTION);

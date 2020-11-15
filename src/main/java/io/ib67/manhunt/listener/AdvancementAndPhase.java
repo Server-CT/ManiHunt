@@ -29,8 +29,12 @@ public class AdvancementAndPhase implements Listener {
     @EventHandler
     public void onCraft(CraftItemEvent event) {
         String name = event.getRecipe().getResult().getType().toString();
-        if (name.contains("IRON") && name.contains("CHESTPLATE") || name.contains("BOOT") || name.contains("HELMET") || name.contains("LEGGING")) {
-            if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() < GameStat.Phase.IRON_ARMOR.ordinal()) {
+        if (name.contains("IRON") && name.contains("CHESTPLATE") ||
+            name.contains("BOOT") ||
+            name.contains("HELMET") ||
+            name.contains("LEGGING")) {
+            if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() <
+                GameStat.Phase.IRON_ARMOR.ordinal()) {
                 ManHunt.getInstance().getGame().getGameStat().setGamePhase(GameStat.Phase.IRON_ARMOR);
             }//IN_NETHER, BLAZE_ROD_GOT, FIND_STRONGHOLD, IN_END, KILLED_THE_DRAGON;
         }
@@ -39,7 +43,8 @@ public class AdvancementAndPhase implements Listener {
     @EventHandler
     public void onUseItem(PlayerInteractEvent a) {
         if (a.getItem().getType() == Material.ENDER_EYE) {
-            if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() < GameStat.Phase.FIND_STRONGHOLD.ordinal()) {
+            if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() <
+                GameStat.Phase.FIND_STRONGHOLD.ordinal()) {
                 ManHunt.getInstance().getGame().getGameStat().setGamePhase(GameStat.Phase.FIND_STRONGHOLD);
             }
         }
@@ -48,7 +53,8 @@ public class AdvancementAndPhase implements Listener {
     @EventHandler
     public void onKillDragon(EntityDeathEvent e) {
         if (e.getEntity().getType() == EntityType.ENDER_DRAGON) {
-            if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() < GameStat.Phase.KILLED_THE_DRAGON.ordinal()) {
+            if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() <
+                GameStat.Phase.KILLED_THE_DRAGON.ordinal()) {
                 ManHunt.getInstance().getGame().getGameStat().setGamePhase(GameStat.Phase.KILLED_THE_DRAGON);
             }
         }
