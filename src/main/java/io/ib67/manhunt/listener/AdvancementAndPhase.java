@@ -42,9 +42,10 @@ public class AdvancementAndPhase implements Listener {
 
     @EventHandler
     public void onUseItem(PlayerInteractEvent a) {
+        if (a.getItem() == null) return;
         if (a.getItem().getType() == Material.ENDER_EYE) {
             if (ManHunt.getInstance().getGame().getGameStat().getGamePhase().ordinal() <
-                GameStat.Phase.FIND_STRONGHOLD.ordinal()) {
+                    GameStat.Phase.FIND_STRONGHOLD.ordinal()) {
                 ManHunt.getInstance().getGame().getGameStat().setGamePhase(GameStat.Phase.FIND_STRONGHOLD);
             }
         }
