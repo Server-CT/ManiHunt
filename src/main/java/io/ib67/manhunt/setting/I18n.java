@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 
 public class I18n {
     public Gaming gaming = new Gaming();
-
+    public Item item = new Item();
     public static class Gaming {
         public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
         public String VOTE_START = ChatColor.GREEN + "人数满足 正在进行投票！" + ChatColor.GRAY + "如果不小心关闭界面，请使用 /vote 再次打开。";
@@ -39,6 +39,10 @@ public class I18n {
             public String TITLE_SUB = "找到逃亡者并杀死他";
             public String UNLIMITED_COMPASS_UNLOCKED = ChatColor.RED + "猎人已解锁无限指南针";
             public String UNLIMITED_COMPASS_LOCKED = ChatColor.RED + "无限指南针已被销毁！猎人需要重新制作指南针";
+            public String FAILED_TO_TRACK = ChatColor.RED + "无法追踪逃亡者！";
+            public String WARN_RUNNER_NOT_ENTERED = ChatColor.RED + "逃亡者尚未到达这个世界";
+            public String ACTION_BAR_RADOR = ChatColor.AQUA + "TRACKING: %d";
+            public String ACTION_BAR_RADOR_PART_FAR = ChatColor.RED + "DISTANCE >> %d";
         }
 
         public static class Runner {
@@ -46,5 +50,8 @@ public class I18n {
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
         }
+    }
+
+    public static class Item {
     }
 }
