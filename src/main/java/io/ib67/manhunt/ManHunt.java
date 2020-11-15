@@ -27,26 +27,35 @@ public final class ManHunt extends JavaPlugin {
         return mainConfig.get();
     }
 
-    ;
-
     public I18n getLanguage() {
         return language.get();
     }
 
     @Override
     public void onEnable() {
+        Logging.info("Loading...");
         instance = this;
         mainConfig.saveDefault();
         mainConfig.reloadConfig();
-        language.setConfigFileName("lang.json");
-        language.saveDefault();
-        language.reloadConfig();
+        Logging.info("Loading Language: " + mainConfig.get().serverLanguage);
+        loadLanguages();
         debug = mainConfig.get().verbose;
+        if (debug) {
+            Logging.warn("VERBOSE MODE ON.IF YOU DON'T KNOW WHAT IS IT,PLEASE SHUT IT DOWN IN YOUR CONFIG.");
+        }
         game = new Game(mainConfig.get().maxPlayers,
-                        g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
-                        g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
+                g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
+                g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
         loadAdditions();
         loadListeners();
+        Logging.info("ManHunt Started! We're waiting for more players.");
+    }
+
+    private void loadLanguages() {
+        language.setConfigFileName("locale/" + mainConfig.get().serverLanguage + ".json");
+        language.saveDefault();
+        language.reloadConfig();
+
     }
 
     private void loadListeners() {

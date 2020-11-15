@@ -40,10 +40,12 @@ public class Chat implements Listener {
                         .forEach(p -> p.sendMessage(event.getFormat()));
             }
         } else {
-            event.setCancelled(true);
             event.setFormat(ChatColor.GRAY + "[SPECTATOR] " + ChatColor.RESET + event.getFormat());
-            Bukkit.getOnlinePlayers().stream().filter(p -> !game.isInGame(p).isPresent()).forEach(p -> p.sendMessage(
-                    event.getFormat()));
+            if (ManHunt.getInstance().getMainConfig().muteSpectatorInGlobalChannel) {
+                event.setCancelled(true);
+                Bukkit.getOnlinePlayers().stream().filter(p -> !game.isInGame(p).isPresent()).forEach(p -> p.sendMessage(
+                        event.getFormat()));
+            }
         }
     }
 }
