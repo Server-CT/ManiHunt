@@ -32,14 +32,14 @@ public class Chat implements Listener {
                     ChatColor.GREEN + "[RUNNER] ") + ChatColor.RESET + event.getFormat());
             if (role == GamePlayer.Role.HUNTER && event.getMessage().startsWith("#")) {
                 event.setCancelled(true);
-                event.setFormat(ChatColor.WHITE + "[TEAM]" + event.getFormat());
+                event.setFormat(ChatColor.WHITE + "[TEAM]" + event.getPlayer().getName() + ": " + event.getMessage());
                 Bukkit.getScheduler().runTask(ManHunt.getInstance(),
-                                              () -> game.getInGamePlayers()
-                                                      .stream()
-                                                      .filter(g -> g.getRole() ==
-                                                                   GamePlayer.Role.HUNTER)
-                                                      .map(GamePlayer::getPlayer)
-                                                      .forEach(p -> p.sendMessage(event.getFormat())));
+                        () -> game.getInGamePlayers()
+                                .stream()
+                                .filter(g -> g.getRole() ==
+                                        GamePlayer.Role.HUNTER)
+                                .map(GamePlayer::getPlayer)
+                                .forEach(p -> p.sendMessage(event.getFormat())));
             }
         } else {
             event.setFormat(ChatColor.GRAY + "[SPECTATOR] " + ChatColor.RESET + event.getFormat());
