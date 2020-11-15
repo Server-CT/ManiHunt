@@ -5,6 +5,7 @@ import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,7 +70,7 @@ public class Vote implements Listener, InventoryHolder {
         InventoryClickEvent.getHandlerList().unregister(this);
     }
 
-    public void vote(Player from, UUID to) {
+    public void vote(Player from, OfflinePlayer to) {
         UUID fromUUID = from.getUniqueId();
         I18n i18n = ManHunt.getInstance().getLanguage();
         if (!shouldVote.contains(fromUUID)) {
@@ -81,11 +82,10 @@ public class Vote implements Listener, InventoryHolder {
             return;
         }
 
-        voteMap.put(to, voteMap.containsKey(to) ? voteMap.get(to) + 1 : 1);
+        voteMap.put(to.getUniqueId(), voteMap.containsKey(to.getUniqueId()) ? voteMap.get(to.getUniqueId()) + 1 : 1);
 
         voted.add(fromUUID);
-        from.sendMessage(String.format(i18n.GAMING.VOTE.VOTE_SUCCEED,
-                                       Objects.requireNonNull(Bukkit.getPlayer(to)).getName()));
+        from.sendMessage(String.format(i18n.GAMING.VOTE.VOTE_SUCCEED, Objects.requireNonNull(to).getName()));
 
         Bukkit.broadcastMessage(String.format(i18n.GAMING.VOTE.VOTING, voted.size(), shouldVote.size()));
         if (allVoted()) {
@@ -119,7 +119,7 @@ public class Vote implements Listener, InventoryHolder {
             return;
 
         SkullMeta meta = (SkullMeta) itemClicked.getItemMeta();
-        vote(p, Objects.requireNonNull(Objects.requireNonNull(meta).getOwningPlayer()).getUniqueId());
+        vote(p, Objects.requireNonNull(Objects.requireNonNull(meta).getOwningPlayer()));
 
         p.closeInventory();
     }
