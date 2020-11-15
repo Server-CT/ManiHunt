@@ -8,7 +8,3 @@ commands:
     description: vote
     usage: /vote
     default: all
-  hunt:
-    description: edit the runner.
-    usage: /hunt <player_name>
-    default: op

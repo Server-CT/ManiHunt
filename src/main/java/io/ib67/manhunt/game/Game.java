@@ -64,6 +64,7 @@ public class Game {
         I18n i18n = ManHunt.getInstance().getLanguage();
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
+            e.getPlayer().setGameMode(GameMode.SURVIVAL);
             e.getPlayer().sendMessage(i18n.GAMING.GAME_INTRODUCTION);
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
@@ -129,6 +130,7 @@ public class Game {
             player.sendMessage(ManHunt.getInstance().getLanguage().GAMING.SPECTATOR_RULE);
             return false;
         }
+        player.setGameMode(GameMode.ADVENTURE);
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
         Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS,
                                               inGamePlayers.size(),
