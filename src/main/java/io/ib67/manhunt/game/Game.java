@@ -59,7 +59,6 @@ public class Game {
         startTime = System.currentTimeMillis();
         this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
-        Bukkit.broadcastMessage(i18n.GAMING.VOTE.VOTE_START);
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
             e.getPlayer().sendMessage(i18n.GAMING.GAME_INTRODUCTION);
@@ -131,9 +130,11 @@ public class Game {
         Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS,
                                               inGamePlayers.size(),
                                               playersToStart));
-        if (inGamePlayers.size() >= playersToStart)
+        if (inGamePlayers.size() >= playersToStart) {
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
             new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
-                    v -> start(v.getResult())).startVote();
+                     v -> start(v.getResult())).startVote();
+        }
         return true;
     }
 

@@ -47,7 +47,6 @@ public class I18n {
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
             public String ARRIVE_NETHER = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 地狱";
             public String ARRIVE_END = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 末地";
-            public String COMPASS_HINT_SAFE = ChatColor.GREEN + "半径 %sM 内无猎人";
         }
 
         public static class Vote {
