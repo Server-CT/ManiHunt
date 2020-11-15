@@ -3,10 +3,11 @@ package io.ib67.manhunt.setting;
 import org.bukkit.ChatColor;
 
 public class I18n {
-    public Gaming GAMING = new Gaming();
+    public Gaming gaming = new Gaming();
 
     public static class Gaming {
         public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
+        public String VOTE_START = ChatColor.GREEN + "人数满足 正在进行投票！" + ChatColor.GRAY + "如果不小心关闭界面，请使用 /vote 再次打开。";
         public Hunter HUNTER = new Hunter();
         public Runner RUNNER = new Runner();
         public Vote VOTE = new Vote();
@@ -24,15 +25,25 @@ public class I18n {
         };
         public String ARCHIVE_TARGET = ChatColor.GOLD + "达成成就: +%dXP";
         public String CRITICAL_TARGET = ChatColor.GOLD + "重拳出击！: +%dXP";
+        public SimpleRador SIMPLE_RADOR = new SimpleRador();
+
+        public static class SimpleRador {
+            public String NEAR = ChatColor.RED + "%d 正在靠近! (<=%dM)";
+            public String SAFE = ChatColor.GREEN + "半径 %dM 内无猎人出现。";
+            public String HINT_CHAT_COMING = "猎人 %d 正在接近。";
+            public String HINT_CHAT_LEAVE = "猎人 %d 离开雷达范围之外。";
+        }
 
         public static class Hunter {
-            public String WON = ChatColor.RED + "游戏结束   猎人 胜利";
+            public String WON = ChatColor.RED + "游戏结束！猎人 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "找到逃亡者并杀死他";
+            public String UNLIMITED_COMPASS_UNLOCKED = ChatColor.RED + "猎人已解锁无限指南针";
+            public String UNLIMITED_COMPASS_LOCKED = ChatColor.RED + "无限指南针已被销毁！猎人需要重新制作指南针";
         }
 
         public static class Runner {
-            public String WON = ChatColor.GREEN + "游戏结束   逃亡者 胜利";
+            public String WON = ChatColor.GREEN + "游戏结束！逃亡者 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% 游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
             public String ARRIVE_NETHER = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 地狱";

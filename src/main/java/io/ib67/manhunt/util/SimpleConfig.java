@@ -251,6 +251,7 @@ public class SimpleConfig<C> {
     @SneakyThrows
     public void saveDefault() {
         Path a = new File(root + "/" + getConfigFileName()).toPath();
+        a.getParent().toFile().mkdirs();
         if (!Files.exists(a)) {
             Files.write(a, gson.toJson(configObj).getBytes());
         }

@@ -3,9 +3,10 @@ package io.ib67.manhunt.game;
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.stat.GameStat;
 import io.ib67.manhunt.gui.Vote;
+import io.ib67.manhunt.rador.Rador;
+import io.ib67.manhunt.rador.SimpleRador;
 import io.ib67.manhunt.setting.I18n;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -33,10 +34,10 @@ public class Game {
     @Getter
     private final GameStat gameStat = new GameStat();
     @Getter
-    @Setter
     private boolean compassEnabled = false;
     public boolean runnerNether = false;
     public boolean runnerEnd = false;
+    private Rador rador;
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
         this.gameStart = gameStart;
@@ -44,15 +45,24 @@ public class Game {
         this.playersToStart = playersToStart;
     }
 
+    public void setCompassEnabled(boolean status) {
+        this.compassEnabled = status;
+        if (status) {
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
+        } else {
+            Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().gaming.HUNTER.UNLIMITED_COMPASS_LOCKED);
+        }
+    }
+
     public void start(Player runner) {
         phase = GamePhase.STARTING;
         startTime = System.currentTimeMillis();
         this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
-        Bukkit.broadcastMessage(i18n.GAMING.VOTE.VOTE_START);
+        Bukkit.broadcastMessage(i18n.gaming.VOTE_START);
         inGamePlayers.forEach(e -> {
             gameStat.addPlayer(e);
-            e.getPlayer().sendMessage(i18n.GAMING.GAME_INTRODUCTION);
+            e.getPlayer().sendMessage(i18n.gaming.GAME_INTRODUCTION);
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
                 e.getPlayer().sendTitle(i18n.GAMING.RUNNER.TITLE_MAIN,
@@ -70,8 +80,9 @@ public class Game {
                                         10 * 20);
             }
         });
-        gameStart.accept(this);
+        initRador();
         phase = GamePhase.STARTED;
+        gameStart.accept(this);
     }
 
     private void airDrop(Player runner) {
@@ -85,11 +96,16 @@ public class Game {
         runner.teleport(loc);
     }
 
+    private void initRador() {
+        rador = new SimpleRador(runner, ManHunt.getInstance().getMainConfig().radorWarnDistance);
+        rador.start();
+    }
+
     public void stop(GameResult result) {
-        //TODO
         gameStat.setTotalTime(System.currentTimeMillis() - startTime);
         this.result = result;
         phase = GamePhase.END;
+        rador.stop();
         String title = result == GameResult.HUNTER_WIN ?
                        ManHunt.getInstance().getLanguage().GAMING.HUNTER.WON :
                        ManHunt.getInstance().getLanguage().GAMING.RUNNER.WON;
@@ -117,7 +133,7 @@ public class Game {
                                               playersToStart));
         if (inGamePlayers.size() >= playersToStart)
             new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
-                     v -> start(v.getResult())).startVote();
+                    v -> start(v.getResult())).startVote();
         return true;
     }
 
