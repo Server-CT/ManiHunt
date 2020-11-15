@@ -7,7 +7,6 @@ public class I18n {
 
     public static class Gaming {
         public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
-        public String VOTE_START = ChatColor.GREEN + "人数满足 正在进行投票！" + ChatColor.GRAY + "如果不小心关闭界面，请使用 /vote 再次打开。";
         public Hunter HUNTER = new Hunter();
         public Runner RUNNER = new Runner();
         public Vote VOTE = new Vote();
