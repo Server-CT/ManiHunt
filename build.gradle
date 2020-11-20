@@ -24,6 +24,8 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    // https://mvnrepository.com/artifact/net.sf.corn/corn-httpclient
+    compile group: 'net.sf.corn', name: 'corn-httpclient', version: '1.0.12'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
 
 }

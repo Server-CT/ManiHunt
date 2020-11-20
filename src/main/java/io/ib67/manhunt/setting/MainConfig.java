@@ -10,6 +10,12 @@ public class MainConfig {
     public Scores playerScores = new Scores();
     public boolean blockCompassWhenDifferentWorld = false;
     public int distanceFar = 2000;
+    public Servers mojangServers = new Servers();
+
+    public static class Servers {
+        public String launchmetaBaseUrl = "https://launchermeta.mojang.com/";
+        public String resourceDownloadBaseUrl = "https://launchermeta.mojang.com/";
+    }
 
     public static class Scores {
         public int critical = 400;
