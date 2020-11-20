@@ -45,6 +45,7 @@ public class I18n {
             public String WARN_RUNNER_NOT_ENTERED = ChatColor.RED + "逃亡者尚未到达这个世界";
             public String ACTION_BAR_RADOR = ChatColor.AQUA + "TRACKING: %d";
             public String ACTION_BAR_RADOR_PART_FAR = ChatColor.RED + "DISTANCE >> %d";
+            public String COMPASS_ARRIVED = ChatColor.LIGHT_PURPLE + "指南针已经到达！请查收背包";
         }
 
         public static class Runner {

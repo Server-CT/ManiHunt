@@ -6,6 +6,7 @@ import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.rador.Rador;
 import io.ib67.manhunt.rador.SimpleRador;
 import io.ib67.manhunt.setting.I18n;
+import io.ib67.manhunt.util.LodestoneCompass;
 import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -50,7 +51,16 @@ public class Game {
         this.compassEnabled = status;
         if (status) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
+            inGamePlayers.stream()
+                    .filter(e -> e.getRole() == GamePlayer.Role.HUNTER && !e.getPlayer().getInventory().contains(Material.COMPASS))
+                    .forEach(e -> {
+                        e.getPlayer().getInventory().addItem(LodestoneCompass.allocate(runner.getLocation()));
+                        e.getPlayer().sendMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.COMPASS_ARRIVED);
+                    });
         } else {
+            inGamePlayers.stream()
+                    .filter(e -> e.getRole() == GamePlayer.Role.HUNTER)
+                    .forEach(e -> e.getPlayer().getInventory().remove(Material.COMPASS));
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_LOCKED);
         }
     }
@@ -70,18 +80,18 @@ public class Game {
             if (e.getPlayer().getUniqueId().equals(runner.getUniqueId())) {
                 e.setRole(GamePlayer.Role.RUNNER);
                 e.getPlayer().sendTitle(i18n.GAMING.RUNNER.TITLE_MAIN,
-                                        i18n.GAMING.RUNNER.TITLE_SUB,
-                                        10 * 20,
-                                        20 * 20,
-                                        10 * 20);
+                        i18n.GAMING.RUNNER.TITLE_SUB,
+                        10 * 20,
+                        20 * 20,
+                        10 * 20);
                 airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
                 e.getPlayer().sendTitle(i18n.GAMING.HUNTER.TITLE_MAIN,
-                                        i18n.GAMING.HUNTER.TITLE_SUB,
-                                        10 * 20,
-                                        20 * 20,
-                                        10 * 20);
+                        i18n.GAMING.HUNTER.TITLE_SUB,
+                        10 * 20,
+                        20 * 20,
+                        10 * 20);
             }
         });
         initRador();
@@ -140,12 +150,12 @@ public class Game {
         player.setGameMode(GameMode.ADVENTURE);
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
         Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS,
-                                              inGamePlayers.size(),
-                                              playersToStart));
+                inGamePlayers.size(),
+                playersToStart));
         if (inGamePlayers.size() >= playersToStart) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
             vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
-                            v -> start(v.getResult()));
+                    v -> start(v.getResult()));
             Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), () -> vote.startVote(), 10);
         }
         return true;
