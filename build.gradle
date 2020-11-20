@@ -1,6 +1,9 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: 'java'
+plugins {
+    id "java"
+    id 'com.github.johnrengelman.shadow' version "6.0.0"
+}
 
 group = 'io.ib67'
 version = '1.0-SNAPSHOT'
@@ -29,7 +32,6 @@ dependencies {
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
 
 }
-
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]

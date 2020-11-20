@@ -1,8 +1,5 @@
 package io.ib67.manhunt;
 
-import com.google.common.io.Files;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
@@ -15,15 +12,12 @@ import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.chat.TranslationRegistry;
-import net.sf.corn.httpclient.HttpClient;
-import net.sf.corn.httpclient.HttpResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -117,8 +111,12 @@ public final class ManHunt extends JavaPlugin {
             Logging.info("MojangLocales loaded.");
             inputStream.close();
             return;
+        } else {
+            Logging.warn("Cache not found.Using spigot-local");
+            loadMojangLocaleLocal();
+            return;
         }
-        getLogger().info("Fetching versions from Mojang Servers.");
+       /* getLogger().info("Fetching versions from Mojang Servers.");
         HttpClient httpClient = new HttpClient(new URI(getMainConfig().mojangServers.launchmetaBaseUrl + "mc/game/version_manifest.json"));
         HttpResponse response = httpClient.sendData(HttpClient.HTTP_METHOD.GET);
         if (response.hasError() || response.getCode() != 200) {
@@ -173,7 +171,7 @@ public final class ManHunt extends JavaPlugin {
         resp = response.getData();
         Logging.info("Caching mojang language file...");
         Files.write(resp.getBytes(), lang);
-        loadMojangLocale();
+        loadMojangLocale();*/
     }
 
     private void loadMojangLocaleLocal() {

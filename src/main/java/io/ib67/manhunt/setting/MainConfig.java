@@ -14,7 +14,7 @@ public class MainConfig {
 
     public static class Servers {
         public String launchmetaBaseUrl = "https://launchermeta.mojang.com/";
-        public String resourceDownloadBaseUrl = "https://launchermeta.mojang.com/";
+        public String resourceDownloadBaseUrl = "http://resources.download.minecraft.net/";
     }
 
     public static class Scores {
