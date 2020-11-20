@@ -3,7 +3,12 @@ package io.ib67.manhunt.setting;
 import org.bukkit.ChatColor;
 
 public class I18n {
+    public static final int VERSION = 0;
     public Gaming GAMING = new Gaming();
+    /**
+     * 配置文件版本号
+     */
+    public int version = VERSION;
 
     public static class Gaming {
         public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";

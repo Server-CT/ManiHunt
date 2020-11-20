@@ -43,6 +43,11 @@ public final class ManHunt extends JavaPlugin {
         if (debug) {
             Logging.warn("VERBOSE MODE ON.IF YOU DON'T KNOW WHAT IS IT,PLEASE SHUT IT DOWN IN YOUR CONFIG.");
         }
+        if (getLanguage().version != I18n.VERSION) {
+            Logging.warn("Language file OUTDATED! If you're using translated locale file,please update it.");
+            Logging.warn("Now using default settings.");
+            language.set(new I18n());
+        }
         game = new Game(mainConfig.get().maxPlayers,
                 g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
                 g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
