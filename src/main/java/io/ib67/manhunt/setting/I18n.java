@@ -3,7 +3,7 @@ package io.ib67.manhunt.setting;
 import org.bukkit.ChatColor;
 
 public class I18n {
-    public static final int VERSION = 0;
+    public static final int VERSION = 2;
     public Gaming GAMING = new Gaming();
     /**
      * 配置文件版本号
@@ -11,7 +11,8 @@ public class I18n {
     public int version = VERSION;
 
     public static class Gaming {
-        public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
+        public String WAITING_FOR_PLAYERS_SUBTITLE = ChatColor.GOLD + "正在等待更多玩家进入游戏!";
+        public String WAITING_FOR_PLAYERS_MAINTITLE = " %d / %d";
         public Hunter HUNTER = new Hunter();
         public Runner RUNNER = new Runner();
         public Vote VOTE = new Vote();
@@ -57,8 +58,8 @@ public class I18n {
             public String WON = ChatColor.GREEN + "游戏结束！逃亡者 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% " + ChatColor.RESET + ChatColor.RED + "游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
-            public String ARRIVE_NETHER = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 地狱";
-            public String ARRIVE_END = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 末地";
+            public String ARRIVE_NETHER = ChatColor.BOLD + "逃亡者已到达 地狱";
+            public String ARRIVE_END = ChatColor.BOLD + "逃亡者已到达 末地";
         }
 
         public static class Vote {
@@ -67,6 +68,7 @@ public class I18n {
             public String SHOULD_NOT_VOTE = ChatColor.RED + "您没有投票的权利";
             public String VOTE_SUCCEED = ChatColor.GREEN + "您成功投给了 %s";
             public String VOTING = ChatColor.GOLD + "投票中: %d / %d 已投票";
+            public String GAME_ALREADY_STARTED = ChatColor.RED + "投票已结束。";
         }
     }
 }

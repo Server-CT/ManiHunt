@@ -6,6 +6,7 @@ import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.game.stat.PlayerStat;
+import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.listener.*;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
@@ -13,6 +14,9 @@ import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -51,6 +55,8 @@ public final class ManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         Logging.info("Loading...");
+        getDataFolder().mkdirs();
+        new File(getDataFolder(), "stats").mkdirs();
         instance = this;
         mainConfig.saveDefault();
         mainConfig.reloadConfig();
@@ -191,5 +197,27 @@ public final class ManHunt extends JavaPlugin {
                                                                  e.replaceAll("\\/", "\\.") +
                                                                  ".title"));
         });
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (label.equalsIgnoreCase("vote")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("Player-only command.");
+                return true;
+            }
+            if (game.isStarted()) {
+                sender.sendMessage(getLanguage().GAMING.VOTE.GAME_ALREADY_STARTED);
+                return true;
+            }
+            Player player = (Player) sender;
+            Vote vote = ManHunt.getInstance().getGame().vote;
+            if (vote != null && vote.getShouldVote().contains(player.getUniqueId())) {
+                Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(),
+                        () -> player.openInventory(vote.getVoteInv()),
+                        10);
+            }
+        }
+        return true;
     }
 }

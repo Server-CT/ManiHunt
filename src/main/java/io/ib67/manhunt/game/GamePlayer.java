@@ -19,7 +19,6 @@ public class GamePlayer {
     @Getter
     @Setter(AccessLevel.PACKAGE)
     private Role role;
-
     public Player getPlayer() {
         return Bukkit.getPlayer(player);
     }

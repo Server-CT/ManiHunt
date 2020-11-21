@@ -1,5 +1,7 @@
 package io.ib67.manhunt.game;
 
+import com.google.common.io.Files;
+import com.google.gson.Gson;
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.stat.GameStat;
 import io.ib67.manhunt.gui.Vote;
@@ -8,13 +10,12 @@ import io.ib67.manhunt.rador.SimpleRador;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.util.LodestoneCompass;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.io.File;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Game {
@@ -115,6 +116,7 @@ public class Game {
         rador.start();
     }
 
+    @SneakyThrows
     public void stop(GameResult result) {
         gameStat.setTotalTime(System.currentTimeMillis() - startTime);
         this.result = result;
@@ -126,11 +128,24 @@ public class Game {
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-            p.sendTitle(title, "", 10 * 20, 20 * 20, 10 * 20);
+            p.sendTitle(title, "", 20, 2 * 20, 20);
         });
+        String report = new Gson().toJson(gameStat);
+        String statId;
+        if (ManHunt.getInstance().getMainConfig().uploadStats) {
+            statId = uploadReport(report);
+        } else {
+            statId = UUID.randomUUID().toString() + "-LOCAL";
+        }
+        Files.write(report.getBytes(), new File(ManHunt.getInstance().getDataFolder(), "stats/" + statId + ".json"));
         gameEnd.accept(this);
         Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.SHUTDOWN);
         Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, 30 * 20L);
+    }
+
+    private String uploadReport(String report) {
+        //TODO
+        return "ID_NOT_IMPLEMENTED";
     }
 
     public boolean isStarted() {
@@ -149,11 +164,12 @@ public class Game {
         }
         player.setGameMode(GameMode.ADVENTURE);
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
-        Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS,
+        Bukkit.getOnlinePlayers().forEach(e -> e.sendTitle(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS_MAINTITLE,
                 inGamePlayers.size(),
-                playersToStart));
+                playersToStart), ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS_SUBTITLE, 0, 600 * 20, 0));
         if (inGamePlayers.size() >= playersToStart) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
+            Bukkit.getOnlinePlayers().forEach(e -> e.sendTitle("", "", 0, 0, 0));//Clear
             vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
                     v -> start(v.getResult()));
             Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), () -> vote.startVote(), 10);
