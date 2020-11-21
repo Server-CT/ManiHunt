@@ -11,7 +11,8 @@ public class I18n {
     public int version = VERSION;
 
     public static class Gaming {
-        public String WAITING_FOR_PLAYERS = ChatColor.GOLD + "正在等待更多玩家进入游戏! (%d/%d)";
+        public String WAITING_FOR_PLAYERS_SUBTITLE = ChatColor.GOLD + "正在等待更多玩家进入游戏!";
+        public String WAITING_FOR_PLAYERS_MAINTITLE = " %d / %d";
         public Hunter HUNTER = new Hunter();
         public Runner RUNNER = new Runner();
         public Vote VOTE = new Vote();

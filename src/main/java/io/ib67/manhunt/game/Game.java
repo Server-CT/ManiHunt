@@ -149,11 +149,12 @@ public class Game {
         }
         player.setGameMode(GameMode.ADVENTURE);
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
-        Bukkit.broadcastMessage(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS,
+        Bukkit.getOnlinePlayers().forEach(e -> e.sendTitle(String.format(ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS_MAINTITLE,
                 inGamePlayers.size(),
-                playersToStart));
+                playersToStart), ManHunt.getInstance().getLanguage().GAMING.WAITING_FOR_PLAYERS_SUBTITLE, 0, 600 * 20, 0));
         if (inGamePlayers.size() >= playersToStart) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
+            Bukkit.getOnlinePlayers().forEach(e -> e.sendTitle("", "", 0, 0, 0));//Clear
             vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
                     v -> start(v.getResult()));
             Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), () -> vote.startVote(), 10);
