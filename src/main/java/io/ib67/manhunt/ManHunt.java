@@ -104,9 +104,11 @@ public final class ManHunt extends JavaPlugin {
 
             PlayerStat.mentionedNormal.forEach(e -> {
                 mojangLocales.put(e, properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
+                Logging.debug(e + " -> " + properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
             });
             PlayerStat.mentionedSpecial.forEach(e -> {
                 mojangLocales.put(e, properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
+                Logging.debug(e + " -> " + properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
             });
             Logging.info("MojangLocales loaded.");
             inputStream.close();
@@ -178,9 +180,11 @@ public final class ManHunt extends JavaPlugin {
         //use spigot local.
         PlayerStat.mentionedNormal.forEach(e -> {
             mojangLocales.put(e, TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
+            Logging.debug(e + " -> " + TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
         });
         PlayerStat.mentionedSpecial.forEach(e -> {
             mojangLocales.put(e, TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
+            Logging.debug(e + " -> " + TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
         });
     }
 }
