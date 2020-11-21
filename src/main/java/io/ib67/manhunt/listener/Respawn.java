@@ -15,6 +15,6 @@ public class Respawn implements Listener {
         if (!game.isStarted() || !game.isCompassEnabled())
             return;
 
-       event.getPlayer().getInventory().addItem(LodestoneCompass.allocate(game.getRunner().getLocation()));
+       event.getPlayer().getInventory().addItem(LodestoneCompass.allocate(event.getPlayer(), game.getRunner().getLocation()));
     }
 }

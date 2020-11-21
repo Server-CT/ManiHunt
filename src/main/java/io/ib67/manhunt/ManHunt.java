@@ -14,6 +14,7 @@ import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -55,9 +56,14 @@ public final class ManHunt extends JavaPlugin {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void onEnable() {
         Logging.info("Loading...");
         Logging.info("Server Version: " + serverVersion);
+        if (Material.valueOf("LODESTONE") == null) {
+            Logging.warn("WE CANT FIND LODESTONE IN THIS VERSION!! THAT MEANS YOU'RE RUNNING MANHUNT IN LEGACY VERSION! (MC < 1.16)");
+            Logging.warn("PROBLEMS MAY BE IGNORED.");
+        }
         getDataFolder().mkdirs();
         new File(getDataFolder(), "stats").mkdirs();
         instance = this;

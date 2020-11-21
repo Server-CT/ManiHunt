@@ -3,10 +3,17 @@ package io.ib67.manhunt.util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class LodestoneCompass {
-    public static ItemStack allocate(Location loc) {
+    @SuppressWarnings("all")
+    public static ItemStack allocate(Player p, Location loc) {
+        if (Material.valueOf("LODESTONE") == null) {
+            //Old version.
+            p.setCompassTarget(loc);
+            return new ItemStack(Material.COMPASS);
+        }
         NBTUtil.NBTValue x = new NBTUtil.NBTValue().set(loc.getBlockX());
         NBTUtil.NBTValue y = new NBTUtil.NBTValue().set(loc.getBlockY());
         NBTUtil.NBTValue z = new NBTUtil.NBTValue().set(loc.getBlockZ());

@@ -55,7 +55,7 @@ public class Game {
             inGamePlayers.stream()
                     .filter(e -> e.getRole() == GamePlayer.Role.HUNTER && !e.getPlayer().getInventory().contains(Material.COMPASS))
                     .forEach(e -> {
-                        e.getPlayer().getInventory().addItem(LodestoneCompass.allocate(runner.getLocation()));
+                        e.getPlayer().getInventory().addItem(LodestoneCompass.allocate(e.getPlayer(), runner.getLocation()));
                         e.getPlayer().sendMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.COMPASS_ARRIVED);
                     });
         } else {

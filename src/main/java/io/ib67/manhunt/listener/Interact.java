@@ -53,7 +53,7 @@ public class Interact implements Listener {
                             if (runner.getLocation().distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
                                 actBarMsg.addExtra(" "+String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                             }
-                            setItem.accept(i, LodestoneCompass.allocate(runner.getLocation()));
+                            setItem.accept(i, LodestoneCompass.allocate(event.getPlayer(), runner.getLocation()));
                             event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, actBarMsg);
                         } else {
                             if (ManHunt.getInstance().getMainConfig().blockCompassWhenDifferentWorld) {
@@ -62,7 +62,7 @@ public class Interact implements Listener {
                             } else {
                                 if (lastLoc.containsKey(event.getPlayer().getWorld().getName())) {
                                     Location loc = lastLoc.get(event.getPlayer().getWorld().getName());
-                                    setItem.accept(i, LodestoneCompass.allocate(loc));
+                                    setItem.accept(i, LodestoneCompass.allocate(event.getPlayer(), loc));
                                     if (loc.distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
                                         actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                                     }
