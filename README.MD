@@ -1,4 +1,5 @@
-# ManHunt
+# ManiHunt
+读作`ManyHunt`，写作`ManHunt1551`
 源自Minecraft Youtuber `Dream` 的创意。  
 
 # How 2 use
