@@ -81,17 +81,17 @@ public class Game {
                 e.setRole(GamePlayer.Role.RUNNER);
                 e.getPlayer().sendTitle(i18n.GAMING.RUNNER.TITLE_MAIN,
                         i18n.GAMING.RUNNER.TITLE_SUB,
-                        10 * 20,
-                        20 * 20,
-                        10 * 20);
+                        20,
+                        2 * 20,
+                        20);
                 airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
                 e.getPlayer().sendTitle(i18n.GAMING.HUNTER.TITLE_MAIN,
                         i18n.GAMING.HUNTER.TITLE_SUB,
-                        10 * 20,
-                        20 * 20,
-                        10 * 20);
+                        20,
+                        2 * 20,
+                        20);
             }
         });
         initRador();
