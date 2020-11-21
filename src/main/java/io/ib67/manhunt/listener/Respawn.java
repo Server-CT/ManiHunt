@@ -25,7 +25,7 @@ public class Respawn implements Listener {
                 .ifPresent(i -> {
                     Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(),()->
                     i.addItem(LodestoneCompass.allocate(game.getRunner().getLocation()))
-                                                       ,10)
+                                                       ,10);
                 });
     }
 }
