@@ -97,6 +97,7 @@ public final class ManHunt extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Death(), this);
         Bukkit.getPluginManager().registerEvents(new Interact(), this);
         Bukkit.getPluginManager().registerEvents(new Respawn(), this);
+        Bukkit.getPluginManager().registerEvents(new Move(), this);
     }
 
     private void loadAdditions() {
