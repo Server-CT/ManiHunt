@@ -91,14 +91,14 @@ public class PlayerStat {
         if (mentionedNormal.contains(adv.getKey().getKey())) {
             advancements.add(
                     AdvancementRecord.builder()
-                            .score(Math.round(normalScore / distance))
+                            .score(Math.round(normalScore / distance + 1))
                             .usedTime(distance)
                             .advancement(AdvancementTranslator.translate(adv.getKey().getKey()))
                             .build());
             lastAdvancementTime = System.currentTimeMillis();
-            return normalScore; //ScoreAddition by time.
+            return Math.round(normalScore / (distance + 1)); //ScoreAddition by time.
         } else if (mentionedSpecial.contains(adv.getKey().getKey())) {
-            int score = Math.round(specialScore / distance);
+            int score = Math.round(specialScore / (distance + 1));
             advancements.add(
                     AdvancementRecord.builder()
                             .score(score)
@@ -115,7 +115,7 @@ public class PlayerStat {
         advancements.add(AdvancementRecord.builder()
                 .advancement(advancement)
                 .score(score)
-                .usedTime(lastAdvancementTime - System.currentTimeMillis())
+                .usedTime(System.currentTimeMillis() - lastAdvancementTime)
                 .build());
         lastAdvancementTime = System.currentTimeMillis();
     }
