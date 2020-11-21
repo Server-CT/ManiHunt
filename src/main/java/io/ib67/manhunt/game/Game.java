@@ -149,7 +149,7 @@ public class Game {
     }
 
     public boolean isStarted() {
-        return phase != GamePhase.WAITING_FOR_PLAYER;
+        return phase != GamePhase.WAITING_FOR_PLAYER && phase != GamePhase.STARTING;
     }
 
     public boolean joinPlayer(Player player) {
