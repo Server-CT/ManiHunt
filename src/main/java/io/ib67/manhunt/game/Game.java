@@ -127,6 +127,7 @@ public class Game {
                 ManHunt.getInstance().getLanguage().GAMING.HUNTER.WON :
                 ManHunt.getInstance().getLanguage().GAMING.RUNNER.WON;
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
+            if (p == null) return;
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
             p.sendTitle(title, "", 20, 2 * 20, 20);
@@ -187,7 +188,11 @@ public class Game {
 
 
     public Optional<GamePlayer> isInGame(Player player) {
-        return inGamePlayers.stream().filter(s -> s.getPlayer().getName().equals(player.getName())).findFirst();
+        return inGamePlayers.stream().filter(s -> {
+            Player playe = s.getPlayer();
+            if (playe == null) return false;
+            return playe.getName().equals(player.getName());
+        }).findFirst();
     }
 
     public List<GamePlayer> getInGamePlayers() {
