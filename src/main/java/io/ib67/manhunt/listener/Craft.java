@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class Craft implements Listener {
     @EventHandler
@@ -16,13 +17,15 @@ public class Craft implements Listener {
         Game game = ManHunt.getInstance().getGame();
 
         if (game.getPhase() != GamePhase.STARTED ||
-            game.isCompassEnabled() ||
-            !(event.getWhoClicked() instanceof Player))
+                game.isCompassEnabled() ||
+                !(event.getWhoClicked() instanceof Player))
             return;
 
-        if (event.getRecipe().getResult().getType() == Material.COMPASS)
+        if (event.getRecipe().getResult().getType() == Material.COMPASS) {
+            event.setCurrentItem(new ItemStack(Material.GRASS));
             game.setCompassEnabled(game.isInGame((Player) event.getWhoClicked())
-                                           .filter(g -> g.getRole() == GamePlayer.Role.HUNTER)
-                                           .isPresent());
+                    .filter(g -> g.getRole() == GamePlayer.Role.HUNTER)
+                    .isPresent());
+        }
     }
 }

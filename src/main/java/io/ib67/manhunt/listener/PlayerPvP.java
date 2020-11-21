@@ -38,7 +38,7 @@ public class PlayerPvP implements Listener {
                     damager.sendMessage(String.format(i18N.GAMING.CRITICAL_TARGET, score));
                 }
             }
-            if (defender.isDead()) {
+            if (defender.getHealth() - e.getFinalDamage() <= 0) {
                 score = ManHunt.getInstance().getMainConfig().playerScores.kill;
                 gameStat.addAdvancement(damager, "KILL_ENEMY", score);
                 damager.sendMessage(String.format(i18N.GAMING.KILL_TARGET, score));

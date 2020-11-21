@@ -187,7 +187,7 @@ public class Game {
 
 
     public Optional<GamePlayer> isInGame(Player player) {
-        return inGamePlayers.stream().filter(s -> s.getPlayer().equals(player)).findFirst();
+        return inGamePlayers.stream().filter(s -> s.getPlayer().getName().equals(player.getName())).findFirst();
     }
 
     public List<GamePlayer> getInGamePlayers() {
