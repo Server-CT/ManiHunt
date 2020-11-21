@@ -49,6 +49,8 @@ public final class ManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         Logging.info("Loading...");
+        getDataFolder().mkdirs();
+        new File(getDataFolder(), "stats").mkdirs();
         instance = this;
         mainConfig.saveDefault();
         mainConfig.reloadConfig();

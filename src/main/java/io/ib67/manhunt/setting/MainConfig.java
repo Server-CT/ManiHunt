@@ -10,6 +10,7 @@ public class MainConfig {
     public Scores playerScores = new Scores();
     public boolean blockCompassWhenDifferentWorld = false;
     public int distanceFar = 2000;
+    public boolean uploadStats = true;
     public Servers mojangServers = new Servers();
 
     public static class Servers {
