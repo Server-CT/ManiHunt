@@ -19,6 +19,7 @@ public class PlayerPvP implements Listener {
             Player runner = ManHunt.getInstance().getGame().getRunner();
             Player damager = (Player) e.getDamager();
             Player defender = (Player) e.getEntity();
+            if(damager!=runner && defender!=runner)return;
             GameStat gameStat = ManHunt.getInstance().getGame().getGameStat();
             I18n i18N = ManHunt.getInstance().getLanguage();
             int score = ManHunt.getInstance().getMainConfig().playerScores.critical;
