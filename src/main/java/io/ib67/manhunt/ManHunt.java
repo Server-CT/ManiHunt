@@ -1,5 +1,6 @@
 package io.ib67.manhunt;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
@@ -10,17 +11,18 @@ import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import net.md_5.bungee.chat.TranslationRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
 
 public final class ManHunt extends JavaPlugin {
     private static ManHunt instance;
@@ -65,8 +67,8 @@ public final class ManHunt extends JavaPlugin {
         }
         loadMojangLocale();
         game = new Game(mainConfig.get().maxPlayers,
-                g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
-                g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
+                        g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
+                        g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
         loadAdditions();
         loadListeners();
         Logging.info("ManHunt Started! We're waiting for more players.");
@@ -94,97 +96,100 @@ public final class ManHunt extends JavaPlugin {
         //todo
     }
 
-    @SneakyThrows
+    //@SneakyThrows
     private void loadMojangLocale() {
-        File lang = new File(getDataFolder().getAbsolutePath() + getMainConfig().serverLanguage.toLowerCase() + ".cache");
+        if (!(getDataFolder().isDirectory() || getDataFolder().mkdirs()))
+            throw new RuntimeException("Invalid data folder.");
+
+        File lang = new File(getDataFolder(), getMainConfig().serverLanguage.toLowerCase() + ".cache");
         if (lang.exists()) {
             Properties properties = new Properties();
-            InputStream inputStream = new FileInputStream(lang);
-            properties.load(inputStream);
+            try (InputStream inputStream = new FileInputStream(lang)) {
+                properties.load(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Logging.warn("Failed to load cache.Using spigot-local");
+                loadMojangLocaleLocal();
+                return;
+            }
 
-            PlayerStat.mentionedNormal.forEach(e -> {
-                mojangLocales.put(e, properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
-                Logging.debug(e + " -> " + properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
-            });
-            PlayerStat.mentionedSpecial.forEach(e -> {
-                mojangLocales.put(e, properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
-                Logging.debug(e + " -> " + properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title"));
-            });
+            Consumer<String> func = e -> {
+                String name = properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title");
+                mojangLocales.put(e, name);
+                Logging.debug(e + " -> " + name);
+            };
+            PlayerStat.mentionedNormal.forEach(func);
+            PlayerStat.mentionedSpecial.forEach(func);
             Logging.info("MojangLocales loaded.");
-            inputStream.close();
-            return;
         } else {
-            Logging.warn("Cache not found.Using spigot-local");
-            loadMojangLocaleLocal();
-            return;
-        }
-       /* getLogger().info("Fetching versions from Mojang Servers.");
-        HttpClient httpClient = new HttpClient(new URI(getMainConfig().mojangServers.launchmetaBaseUrl + "mc/game/version_manifest.json"));
-        HttpResponse response = httpClient.sendData(HttpClient.HTTP_METHOD.GET);
-        if (response.hasError() || response.getCode() != 200) {
-            Logging.warn("Failed to load from network.Using spigot-local");
-            loadMojangLocaleLocal();
-            return;
-        }
-        String resp = response.getData();
-        JsonObject jsonObject = jsonParser.parse(resp).getAsJsonObject();
-        String newUrl = null;
-        String langVer = null;
-        for (JsonElement version : jsonObject.getAsJsonArray("versions")) {
-            JsonObject jo = version.getAsJsonObject();
-            if (jo.get("id").toString().contains(serverVersion)) {
-                langVer = jo.get("id").toString();
-                newUrl = jo.get("url").toString().replaceAll("https://launchermeta.mojang.com/", getMainConfig().mojangServers.launchmetaBaseUrl);
-                break;
+            try {
+                final String defaultBase = "https://launchermeta.mojang.com/";
+                final String baseURL = getMainConfig().mojangServers.launchmetaBaseUrl;
+                final String hash = jsonParser.parse(new InputStreamReader(new URL(jsonParser.parse(new InputStreamReader(
+                        new URL(StreamSupport.stream(jsonParser.parse(new InputStreamReader(new URL(baseURL +
+                                                                                                    "mc/game/version_manifest.json")
+                                                                                                    .openStream()))
+                                                             .getAsJsonObject()
+                                                             .getAsJsonArray("versions")
+                                                             .spliterator(), false)
+                                        .map(JsonElement::getAsJsonObject)
+                                        .filter(jo -> jo.get("id").getAsString().contains(serverVersion))
+                                        .findAny()
+                                        .orElseThrow(() -> new AssertionError("Impossible null"))
+                                        .get("url")
+                                        .getAsString()
+                                        .replaceFirst(defaultBase, baseURL)).openStream()))
+                                                                                           .getAsJsonObject()
+                                                                                           .getAsJsonObject("assetIndex")
+                                                                                           .get("url")
+                                                                                           .getAsString()
+                                                                                           .replaceFirst(defaultBase,
+                                                                                                         baseURL)).openStream()))
+                        .getAsJsonObject()
+                        .getAsJsonObject("objects")
+                        .getAsJsonObject("minecraft/lang/" + getMainConfig().serverLanguage.toLowerCase() + ".json")
+                        .get("hash")
+                        .getAsString();
+                lang.createNewFile();
+                try (InputStream input = new URL(getMainConfig().mojangServers.resourceDownloadBaseUrl +
+                                                 hash.charAt(0) +
+                                                 hash.charAt(1) +
+                                                 "/" +
+                                                 hash).openStream()) {
+                    Files.copy(input, lang.toPath());
+                }
+                loadMojangLocale();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Logging.warn("Failed to download cache.Using spigot-local");
+                loadMojangLocaleLocal();
             }
         }
-        if (newUrl == null) {
-            Logging.warn("Failed to load from network.Using spigot-local");
-            loadMojangLocaleLocal();
-            return;
-        }
-        httpClient = new HttpClient(new URI(newUrl));
-        if (response.hasError() || response.getCode() != 200) {
-            Logging.warn("Failed to load from network.Using spigot-local");
-            loadMojangLocaleLocal();
-            return;
-        }
-        resp = response.getData();
-        jsonObject = jsonParser.parse(resp).getAsJsonObject();
-        newUrl = jsonObject.get("assetIndex").getAsJsonObject().get("url").toString().replaceAll("https://launchermeta.mojang.com/", getMainConfig().mojangServers.launchmetaBaseUrl);
-        httpClient = new HttpClient(new URI(newUrl));
-        if (response.hasError() || response.getCode() != 200) {
-            Logging.warn("Failed to load from network.Using spigot-local");
-            loadMojangLocaleLocal();
-            return;
-        }
-        resp = response.getData();
-        jsonObject = jsonParser.parse(resp).getAsJsonObject();
-        String hash = jsonObject.getAsJsonObject("objects").getAsJsonObject("minecraft/lang/" + getMainConfig().serverLanguage.toLowerCase() + ".json").get("hash").toString();
-        //download properties
-        newUrl = getMainConfig().mojangServers.resourceDownloadBaseUrl + hash.substring(0, 1) + "/" + hash;
-        newUrl = jsonObject.get("assetIndex").getAsJsonObject().get("url").toString().replaceAll("https://launchermeta.mojang.com/", getMainConfig().mojangServers.launchmetaBaseUrl);
-        httpClient = new HttpClient(new URI(newUrl));
-        if (response.hasError() || response.getCode() != 200) {
-            Logging.warn("Failed to load from network.Using spigot-local");
-            loadMojangLocaleLocal();
-            return;
-        }
-        resp = response.getData();
-        Logging.info("Caching mojang language file...");
-        Files.write(resp.getBytes(), lang);
-        loadMojangLocale();*/
     }
 
     private void loadMojangLocaleLocal() {
         //use spigot local.
         PlayerStat.mentionedNormal.forEach(e -> {
-            mojangLocales.put(e, TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
-            Logging.debug(e + " -> " + TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
+            mojangLocales.put(e,
+                              TranslationRegistry.INSTANCE.translate("advancements." +
+                                                                     e.replaceAll("\\/", "\\.") +
+                                                                     ".title"));
+            Logging.debug(e +
+                          " -> " +
+                          TranslationRegistry.INSTANCE.translate("advancements." +
+                                                                 e.replaceAll("\\/", "\\.") +
+                                                                 ".title"));
         });
         PlayerStat.mentionedSpecial.forEach(e -> {
-            mojangLocales.put(e, TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
-            Logging.debug(e + " -> " + TranslationRegistry.INSTANCE.translate("advancements." + e.replaceAll("\\/", "\\.") + ".title"));
+            mojangLocales.put(e,
+                              TranslationRegistry.INSTANCE.translate("advancements." +
+                                                                     e.replaceAll("\\/", "\\.") +
+                                                                     ".title"));
+            Logging.debug(e +
+                          " -> " +
+                          TranslationRegistry.INSTANCE.translate("advancements." +
+                                                                 e.replaceAll("\\/", "\\.") +
+                                                                 ".title"));
         });
     }
 }
