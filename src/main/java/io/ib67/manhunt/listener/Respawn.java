@@ -22,6 +22,10 @@ public class Respawn implements Listener {
                 .filter(g -> g.getRole() == GamePlayer.Role.HUNTER)
                 .map(GamePlayer::getPlayer)
                 .map(Player::getInventory)
-                .ifPresent(i -> i.addItem(LodestoneCompass.allocate(game.getRunner().getLocation())));
+                .ifPresent(i -> {
+                    Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(),()->
+                    i.addItem(LodestoneCompass.allocate(game.getRunner().getLocation()))
+                                                       ,10)
+                });
     }
 }
