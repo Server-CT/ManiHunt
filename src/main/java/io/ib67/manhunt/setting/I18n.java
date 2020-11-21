@@ -58,8 +58,8 @@ public class I18n {
             public String WON = ChatColor.GREEN + "游戏结束！逃亡者 胜利";
             public String TITLE_MAIN = ChatColor.RED.toString() + ChatColor.MAGIC + "%%% " + ChatColor.RESET + ChatColor.RED + "游戏开始 %%%";
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
-            public String ARRIVE_NETHER = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 地狱";
-            public String ARRIVE_END = ChatColor.GOLD.toString() + ChatColor.BOLD + "逃亡者已到达 末地";
+            public String ARRIVE_NETHER = ChatColor.BOLD + "逃亡者已到达 地狱";
+            public String ARRIVE_END = ChatColor.BOLD + "逃亡者已到达 末地";
         }
 
         public static class Vote {
