@@ -37,7 +37,7 @@ public final class ManHunt extends JavaPlugin {
     private final Map<String, String> mojangLocales = new HashMap<>();
     @Getter
     private Game game;
-    private final String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    private final String serverVersion = Bukkit.getVersion();
     private static final JsonParser jsonParser = new JsonParser();
 
     public static ManHunt getInstance() {
@@ -55,6 +55,7 @@ public final class ManHunt extends JavaPlugin {
     @Override
     public void onEnable() {
         Logging.info("Loading...");
+        Logging.info("Server Version: " + serverVersion);
         getDataFolder().mkdirs();
         new File(getDataFolder(), "stats").mkdirs();
         instance = this;
@@ -108,7 +109,7 @@ public final class ManHunt extends JavaPlugin {
             throw new RuntimeException("Invalid data folder.");
 
         File lang = new File(getDataFolder(), getMainConfig().serverLanguage.toLowerCase() + ".cache");
-        if (lang.exists()) {
+        if (lang.exists() && lang.length() > 0) {
             Properties properties = new Properties();
             try (InputStream inputStream = new FileInputStream(lang)) {
                 properties.load(inputStream);
@@ -133,13 +134,13 @@ public final class ManHunt extends JavaPlugin {
                 final String baseURL = getMainConfig().mojangServers.launchmetaBaseUrl;
                 final String hash = jsonParser.parse(new InputStreamReader(new URL(jsonParser.parse(new InputStreamReader(
                         new URL(StreamSupport.stream(jsonParser.parse(new InputStreamReader(new URL(baseURL +
-                                                                                                    "mc/game/version_manifest.json")
-                                                                                                    .openStream()))
-                                                             .getAsJsonObject()
-                                                             .getAsJsonArray("versions")
-                                                             .spliterator(), false)
-                                        .map(JsonElement::getAsJsonObject)
-                                        .filter(jo -> jo.get("id").getAsString().contains(serverVersion))
+                                "mc/game/version_manifest.json")
+                                .openStream()))
+                                .getAsJsonObject()
+                                .getAsJsonArray("versions")
+                                .spliterator(), false)
+                                .map(JsonElement::getAsJsonObject)
+                                .filter(jo -> serverVersion.contains(jo.get("id").getAsString()))
                                         .findAny()
                                         .orElseThrow(() -> new AssertionError("Impossible null"))
                                         .get("url")
@@ -156,7 +157,6 @@ public final class ManHunt extends JavaPlugin {
                         .getAsJsonObject("minecraft/lang/" + getMainConfig().serverLanguage.toLowerCase() + ".json")
                         .get("hash")
                         .getAsString();
-                lang.createNewFile();
                 try (InputStream input = new URL(getMainConfig().mojangServers.resourceDownloadBaseUrl +
                                                  hash.charAt(0) +
                                                  hash.charAt(1) +
