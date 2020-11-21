@@ -56,6 +56,9 @@ public class SimpleRador implements Rador {
 
     @Override
     public void onMove(Player p) {
+        if (p == player) {
+            return;
+        }
         I18n i18n = ManHunt.getInstance().getLanguage();
         if (p.getLocation().getWorld() != player.getLocation().getWorld()) {
             return;
