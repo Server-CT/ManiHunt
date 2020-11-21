@@ -2,7 +2,6 @@ package io.ib67.manhunt.listener;
 
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.Game;
-import io.ib67.manhunt.game.GamePlayer;
 import io.ib67.manhunt.util.LodestoneCompass;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,8 +15,6 @@ public class Respawn implements Listener {
         if (!game.isStarted() || !game.isCompassEnabled())
             return;
 
-        game.isInGame(event.getPlayer())
-                .filter(g -> g.getRole() == GamePlayer.Role.HUNTER)
-                .ifPresent(e -> e.getPlayer().getInventory().addItem(LodestoneCompass.allocate(game.getRunner().getLocation())));
+       event.getPlayer().getInventory().addItem(LodestoneCompass.allocate(game.getRunner().getLocation()));
     }
 }

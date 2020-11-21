@@ -71,7 +71,7 @@ public class SimpleRador implements Rador {
             }
         } else {
             if (nearbyPlayers.contains(p)) {
-                nearbyPlayers.add(p);
+                nearbyPlayers.remove(p);
                 player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADOR.HINT_CHAT_LEAVE, p.getName()));
             }
         }
