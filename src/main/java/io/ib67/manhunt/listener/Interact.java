@@ -34,7 +34,7 @@ public class Interact implements Listener {
             return;
 
 
-        if (event.getAction() == Action.RIGHT_CLICK_AIR ||
+        if ((event.getAction() == Action.RIGHT_CLICK_AIR) ||
             event.getAction() == Action.RIGHT_CLICK_BLOCK &&
             event.hasItem() &&
             Objects.requireNonNull(event.getItem()).getType() == Material.COMPASS) {
