@@ -19,12 +19,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
@@ -111,24 +113,22 @@ public final class ManHunt extends JavaPlugin {
 
         File lang = new File(getDataFolder(), getMainConfig().serverLanguage.toLowerCase() + ".cache");
         if (lang.exists() && lang.length() > 0) {
-            Properties properties = new Properties();
-            try (InputStream inputStream = new FileInputStream(lang)) {
-                properties.load(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Logging.warn("Failed to load cache.Using spigot-local");
-                loadMojangLocaleLocal();
-                return;
-            }
+            try {
+                JsonElement jo = jsonParser.parse(new FileReader(lang));
 
-            Consumer<String> func = e -> {
-                String name = properties.getProperty("advancements." + e.replaceAll("/", "\\.") + ".title");
-                mojangLocales.put(e, name);
-                Logging.debug(e + " -> " + name);
-            };
-            PlayerStat.mentionedNormal.forEach(func);
-            PlayerStat.mentionedSpecial.forEach(func);
-            Logging.info("MojangLocales loaded.");
+                Consumer<String> func = e -> {
+                    String name = jo.getAsJsonObject().get("advancements." + e.replaceAll("/", "\\.") + ".title").getAsString();
+                    mojangLocales.put(e, name);
+                    Logging.debug(e + " -> " + name);
+                };
+                PlayerStat.mentionedNormal.forEach(func);
+                PlayerStat.mentionedSpecial.forEach(func);
+                Logging.info("MojangLocales loaded.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Logging.warn("Failed to load cache,using spigot-locals.");
+                loadMojangLocaleLocal();
+            }
         } else {
             try {
                 final String defaultBase = "https://launchermeta.mojang.com/";

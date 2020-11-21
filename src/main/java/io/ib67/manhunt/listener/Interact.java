@@ -34,14 +34,14 @@ public class Interact implements Listener {
             return;
 
 
-        if ((event.getAction() == Action.RIGHT_CLICK_AIR) ||
-            event.getAction() == Action.RIGHT_CLICK_BLOCK &&
-            event.hasItem() &&
-            Objects.requireNonNull(event.getItem()).getType() == Material.COMPASS) {
+        if ((event.getAction() == Action.RIGHT_CLICK_AIR ||
+                event.getAction() == Action.RIGHT_CLICK_BLOCK) &&
+                event.hasItem() &&
+                Objects.requireNonNull(event.getItem()).getType() == Material.COMPASS) {
             event.setCancelled(true);
             final BiConsumer<PlayerInventory, ItemStack> setItem = event.getHand() == EquipmentSlot.HAND ?
-                                                                   PlayerInventory::setItemInMainHand :
-                                                                   PlayerInventory::setItemInOffHand;
+                    PlayerInventory::setItemInMainHand :
+                    PlayerInventory::setItemInOffHand;
             game.isInGame(event.getPlayer())
                     .filter(g -> g.getRole() == GamePlayer.Role.HUNTER)
                     .map(GamePlayer::getPlayer)
