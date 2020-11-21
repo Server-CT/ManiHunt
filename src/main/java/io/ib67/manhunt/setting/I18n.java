@@ -29,6 +29,7 @@ public class I18n {
                 ChatColor.WHITE + "游戏通过 投票 选举逃亡者。"
         };
         public String ARCHIVE_TARGET = ChatColor.GOLD + "达成成就: +%dXP";
+        public String KILL_TARGET = ChatColor.GOLD + "杀死对手: +%dXP";
         public String CRITICAL_TARGET = ChatColor.GOLD + "重拳出击！: +%dXP";
         public String DONT_RUN_AWAY = ChatColor.RED + "请不要跑出出生点。";
         public String SHUTDOWN = "30S 后将会自动重启。";

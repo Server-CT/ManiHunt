@@ -19,7 +19,10 @@ public class PlayerPvP implements Listener {
             Player runner = ManHunt.getInstance().getGame().getRunner();
             Player damager = (Player) e.getDamager();
             Player defender = (Player) e.getEntity();
-            if(damager!=runner && defender!=runner)return;
+            if (damager != runner && defender != runner && ManHunt.getInstance().getMainConfig().disableTeamMateDamage) {
+                e.setCancelled(true);
+                return;
+            }
             GameStat gameStat = ManHunt.getInstance().getGame().getGameStat();
             I18n i18N = ManHunt.getInstance().getLanguage();
             int score = ManHunt.getInstance().getMainConfig().playerScores.critical;
@@ -34,6 +37,11 @@ public class PlayerPvP implements Listener {
                     gameStat.addAdvancement(damager, "CRITICAL_TO_HUNTER", score);
                     damager.sendMessage(String.format(i18N.GAMING.CRITICAL_TARGET, score));
                 }
+            }
+            if (defender.isDead()) {
+                score = ManHunt.getInstance().getMainConfig().playerScores.kill;
+                gameStat.addAdvancement(damager, "KILL_ENEMY", score);
+                damager.sendMessage(String.format(i18N.GAMING.KILL_TARGET, score));
             }
         }
     }

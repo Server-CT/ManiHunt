@@ -9,6 +9,7 @@ public class MainConfig {
     public int radorWarnDistance = 30;
     public Scores playerScores = new Scores();
     public boolean blockCompassWhenDifferentWorld = false;
+    public boolean disableTeamMateDamage = false;
     public int distanceFar = 2000;
     public boolean uploadStats = true;
     public Servers mojangServers = new Servers();
@@ -20,6 +21,7 @@ public class MainConfig {
 
     public static class Scores {
         public int critical = 400;
+        public int kill = 800;
         public int advancementNormal = 500;
         public int advancementSpecial = 1000;
     }
