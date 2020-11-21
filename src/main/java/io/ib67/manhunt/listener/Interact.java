@@ -51,7 +51,7 @@ public class Interact implements Listener {
                         TextComponent actBarMsg = new TextComponent(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR, runner.getDisplayName()));
                         if (event.getPlayer().getWorld() == runner.getLocation().getWorld()) {
                             if (runner.getLocation().distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
-                                actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
+                                actBarMsg.addExtra(" "+String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                             }
                             setItem.accept(i, LodestoneCompass.allocate(runner.getLocation()));
                             event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, actBarMsg);
