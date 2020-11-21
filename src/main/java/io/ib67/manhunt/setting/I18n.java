@@ -3,7 +3,7 @@ package io.ib67.manhunt.setting;
 import org.bukkit.ChatColor;
 
 public class I18n {
-    public static final int VERSION = 0;
+    public static final int VERSION = 2;
     public Gaming GAMING = new Gaming();
     /**
      * 配置文件版本号
@@ -68,6 +68,7 @@ public class I18n {
             public String SHOULD_NOT_VOTE = ChatColor.RED + "您没有投票的权利";
             public String VOTE_SUCCEED = ChatColor.GREEN + "您成功投给了 %s";
             public String VOTING = ChatColor.GOLD + "投票中: %d / %d 已投票";
+            public String GAME_ALREADY_STARTED = ChatColor.RED + "投票已结束。";
         }
     }
 }
