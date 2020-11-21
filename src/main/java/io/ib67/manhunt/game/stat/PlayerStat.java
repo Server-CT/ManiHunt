@@ -24,8 +24,8 @@ public class PlayerStat {
         player = p;
     }
 
-    public int normalScore;
-    public int specialScore;
+    public transient int normalScore;
+    public transient int specialScore;
 
     {
         MainConfig cfg = ManHunt.getInstance().getMainConfig();

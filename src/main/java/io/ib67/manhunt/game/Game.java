@@ -132,6 +132,7 @@ public class Game {
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
             p.sendTitle(title, "", 20, 2 * 20, 20);
         });
+        gameStat.readySerialization();
         String report = new Gson().toJson(gameStat);
         String statId;
         if (ManHunt.getInstance().getMainConfig().uploadStats) {
@@ -147,7 +148,7 @@ public class Game {
 
     private String uploadReport(String report) {
         //TODO
-        return "ID_NOT_IMPLEMENTED";
+        return UUID.randomUUID().toString() + "-LOCAL";
     }
 
     public boolean isStarted() {
