@@ -68,6 +68,7 @@ public class Game {
 
     public void start(Player runner) {
         vote = null;
+        Bukkit.broadcastMessage(ChatColor.GREEN+"Runner: "+runner.getDisplayName()+" !");
         Bukkit.getWorld("world").setDifficulty(Difficulty.valueOf(ManHunt.getInstance().getMainConfig().difficulty));
         Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         phase = GamePhase.STARTING;
