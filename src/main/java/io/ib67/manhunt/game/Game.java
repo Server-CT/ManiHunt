@@ -68,6 +68,11 @@ public class Game {
 
     public void start(Player runner) {
         vote = null;
+        if (runner == null) {
+            Bukkit.broadcastMessage("An exception was occurred! Please feedback to server admin :: ERROR: RUNNER_IS_NULL");
+            Bukkit.broadcastMessage("GAME INTERRUPTED.");
+            return;
+        }
         Bukkit.getWorld("world").setDifficulty(Difficulty.valueOf(ManHunt.getInstance().getMainConfig().difficulty));
         Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         phase = GamePhase.STARTING;
