@@ -15,6 +15,6 @@ public class Move implements Listener {
             }
             return;
         }
-        ManHunt.getInstance().getGame().getRador().onMove(e.getPlayer());
+        ManHunt.getInstance().getGame().getRadar().onMove(e.getPlayer());
     }
 }
