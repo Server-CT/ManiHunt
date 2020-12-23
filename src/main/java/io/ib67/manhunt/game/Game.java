@@ -5,8 +5,8 @@ import com.google.gson.Gson;
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.stat.GameStat;
 import io.ib67.manhunt.gui.Vote;
-import io.ib67.manhunt.rador.Rador;
-import io.ib67.manhunt.rador.SimpleRador;
+import io.ib67.manhunt.radar.Radar;
+import io.ib67.manhunt.radar.SimpleRadar;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.util.LodestoneCompass;
 import lombok.Getter;
@@ -37,7 +37,7 @@ public class Game {
     public boolean runnerNether = false;
     public boolean runnerEnd = false;
     @Getter
-    private Rador rador;
+    private Radar radar;
     public Vote vote;
 
     public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
@@ -118,8 +118,8 @@ public class Game {
     }
 
     private void initRador() {
-        rador = new SimpleRador(runner, ManHunt.getInstance().getMainConfig().radorWarnDistance);
-        rador.start();
+        radar = new SimpleRadar(runner, ManHunt.getInstance().getMainConfig().radorWarnDistance);
+        radar.start();
     }
 
     @SneakyThrows
@@ -127,7 +127,7 @@ public class Game {
         gameStat.setTotalTime(System.currentTimeMillis() - startTime);
         this.result = result;
         phase = GamePhase.END;
-        rador.stop();
+        radar.stop();
         String title = result == GameResult.HUNTER_WIN ?
                 ManHunt.getInstance().getLanguage().GAMING.HUNTER.WON :
                 ManHunt.getInstance().getLanguage().GAMING.RUNNER.WON;

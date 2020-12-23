@@ -2,9 +2,9 @@ package io.ib67.manhunt.util;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 
 public class LodestoneCompass {
     @SuppressWarnings("all")
@@ -14,27 +14,13 @@ public class LodestoneCompass {
             p.setCompassTarget(loc);
             return new ItemStack(Material.COMPASS);
         }
-        NBTUtil.NBTValue x = new NBTUtil.NBTValue().set(loc.getBlockX());
-        NBTUtil.NBTValue y = new NBTUtil.NBTValue().set(loc.getBlockY());
-        NBTUtil.NBTValue z = new NBTUtil.NBTValue().set(loc.getBlockZ());
-        Object compound = NBTUtil.setTagValue(NBTUtil.newNBTTagCompound(), "X", x);
-        compound = NBTUtil.setTagValue(compound, "Y", y);
-        compound = NBTUtil.setTagValue(compound, "Z", z);
-        ItemStack modified = NBTUtil.setTagValue(new ItemStack(Material.COMPASS), "LodestoneTracked", new NBTUtil.NBTValue().set(false));
-        modified = NBTUtil.setTagValue(modified, "LodestonePos", new NBTUtil.NBTValue(compound));
-        modified = NBTUtil.setTagValue(modified, "LodestoneDimension", new NBTUtil.NBTValue().set(envAsName(loc.getWorld().getEnvironment())));
-        return modified;
-    }
 
-    private static String envAsName(World.Environment env) {
-        switch (env) {
-            case NORMAL:
-                return "minecraft:overworld";
-            case THE_END:
-                return "minecraft:the_end";
-            case NETHER:
-                return "minecraft:the_nether";
-        }
-        throw new IllegalArgumentException("Invalid env: " + env);
+        // AmemiyaShigure: Do NOT use NMS.
+        ItemStack compass = new ItemStack(Material.COMPASS);
+        CompassMeta meta = (CompassMeta) compass.getItemMeta();
+        meta.setLodestone(loc);
+        meta.setLodestoneTracked(true);
+        compass.setItemMeta(meta);
+        return compass;
     }
 }
