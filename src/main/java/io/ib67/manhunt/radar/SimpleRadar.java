@@ -1,4 +1,4 @@
-package io.ib67.manhunt.rador;
+package io.ib67.manhunt.radar;
 
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.setting.I18n;
@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class SimpleRador implements Rador {
+public class SimpleRadar implements Radar {
     private final Player player;
     private final Set<Player> nearbyPlayers = new HashSet<>();
     private int warnDistance;
     private BukkitTask keeper;
 
-    public SimpleRador(Player player, int warnDistance) {
+    public SimpleRadar(Player player, int warnDistance) {
         this.player = player;
         this.warnDistance = warnDistance;
     }
