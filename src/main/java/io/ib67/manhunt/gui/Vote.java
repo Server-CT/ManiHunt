@@ -105,7 +105,7 @@ public class Vote implements Listener, InventoryHolder {
                                         .orElseThrow(() -> new IllegalStateException("Impossible null"))
                                         .getKey());
     }
-
+    @SuppressWarnings("deprecated")
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player &&
@@ -119,7 +119,7 @@ public class Vote implements Listener, InventoryHolder {
             return;
 
         SkullMeta meta = (SkullMeta) itemClicked.getItemMeta();
-        vote(p, Objects.requireNonNull(Objects.requireNonNull(meta).getOwningPlayer()));
+        vote(p, Bukkit.getPlayer(Objects.requireNonNull(Objects.requireNonNull(meta).getOwner())));
 
         p.closeInventory();
     }
