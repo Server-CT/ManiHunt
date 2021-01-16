@@ -33,8 +33,9 @@ public class Vote implements Listener, InventoryHolder {
         this.shouldVote = new LinkedList<>(shouldVote);
         this.callback = callback;
         this.voteInv = Bukkit.createInventory(this,
-                                              (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
-                                              9);
+                (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
+                        9,
+                ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_TITLE);
         initInventory();
     }
 
@@ -42,16 +43,19 @@ public class Vote implements Listener, InventoryHolder {
         this.shouldVote = shouldVote.collect(Collectors.toCollection(LinkedList<UUID>::new));
         this.callback = callback;
         this.voteInv = Bukkit.createInventory(this,
-                                              (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
-                                              9);
+                (this.shouldVote.size() / 9 + (this.shouldVote.size() % 9 == 0 ? 0 : 1)) *
+                        9,
+                ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_TITLE);
         initInventory();
     }
 
+    @SuppressWarnings("deprecated")
     private void initInventory() {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) Objects.requireNonNull(head.getItemMeta());
         for (UUID uuid : shouldVote) {
             meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+            meta.setDisplayName(String.format(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_ITEM_FORMAT, meta.getOwner()));
             head.setItemMeta(meta);
             voteInv.addItem(head.clone());
         }
