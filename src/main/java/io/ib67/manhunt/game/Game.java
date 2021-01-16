@@ -57,6 +57,7 @@ public class Game {
                     .forEach(e -> {
                         e.getPlayer().getInventory().addItem(LodestoneCompass.allocate(e.getPlayer(), runner.getLocation()));
                         e.getPlayer().sendMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.COMPASS_ARRIVED);
+                        e.getPlayer().sendMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_USAGE);
                     });
         } else {
             inGamePlayers.stream()
