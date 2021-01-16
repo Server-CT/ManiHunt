@@ -14,12 +14,10 @@ public class LodestoneCompass {
             p.setCompassTarget(loc);
             return new ItemStack(Material.COMPASS);
         }
-
-        // AmemiyaShigure: Do NOT use NMS.
         ItemStack compass = new ItemStack(Material.COMPASS);
         CompassMeta meta = (CompassMeta) compass.getItemMeta();
+        meta.setLodestoneTracked(false);
         meta.setLodestone(loc);
-        meta.setLodestoneTracked(true);
         compass.setItemMeta(meta);
         return compass;
     }
