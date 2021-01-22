@@ -62,6 +62,7 @@ public class I18n {
             public String TITLE_SUB = "杀死末影龙，同时躲避猎人！";
             public String ARRIVE_NETHER = ChatColor.BOLD + "逃亡者已到达 地狱";
             public String ARRIVE_END = ChatColor.BOLD + "逃亡者已到达 末地";
+            public String THE_RUNNER_IS = ChatColor.GREEN + "逃亡者是：" + ChatColor.RED + " %s !";
         }
 
         public static class Vote {

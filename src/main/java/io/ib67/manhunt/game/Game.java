@@ -14,7 +14,6 @@ import io.ib67.manhunt.util.LodestoneCompass;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -108,7 +107,7 @@ public class Game {
                         20);
             }
         });
-        Bukkit.broadcastMessage(ChatColor.GREEN + "Runner: " + runner.getDisplayName() + " !"); //todo I18N
+        Bukkit.broadcastMessage(String.format(i18n.GAMING.RUNNER.THE_RUNNER_IS, runner.getDisplayName()));
         initRador();
         phase = GamePhase.STARTED;
         region.gameStatus(phase); // Region handles airdrop.
