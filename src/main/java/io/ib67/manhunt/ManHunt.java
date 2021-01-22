@@ -70,6 +70,7 @@ public final class ManHunt extends JavaPlugin {
         getDataFolder().mkdirs();
         new File(getDataFolder(), "stats").mkdirs();
         instance = this;
+        getMainConfig().worldSettings.defaultWorldName = Bukkit.getWorlds().get(0).getName();
         mainConfig.saveDefault();
         mainConfig.reloadConfig();
         Logging.info("Loading Language: " + mainConfig.get().serverLanguage);
