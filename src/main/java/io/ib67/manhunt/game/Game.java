@@ -3,6 +3,8 @@ package io.ib67.manhunt.game;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import io.ib67.manhunt.ManHunt;
+import io.ib67.manhunt.game.region.GamingRegion;
+import io.ib67.manhunt.game.region.RegionProvider;
 import io.ib67.manhunt.game.stat.GameStat;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.radar.Radar;
@@ -11,11 +13,17 @@ import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.util.LodestoneCompass;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class Game {
@@ -39,13 +47,14 @@ public class Game {
     @Getter
     private Radar radar;
     public Vote vote;
+    private GamingRegion region;
 
-    public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd) {
+    public Game(int playersToStart, Consumer<Game> gameStart, Consumer<Game> gameEnd, RegionProvider<?> regionProvider) {
         this.gameStart = gameStart;
         this.gameEnd = gameEnd;
         this.playersToStart = playersToStart;
-        Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        Bukkit.getWorld("world").setDifficulty(Difficulty.PEACEFUL);
+        this.region = regionProvider.claim(this);
+        region.gameStatus(GamePhase.WAITING_FOR_PLAYER);
     }
 
     public void setCompassEnabled(boolean status) {
@@ -74,9 +83,8 @@ public class Game {
             Bukkit.broadcastMessage("GAME INTERRUPTED.");
             return;
         }
-        Bukkit.getWorld("world").setDifficulty(Difficulty.valueOf(ManHunt.getInstance().getMainConfig().difficulty));
-        Bukkit.getWorld("world").setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
         phase = GamePhase.STARTING;
+        region.gameStatus(phase);
         startTime = System.currentTimeMillis();
         this.runner = runner;
         I18n i18n = ManHunt.getInstance().getLanguage();
@@ -91,7 +99,6 @@ public class Game {
                         20,
                         2 * 20,
                         20);
-                airDrop(runner);
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
                 e.getPlayer().sendTitle(i18n.GAMING.HUNTER.TITLE_MAIN,
@@ -101,22 +108,13 @@ public class Game {
                         20);
             }
         });
-        Bukkit.broadcastMessage(ChatColor.GREEN + "Runner: " + runner.getDisplayName() + " !");
+        Bukkit.broadcastMessage(ChatColor.GREEN + "Runner: " + runner.getDisplayName() + " !"); //todo I18N
         initRador();
         phase = GamePhase.STARTED;
+        region.gameStatus(phase); // Region handles airdrop.
         gameStart.accept(this);
     }
 
-    private void airDrop(Player runner) {
-        Location loc = runner.getLocation();
-        loc = new Location(loc.getWorld(), loc.getBlockX(), 0, loc.getBlockZ());
-        Random random = new Random();
-        loc.add(random.nextInt(200) + 100, 0, random.nextInt(200) + 100);
-        loc = loc.getWorld().getHighestBlockAt(loc).getLocation();
-        loc.getBlock().setType(Material.GLASS);
-        loc.setY(loc.getY() + 1);
-        runner.teleport(loc);
-    }
 
     private void initRador() {
         radar = new SimpleRadar(runner, ManHunt.getInstance().getMainConfig().radorWarnDistance);
@@ -135,9 +133,11 @@ public class Game {
         inGamePlayers.stream().map(GamePlayer::getPlayer).forEach(p -> {
             if (p == null) return;
             p.setGameMode(GameMode.SPECTATOR);
-            p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            //p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
             p.sendTitle(title, "", 20, 2 * 20, 20);
         });
+        region.gameStatus(phase);
+
         gameStat.readySerialization();
         String report = new Gson().toJson(gameStat);
         String statId;
@@ -149,7 +149,7 @@ public class Game {
         Files.write(report.getBytes(), new File(ManHunt.getInstance().getDataFolder(), "stats/" + statId + ".json"));
         gameEnd.accept(this);
         Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.SHUTDOWN);
-        Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, 30 * 20L);
+        Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, 30 * 20L); //todo auto shutdown toggle
     }
 
     private String uploadReport(String report) {
@@ -161,15 +161,14 @@ public class Game {
         return phase != GamePhase.WAITING_FOR_PLAYER && phase != GamePhase.STARTING;
     }
 
-    public boolean joinPlayer(Player player) {
+    public void joinPlayer(Player player) {
         if (isStarted()) {
             if (!isInGame(player).isPresent()) {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendMessage(ManHunt.getInstance().getLanguage().GAMING.SPECTATOR_RULE);
-                return false;
-            } else {
-                return true;
+                region.joinPlayer(player, true);
             }
+            return;
         }
         player.setGameMode(GameMode.ADVENTURE);
         inGamePlayers.add(GamePlayer.builder().player(player.getName()).build());
@@ -179,18 +178,21 @@ public class Game {
         if (inGamePlayers.size() >= playersToStart) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.VOTE.VOTE_START);
             Bukkit.getOnlinePlayers().forEach(e -> e.sendTitle("", "", 0, 0, 0));//Clear
+            region.joinPlayer(player, false);
             vote = new Vote(inGamePlayers.stream().map(GamePlayer::getPlayer).map(Player::getUniqueId),
                     v -> start(v.getResult()));
             Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), () -> vote.startVote(), 10);
         }
-        return true;
     }
 
     public void kickPlayer(String player) {
         inGamePlayers.stream()
                 .filter(e -> e.getPlayer().getName().equals(player))
                 .findFirst()
-                .ifPresent(inGamePlayers::remove);
+                .ifPresent(e -> {
+                    region.deletePlayer(e.getPlayer());
+                    inGamePlayers.remove(e);
+                });
     }
 
 

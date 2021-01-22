@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
+import io.ib67.manhunt.game.region.impl.SingleWorldRegionProvider;
 import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.listener.*;
@@ -42,6 +43,8 @@ public final class ManHunt extends JavaPlugin {
     private Game game;
     private final String serverVersion = Bukkit.getVersion();
     private static final JsonParser jsonParser = new JsonParser();
+    @Getter
+    private final RegionProviderManager regionProviderManager = new RegionProviderManager();
 
     public static ManHunt getInstance() {
         return instance;
@@ -81,12 +84,21 @@ public final class ManHunt extends JavaPlugin {
             language.set(new I18n());
         }
         loadMojangLocale();
-        game = new Game(mainConfig.get().maxPlayers,
-                        g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
-                        g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
+        loadInternalRegionProvider();
+        Bukkit.getScheduler().runTask(this, () -> {
+            game = new Game(mainConfig.get().maxPlayers,
+                    g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
+                    g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)),
+                    regionProviderManager.getProvider(getMainConfig().usingRegionProvider));
+            Bukkit.getOnlinePlayers().forEach(game::joinPlayer);
+        }); //for other plugin to load their own provider.
         loadAdditions();
         loadListeners();
         Logging.info("ManHunt Started! We're waiting for more players.");
+    }
+
+    private void loadInternalRegionProvider() {
+        regionProviderManager.registerRegionProvider(SingleWorldRegionProvider.NAME, SingleWorldRegionProvider.INSTANCE);
     }
 
     private void loadLanguages() {

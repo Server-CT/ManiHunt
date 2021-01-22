@@ -1,5 +1,7 @@
 package io.ib67.manhunt.game.region;
 
-public interface RegionProvider {
-    GamingRegion claim();
+import io.ib67.manhunt.game.Game;
+
+public interface RegionProvider<T extends GamingRegion> {
+    T claim(Game game);
 }
