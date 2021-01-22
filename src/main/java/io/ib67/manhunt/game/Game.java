@@ -148,7 +148,7 @@ public class Game {
         Files.write(report.getBytes(), new File(ManHunt.getInstance().getDataFolder(), "stats/" + statId + ".json"));
         gameEnd.accept(this);
         Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.SHUTDOWN);
-        Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, 30 * 20L); //todo auto shutdown toggle
+        Bukkit.getScheduler().runTaskLater(ManHunt.getInstance(), Bukkit::shutdown, ManHunt.getInstance().getMainConfig().shutdownTimer * 20L);
     }
 
     private String uploadReport(String report) {

@@ -12,6 +12,7 @@ public class MainConfig {
     public boolean blockCompassWhenDifferentWorld = false;
     public boolean disableTeamMateDamage = false;
     public int distanceFar = 2000;
+    public int shutdownTimer = 30;
     public String usingRegionProvider = SingleWorldRegionProvider.NAME;
     public boolean uploadStats = true;
     public WorldSettings worldSettings = new WorldSettings();
