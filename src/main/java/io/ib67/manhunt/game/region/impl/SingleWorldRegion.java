@@ -64,6 +64,8 @@ public class SingleWorldRegion implements GamingRegion {
                 break;
             case WAITING_FOR_PLAYER:
                 setLocked(true);
+                getCenter().getWorld().setDifficulty(Difficulty.PEACEFUL);
+                getCenter().getWorld().setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
                 break;
             case STARTED:
                 setLocked(false);
