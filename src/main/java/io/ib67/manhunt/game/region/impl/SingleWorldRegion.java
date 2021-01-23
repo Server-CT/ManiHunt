@@ -17,6 +17,7 @@ import java.util.List;
 public class SingleWorldRegion implements GamingRegion {
     private boolean locked;
     private int lockRadius = 30; //Defaults: 30
+
     private Game game;
     private List<String> players = new ArrayList<>();
     private List<String> spectators = new ArrayList<>();
@@ -53,6 +54,11 @@ public class SingleWorldRegion implements GamingRegion {
     @Override
     public int getLockRadius() {
         return lockRadius;
+    }
+
+    @Override
+    public boolean hasPlayer(Player p) {
+        return players.contains(p.getName());
     }
 
     @Override

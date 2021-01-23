@@ -15,6 +15,7 @@ public class SingleWorldRegionPlayerListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         if (event.getTo() == null || !region.isLocked()) return;
+        if (!region.hasPlayer(event.getPlayer())) return;
         if (region.getCenter().distance(event.getTo()) > region.getLockRadius()) {
             event.getPlayer().teleport(region.getCenter());
         }

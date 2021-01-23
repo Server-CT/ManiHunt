@@ -17,6 +17,8 @@ public interface GamingRegion {
 
     int getLockRadius();
 
+    boolean hasPlayer(Player p);
+
     void gameStatus(GamePhase phase);
 
     void joinPlayer(Player player, boolean isSpectator);
