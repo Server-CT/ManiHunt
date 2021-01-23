@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.game.GameManager;
+import io.ib67.manhunt.game.lobby.GameSelector;
 import io.ib67.manhunt.game.region.impl.SingleWorldRegionProvider;
 import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;
@@ -34,15 +35,22 @@ import java.util.stream.StreamSupport;
 public final class ManHunt extends JavaPlugin {
     private static ManHunt instance;
     public static boolean debug = false;
-    private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class, SimpleConfig.SerializationType.YAML);
-    private final SimpleConfig<I18n> language = new SimpleConfig<>(getDataFolder(), I18n.class, SimpleConfig.SerializationType.JSON);
+    private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(),
+                                                                           MainConfig.class,
+                                                                           SimpleConfig.SerializationType.YAML);
+    private final SimpleConfig<I18n> language = new SimpleConfig<>(getDataFolder(),
+                                                                   I18n.class,
+                                                                   SimpleConfig.SerializationType.JSON);
     @Getter
     private final Map<String, String> mojangLocales = new HashMap<>();
     @Getter
     private Game game;
     private final String serverVersion = Bukkit.getVersion();
     private static final JsonParser jsonParser = new JsonParser();
-    private final GameManager gameManager = null; //todo init gamemanager
+    @Getter
+    private final GameManager gameManager = null; //todo init GameManager
+    @Getter
+    private final GameSelector gameSelector = new GameSelector();
     @Getter
     private final RegionProviderManager regionProviderManager = new RegionProviderManager();
 

@@ -7,13 +7,17 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface GameManager {
-    JoinResult join(Player player);
+    JoinResult join(Player player, Game game);
 
-    JoinResult join(String gameId, Player player);
+    boolean isInGame(Player player);
 
     Optional<Game> gameOf(Player player);
 
     Map<String, Game> getGames();
+
+    Game checkCreateGame(String id);
+
+    Optional<Game> getGame(String id);
 
     @AllArgsConstructor
     class JoinResult {
