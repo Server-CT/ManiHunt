@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -201,7 +202,7 @@ import java.nio.file.Path;
  * same "printed page" as the copyright notice for easier
  * identification within third-party archives.
  * <p>
- * Copyright [2020] [SaltedFish Club]
+ * Copyright [2021] [SaltedFish Club]
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -220,18 +221,21 @@ import java.nio.file.Path;
  */
 public class SimpleConfig<C> {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Yaml yaml = new Yaml();
     private final String root;
     private C configObj;
     @Setter
     @Getter
     private String configFileName = "config.json";
+    private final SerializationType type;
     private final Class<C> clazz;
 
     @SneakyThrows
-    public SimpleConfig(File rootDir, Class<C> configClass) {
+    public SimpleConfig(File rootDir, Class<C> configClass, SerializationType serializationType) {
         rootDir.mkdirs();
         this.root = rootDir.getAbsolutePath();
         this.clazz = configClass;
+        this.type = serializationType;
         this.configObj = configClass.getDeclaredConstructor().newInstance();
         saveDefault();
         reloadConfig();
@@ -242,7 +246,14 @@ public class SimpleConfig<C> {
      */
     @SneakyThrows
     public void saveConfig() {
-        Files.write(new File(root + "/" + getConfigFileName()).toPath(), gson.toJson(configObj).getBytes());
+        switch (type) {
+            case JSON:
+                Files.write(new File(root + "/" + getConfigFileName()).toPath(), gson.toJson(configObj).getBytes());
+                break;
+            case YAML:
+                Files.write(new File(root + "/" + getConfigFileName()).toPath(), yaml.dump(configObj).getBytes());
+                break;
+        }
     }
 
     /**
@@ -253,7 +264,7 @@ public class SimpleConfig<C> {
         Path a = new File(root + "/" + getConfigFileName()).toPath();
         a.getParent().toFile().mkdirs();
         if (!Files.exists(a)) {
-            Files.write(a, gson.toJson(configObj).getBytes());
+            saveConfig();
         }
     }
 
@@ -275,6 +286,17 @@ public class SimpleConfig<C> {
      */
     @SneakyThrows
     public void reloadConfig() {
-        configObj = gson.fromJson(new BufferedReader(new FileReader(root + "/" + getConfigFileName())), clazz);
+        switch (type) {
+            case JSON:
+                configObj = gson.fromJson(new BufferedReader(new FileReader(root + "/" + getConfigFileName())), clazz);
+                break;
+            case YAML:
+                configObj = yaml.loadAs(new BufferedReader(new FileReader(root + "/" + getConfigFileName())), clazz);
+                break;
+        }
+    }
+
+    public enum SerializationType {
+        JSON, YAML
     }
 }

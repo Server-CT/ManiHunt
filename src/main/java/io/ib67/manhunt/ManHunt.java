@@ -2,8 +2,6 @@ package io.ib67.manhunt;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import io.ib67.manhunt.event.HuntEndEvent;
-import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.game.region.impl.SingleWorldRegionProvider;
 import io.ib67.manhunt.game.stat.PlayerStat;
@@ -35,8 +33,8 @@ import java.util.stream.StreamSupport;
 public final class ManHunt extends JavaPlugin {
     private static ManHunt instance;
     public static boolean debug = false;
-    private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class);
-    private final SimpleConfig<I18n> language = new SimpleConfig<>(getDataFolder(), I18n.class);
+    private final SimpleConfig<MainConfig> mainConfig = new SimpleConfig<>(getDataFolder(), MainConfig.class, SimpleConfig.SerializationType.YAML);
+    private final SimpleConfig<I18n> language = new SimpleConfig<>(getDataFolder(), I18n.class, SimpleConfig.SerializationType.JSON);
     @Getter
     private final Map<String, String> mojangLocales = new HashMap<>();
     @Getter
@@ -86,13 +84,14 @@ public final class ManHunt extends JavaPlugin {
         }
         loadMojangLocale();
         loadInternalRegionProvider();
-        Bukkit.getScheduler().runTask(this, () -> {
+       /* Bukkit.getScheduler().runTask(this, () -> {
             game = new Game(mainConfig.get().maxPlayers,
                     g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
                     g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)),
                     regionProviderManager.getProvider(getMainConfig().usingRegionProvider));
             Bukkit.getOnlinePlayers().forEach(game::joinPlayer);
-        }); //for other plugin to load their own provider.
+        }); //for other plugin to load their own provider.*/
+        //todo gameevents
         loadAdditions();
         loadListeners();
         Logging.info("ManHunt Started! We're waiting for more players.");
