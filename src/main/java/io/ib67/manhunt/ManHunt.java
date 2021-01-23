@@ -3,6 +3,7 @@ package io.ib67.manhunt;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.ib67.manhunt.game.Game;
+import io.ib67.manhunt.game.GameManager;
 import io.ib67.manhunt.game.region.impl.SingleWorldRegionProvider;
 import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;
@@ -41,6 +42,7 @@ public final class ManHunt extends JavaPlugin {
     private Game game;
     private final String serverVersion = Bukkit.getVersion();
     private static final JsonParser jsonParser = new JsonParser();
+    private final GameManager gameManager = null; //todo init gamemanager
     @Getter
     private final RegionProviderManager regionProviderManager = new RegionProviderManager();
 

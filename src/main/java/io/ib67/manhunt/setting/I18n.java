@@ -34,6 +34,7 @@ public class I18n {
         public String DONT_RUN_AWAY = ChatColor.RED + "请不要跑出出生点。";
         public String SHUTDOWN = "30S 后将会自动重启。";
         public SimpleRador SIMPLE_RADOR = new SimpleRador();
+        public GameSelector GAME_SELECTOR = new GameSelector();
 
         public static class SimpleRador {
             public String NEAR = ChatColor.RED + "%s 正在靠近! (<=%dM)";
@@ -74,6 +75,12 @@ public class I18n {
             public String GAME_ALREADY_STARTED = ChatColor.RED + "投票已结束。";
             public String VOTE_TITLE = "谁 是 幸 运 嘉 宾 ？";
             public String VOTE_ITEM_FORMAT = "那当然是 %s";
+        }
+
+        public static class GameSelector {
+            public String MAIN_TITLE = "ManHunt";
+            public String ITEM_GAME_LIST = ChatColor.WHITE + "点击查看 " + ChatColor.GREEN + "游戏列表";
+            public String ITEM_RANDOM_CLAIM = ChatColor.AQUA + "点击此处随机匹配";
         }
     }
 }

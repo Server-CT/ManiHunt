@@ -20,4 +20,9 @@ public class SingleWorldRegionProvider implements RegionProvider<SingleWorldRegi
         Bukkit.getPluginManager().registerEvents(new SingleWorldRegionPlayerListener(r), ManHunt.getInstance());
         return r;
     }
+
+    @Override
+    public boolean isSingletonGameRequired() {
+        return true;
+    }
 }
