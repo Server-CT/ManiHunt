@@ -29,7 +29,6 @@ public class GameSelector implements Listener, InventoryHolder {
         holdingInv = Bukkit.createInventory(this,
                                             9 * 9,
                                             ManHunt.getInstance().getLanguage().GAMING.GAME_SELECTOR.MAIN_TITLE);
-        //todo @czm23333 游戏选择&随机分配菜单
         IntStream.range(0, 9 * 9 - 1).forEach(i -> {
             ItemStack temp = new ItemStack(Material.WHITE_WOOL);
             ItemMeta meta = temp.hasItemMeta() ?
