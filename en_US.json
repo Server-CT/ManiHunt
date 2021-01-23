@@ -1,0 +1,59 @@
+{
+  "GAMING": {
+    "WAITING_FOR_PLAYERS_SUBTITLE": "§6Waiting for more player join...",
+    "WAITING_FOR_PLAYERS_MAINTITLE": " %d / %d",
+    "Hunter": {
+      "WON": "§cGame Over! The Hunters won.",
+      "TITLE_MAIN": "§c§k%%% §r§cGame Start %%%",
+      "TITLE_SUB": "Find the Runner and catch them",
+      "UNLIMITED_COMPASS_UNLOCKED": "§cHunters has unlock the compass!",
+      "UNLIMITED_COMPASS_USAGE": "§aPlease long press §6[Right click] §ato refresh the compass。",
+      "UNLIMITED_COMPASS_LOCKED": "§cInfinite compass has been broken! Hunters need to remake the compass.",
+      "FAILED_TO_TRACK": "§cCan not trace the Runner!",
+      "WARN_Runner_NOT_ENTERED": "§cThe Runner has not arrived at this world",
+      "ACTION_BAR_RADOR": "§bTRACKING: %s",
+      "ACTION_BAR_RADOR_PART_FAR": "§cDISTANCE \u003e\u003e %d",
+      "COMPASS_ARRIVED": "§dThe compass has been delivered！Please check your bag."
+    },
+    "Runner": {
+      "WON": "§aGame Over! The Runner won.",
+      "TITLE_MAIN": "§c§k%%% §r§cGame Start %%%",
+      "TITLE_SUB": "Kill the Under Dragon and hide yourself!",
+      "ARRIVE_NETHER": "§lThe Runner has arrived The Nether.",
+      "ARRIVE_END": "§lThe Runner has arrived the under The End."
+    },
+    "VOTE": {
+      "VOTE_START": "§aPlayer enough. Voting... §7If you closed the vote window, pleace use /vote reopen it.",
+      "ALREADY_VOTED": "§cYou have voted already!",
+      "SHOULD_NOT_VOTE": "§cYou do not have permission to vote!",
+      "VOTE_SUCCEED": "§aYou voted for %s",
+      "VOTING": "§6Voting: %d / %d have voted",
+      "GAME_ALREADY_STARTED": "§cVoting finished.",
+      "VOTE_TITLE": "WHO IS THE LUCKY ONE ?",
+      "VOTE_ITEM_FORMAT": "Sure, he is %s"
+    },
+    "SPECTATOR_RULE": "§aGame Started. Please be quiet.",
+    "GAME_INTRODUCTION": [
+      "§bWelcome to §cManHunt!",
+      "§fIn the game，there is going to have serveral players be the §cHunter§f，1 player be the §cRunner§f.",
+      "§fGame rules:",
+      "§f- §aWhen the Hunters killed the Runner, the Hunters won",
+      "§f- §aWhen the Runner killed the Under Dragon, the Runner won",
+      "§fWhen the Hunters first made the compass，§cthe infinite compass would turn on, use the right click to the location of the Runner",
+      "§fWhen ever a person finished an achievements，§athere are a few rate to got addional score. §7The premise is the server turned this function.",
+      "§fThe game choose the Escaper by ovting"
+    ],
+    "ARCHIVE_TARGET": "§6Got an achivement: +%dXP",
+    "KILL_TARGET": "§6Kill your foe: +%dXP",
+    "CRITICAL_TARGET": "§6Funch out! : +%dXP",
+    "DONT_RUN_AWAY": "§cDo not run out the Gameing Space。",
+    "SHUTDOWN": "Auto-reboot in 30s.",
+    "SIMPLE_RADOR": {
+      "NEAR": "§c%s is approaching! (\u003c\u003d%dM)",
+      "SAFE": "§a%dM radius without foes",
+      "HINT_CHAT_COMING": "The Hunter %s is approaching.",
+      "HINT_CHAT_LEAVE": "The Hunter %s leave the range of the radar."
+    }
+  },
+  "version": 3
+}
