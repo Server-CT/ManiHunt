@@ -1,0 +1,59 @@
+{
+  "GAMING": {
+    "WAITING_FOR_PLAYERS_SUBTITLE": "§6正在等待更多玩家进入游戏!",
+    "WAITING_FOR_PLAYERS_MAINTITLE": " %d / %d",
+    "HUNTER": {
+      "WON": "§c游戏结束！猎人 胜利",
+      "TITLE_MAIN": "§c§k%%% §r§c游戏开始 %%%",
+      "TITLE_SUB": "找到逃亡者并杀死他",
+      "UNLIMITED_COMPASS_UNLOCKED": "§c猎人已解锁无限指南针",
+      "UNLIMITED_COMPASS_USAGE": "§a请持续 §6[右键] §a指南针以刷新指向。",
+      "UNLIMITED_COMPASS_LOCKED": "§c无限指南针已被销毁！猎人需要重新制作指南针",
+      "FAILED_TO_TRACK": "§c无法追踪逃亡者！",
+      "WARN_RUNNER_NOT_ENTERED": "§c逃亡者尚未到达这个世界",
+      "ACTION_BAR_RADOR": "§bTRACKING: %s",
+      "ACTION_BAR_RADOR_PART_FAR": "§cDISTANCE \u003e\u003e %d",
+      "COMPASS_ARRIVED": "§d指南针已经到达！请查收背包"
+    },
+    "RUNNER": {
+      "WON": "§a游戏结束！逃亡者 胜利",
+      "TITLE_MAIN": "§c§k%%% §r§c游戏开始 %%%",
+      "TITLE_SUB": "杀死末影龙，同时躲避猎人！",
+      "ARRIVE_NETHER": "§l逃亡者已到达 地狱",
+      "ARRIVE_END": "§l逃亡者已到达 末地"
+    },
+    "VOTE": {
+      "VOTE_START": "§a人数满足 正在进行投票！§7如果不小心关闭界面，请使用 /vote 再次打开。",
+      "ALREADY_VOTED": "§c您已经投票过了",
+      "SHOULD_NOT_VOTE": "§c您没有投票的权利",
+      "VOTE_SUCCEED": "§a您成功投给了 %s",
+      "VOTING": "§6投票中: %d / %d 已投票",
+      "GAME_ALREADY_STARTED": "§c投票已结束。",
+      "VOTE_TITLE": "谁 是 幸 运 嘉 宾 ？",
+      "VOTE_ITEM_FORMAT": "那当然是 %s"
+    },
+    "SPECTATOR_RULE": "§a游戏已开始，请保持安静。",
+    "GAME_INTRODUCTION": [
+      "§b欢迎来到 §cManHunt!",
+      "§f在本游戏中，将有多名玩家扮演§c猎人§f，1 名玩家扮演§c逃亡者§f。",
+      "§f游戏规则:",
+      "§f- §a猎人杀死逃亡者时，猎人胜利。",
+      "§f- §a逃亡者杀死末影龙时，逃亡者胜利",
+      "§f当猎人第一次造出指南针后，§c将会开启无限指南针，并通过右键交互定位逃亡者位置",
+      "§f并且每个人每完成一个成就后，§a将有机率拿到一样加成物品。 §7前提：服务器开启加成模式",
+      "§f游戏通过 投票 选举逃亡者。"
+    ],
+    "ARCHIVE_TARGET": "§6达成成就: +%dXP",
+    "KILL_TARGET": "§6杀死对手: +%dXP",
+    "CRITICAL_TARGET": "§6重拳出击！: +%dXP",
+    "DONT_RUN_AWAY": "§c请不要跑出出生点。",
+    "SHUTDOWN": "30S 后将会自动重启。",
+    "SIMPLE_RADOR": {
+      "NEAR": "§c%s 正在靠近! (\u003c\u003d%dM)",
+      "SAFE": "§a半径 %dM 内无猎人出现。",
+      "HINT_CHAT_COMING": "猎人 %s 正在接近。",
+      "HINT_CHAT_LEAVE": "猎人 %s 离开雷达范围之外。"
+    }
+  },
+  "version": 3
+}
