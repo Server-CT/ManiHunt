@@ -11,6 +11,7 @@ public class MainConfig {
     public boolean blockCompassWhenDifferentWorld = false;
     public boolean disableTeamMateDamage = false;
     public int distanceFar = 2000;
+    public boolean enableBedHint = true;
     public boolean uploadStats = true;
     public Servers mojangServers = new Servers();
 

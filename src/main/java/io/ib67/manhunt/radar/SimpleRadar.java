@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -68,6 +69,10 @@ public class SimpleRadar implements Radar {
             if (!nearbyPlayers.contains(p)) {
                 nearbyPlayers.add(p);
                 player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADOR.HINT_CHAT_COMING, p.getName()));
+                if (Arrays.stream(p.getInventory().getContents()).anyMatch(e -> e.getType().name().endsWith("BED"))
+                        && ManHunt.getInstance().getMainConfig().enableBedHint) {
+                    player.sendMessage(i18n.GAMING.SIMPLE_RADOR.HUNTER_HAS_BED);
+                }
             }
         } else {
             if (nearbyPlayers.contains(p)) {

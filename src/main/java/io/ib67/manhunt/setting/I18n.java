@@ -3,7 +3,7 @@ package io.ib67.manhunt.setting;
 import org.bukkit.ChatColor;
 
 public class I18n {
-    public static final int VERSION = 3;
+    public static final int VERSION = 4;
     public Gaming GAMING = new Gaming();
     /**
      * 配置文件版本号
@@ -40,6 +40,7 @@ public class I18n {
             public String SAFE = ChatColor.GREEN + "半径 %dM 内无猎人出现。";
             public String HINT_CHAT_COMING = "猎人 %s 正在接近。";
             public String HINT_CHAT_LEAVE = "猎人 %s 离开雷达范围之外。";
+            public String HUNTER_HAS_BED = ChatColor.WHITE + "%s 带了床，他可能会把你炸飞天.";
         }
 
         public static class Hunter {
