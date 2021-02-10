@@ -5,7 +5,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 
 public class Logging {
-    private static final String FORMAT = ChatColor.AQUA.toString() + ChatColor.BOLD + "Man" + ChatColor.RED + "Hunt " + ChatColor.RESET + ChatColor.WHITE + ">> %";
+    private static final String FORMAT = ChatColor.AQUA.toString() + ChatColor.BOLD + "ManHunt" + ChatColor.RED + "v2 " + ChatColor.RESET + ChatColor.WHITE + ">> %";
 
     public static void info(String mesg) {
         Bukkit.getServer().getConsoleSender().sendMessage(FORMAT.replaceAll("%", mesg));
