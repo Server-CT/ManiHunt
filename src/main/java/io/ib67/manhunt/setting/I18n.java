@@ -79,7 +79,9 @@ public class I18n {
 
         public static class GameSelector {
             public String MAIN_TITLE = "ManHunt";
-            public String ITEM_GAME_LIST = ChatColor.WHITE + "点击查看 " + ChatColor.GREEN + "游戏列表";
+            public String ITEM_NAME_FORMAT = ChatColor.GREEN + "游戏 [ %d ]";
+            public String CLICK_TO_JOIN = ChatColor.WHITE + "点击加入";
+            public String ITEM_GAME_LIST = ChatColor.WHITE + "点击查看 " + ChatColor.GREEN + "游戏列表"; // looks like unused.
             public String ITEM_RANDOM_CLAIM = ChatColor.AQUA + "点击此处随机匹配";
         }
     }

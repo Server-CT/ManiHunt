@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.game.GameManager;
 import io.ib67.manhunt.game.lobby.GameSelector;
+import io.ib67.manhunt.game.region.RegionProviderManager;
 import io.ib67.manhunt.game.region.impl.SingleWorldRegionProvider;
 import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;

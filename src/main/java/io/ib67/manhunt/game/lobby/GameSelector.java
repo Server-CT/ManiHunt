@@ -3,7 +3,6 @@ package io.ib67.manhunt.game.lobby;
 import io.ib67.manhunt.ManHunt;
 import io.ib67.manhunt.game.GameManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,10 +31,11 @@ public class GameSelector implements Listener, InventoryHolder {
         IntStream.range(0, 9 * 9 - 1).forEach(i -> {
             ItemStack temp = new ItemStack(Material.WHITE_WOOL);
             ItemMeta meta = temp.hasItemMeta() ?
-                            temp.getItemMeta() :
-                            Bukkit.getItemFactory().getItemMeta(Material.WHITE_WOOL);
-            Objects.requireNonNull(meta).setDisplayName(ChatColor.GREEN + "Game " + i);
-            meta.setLore(Collections.singletonList(ChatColor.WHITE + "Click to join"));
+                    temp.getItemMeta() :
+                    Bukkit.getItemFactory().getItemMeta(Material.WHITE_WOOL);
+            //Objects.requireNonNull(meta).setDisplayName(ChatColor.GREEN + "Game " + i);
+            Objects.requireNonNull(meta).setDisplayName(String.format(ManHunt.getInstance().getLanguage().GAMING.GAME_SELECTOR.ITEM_NAME_FORMAT, i));
+            meta.setLore(Collections.singletonList(ManHunt.getInstance().getLanguage().GAMING.GAME_SELECTOR.CLICK_TO_JOIN));
             temp.setItemMeta(meta);
             holdingInv.setItem(i, temp);
         });
@@ -43,7 +43,7 @@ public class GameSelector implements Listener, InventoryHolder {
         ItemMeta meta = temp.hasItemMeta() ?
                         temp.getItemMeta() :
                         Bukkit.getItemFactory().getItemMeta(Material.RED_WOOL);
-        Objects.requireNonNull(meta).setDisplayName(ChatColor.RED + "Random join");
+        Objects.requireNonNull(meta).setDisplayName(ManHunt.getInstance().getLanguage().GAMING.GAME_SELECTOR.ITEM_RANDOM_CLAIM);
         temp.setItemMeta(meta);
         holdingInv.setItem(9 * 9 - 1, temp);
 

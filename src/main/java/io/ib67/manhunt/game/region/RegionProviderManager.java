@@ -1,6 +1,4 @@
-package io.ib67.manhunt;
-
-import io.ib67.manhunt.game.region.RegionProvider;
+package io.ib67.manhunt.game.region;
 
 import java.util.HashMap;
 import java.util.Map;
