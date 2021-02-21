@@ -3,6 +3,8 @@ Sorry,but for some reason,this project was ARCHIVED.
 However, you can play this game if you want, but we may suppress any bug feedbacks or feature requests.   
 PRs welcome but maintainers will not continue contributing to this project.  
 See you next game. <3   
+Contact us via issue if you want to maintain it.  
+
 
 # ManiHunt
 > You should read it as `ManyHunt` but write it as `ManHunt1551`.
