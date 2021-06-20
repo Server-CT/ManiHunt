@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.ib67'
-version = '1.1'
+version = '1.2'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -33,6 +33,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    compile 'org.bstats:bstats-bukkit:2.2.1'
 
 }
 processResources {

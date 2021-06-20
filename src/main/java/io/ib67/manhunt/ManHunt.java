@@ -13,6 +13,7 @@ import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
 import net.md_5.bungee.chat.TranslationRegistry;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -42,6 +43,7 @@ public final class ManHunt extends JavaPlugin {
     private Game game;
     private final String serverVersion = Bukkit.getVersion();
     private static final JsonParser jsonParser = new JsonParser();
+    private Metrics metrics;
 
     public static ManHunt getInstance() {
         return instance;
@@ -58,6 +60,7 @@ public final class ManHunt extends JavaPlugin {
     @Override
     @SuppressWarnings("all")
     public void onEnable() {
+        metrics = new Metrics(this,11759);
         Logging.info("Loading...");
         Logging.info("Server Version: " + serverVersion);
         if (Material.valueOf("LODESTONE") == null) {
