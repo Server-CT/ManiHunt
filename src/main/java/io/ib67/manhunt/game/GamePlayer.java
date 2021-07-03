@@ -10,9 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-/**
- * 为了Additions 可能要求扩展数据做的准备。
- */
 @Builder
 public class GamePlayer {
     private final String player;

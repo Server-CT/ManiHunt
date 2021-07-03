@@ -1,4 +1,4 @@
-package org.bstats.bukkit;
+package io.ib67.manhunt;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
