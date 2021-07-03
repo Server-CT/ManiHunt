@@ -28,7 +28,7 @@ public class PlayerPvP implements Listener {
             int score = ManHunt.getInstance().getMainConfig().playerScores.critical;
             if (defender.equals(runner)) {
                 if (e.getFinalDamage() > 7) {
-                    //é‡æ‹³å‡ºå‡»ï¼(é™„é­”é’»å‰‘æˆ–é“ï¼Œé’»å‰‘æš´å‡»)
+                    //ÖØÈ­³ö»÷£¡(¸½Ä§×ê½£»òÌú£¬×ê½£±©»÷)
                     gameStat.addAdvancement(damager, "CRITICAL_TO_RUNNER", score);
                     damager.sendMessage(String.format(i18N.GAMING.CRITICAL_TARGET, score));
                 }
