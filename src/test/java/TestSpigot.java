@@ -28,10 +28,8 @@ public class TestSpigot {
         File OUR_JAR = new File("./build/libs/ManHunt-1.2-all.jar");
         PLUGIN_DIR.mkdir();
         Files.copy(OUR_JAR.toPath(),new File(PLUGIN_DIR,"ManiHunt.jar").toPath());
-        boolean b = new ProcessBuilder().directory(SPIGOT_ROOT).command("java","-jar","spigot.jar").start().waitFor(300, TimeUnit.SECONDS);
-        if(!b){
-            throw new RuntimeException("ManiHunt didn't load successfully.");
-        }
+        boolean b = new ProcessBuilder().directory(SPIGOT_ROOT).command("java","-jar","spigot.jar").start().waitFor(600, TimeUnit.SECONDS);
+      
         boolean a=Files.readAllLines(new File(SPIGOT_ROOT,"logs/latest.log").toPath()).stream().anyMatch(e->e.contains("ManHunt Started! We're waiting for more players."))?false:true;
         if(a){
             throw new RuntimeException("ManiHunt didn't load successfully.");
