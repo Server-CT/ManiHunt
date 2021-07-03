@@ -59,7 +59,7 @@ public final class ManHunt extends JavaPlugin {
     @Override
     @SuppressWarnings("all")
     public void onEnable() {
-        metrics = new Metrics(this,11759);
+        if (!System.getProperty("user.name").equals("runner")) metrics = new Metrics(this,11759); // prevent fake stats
         Logging.info("Loading...");
         Logging.info("Server Version: " + serverVersion);
         if (Material.valueOf("LODESTONE") == null) {
