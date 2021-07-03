@@ -15,7 +15,6 @@ import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
 import lombok.Getter;
 import net.md_5.bungee.chat.TranslationRegistry;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
