@@ -91,7 +91,9 @@ public class Game {
                         20,
                         2 * 20,
                         20);
-                airDrop(runner);
+                if(ManHunt.getInstance().getMainConfig().enableAirDrop){
+                    airDrop(runner);
+                }
             } else {
                 e.setRole(GamePlayer.Role.HUNTER);
                 e.getPlayer().sendTitle(i18n.GAMING.HUNTER.TITLE_MAIN,
@@ -108,13 +110,29 @@ public class Game {
     }
 
     private void airDrop(Player runner) {
+        int counter = 0 ;
         Location loc = runner.getLocation();
-        loc = new Location(loc.getWorld(), loc.getBlockX(), 0, loc.getBlockZ());
-        Random random = new Random();
-        loc.add(random.nextInt(200) + 100, 0, random.nextInt(200) + 100);
-        loc = loc.getWorld().getHighestBlockAt(loc).getLocation();
-        loc.getBlock().setType(Material.GLASS);
-        loc.setY(loc.getY() + 1);
+        while(true) {
+            loc = new Location(loc.getWorld(), loc.getBlockX(), 0, loc.getBlockZ());
+            Random random = new Random();
+            loc.add(random.nextInt(200) + 100, 0, random.nextInt(200) + 100);
+            loc = loc.getWorld().getHighestBlockAt(loc).getLocation();
+            loc.getBlock().setType(Material.GLASS);
+            loc.setY(loc.getY() + 1);
+            if(ManHunt.getInstance().getMainConfig().tryToAvoidOcean){
+                if(loc.getWorld().getBiome(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).name().endsWith("OCEAN")){
+                    counter++;
+                    if(counter>5){
+                        ManHunt.getInstance().getLogger().warning("Failed to locate a place where is not ocean.");
+                        break;
+                    }
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+        }
         runner.teleport(loc);
     }
 

@@ -13,6 +13,8 @@ public class MainConfig {
     public int distanceFar = 2000;
     public boolean enableBedHint = true;
     public boolean uploadStats = true;
+    public boolean enableAirDrop = true;
+    public boolean tryToAvoidOcean = true;
     public Servers mojangServers = new Servers();
 
     public static class Servers {
