@@ -33,7 +33,11 @@ public class Game {
     @Getter
     private final GameStat gameStat = new GameStat();
     @Getter
-    private boolean compassEnabled = false;
+    private boolean compassEnabled = ManHunt.getInstance().getMainConfig().EnableCompass;
+    private final int XBasic = ManHunt.getInstance().getMainConfig().XBasic;
+    private final int ZBasic = ManHunt.getInstance().getMainConfig().ZBasic;
+    private final int XRandom = ManHunt.getInstance().getMainConfig().XRandom;
+    private final int ZRandom = ManHunt.getInstance().getMainConfig().ZRandom;
     public boolean runnerNether = false;
     public boolean runnerEnd = false;
     @Getter
@@ -107,7 +111,7 @@ public class Game {
             }
         });
         Bukkit.broadcastMessage(ChatColor.GREEN + "Runner: " + runner.getDisplayName() + " !");
-        initRador();
+        initRadar();
         phase = GamePhase.STARTED;
         gameStart.accept(this);
     }
@@ -118,7 +122,7 @@ public class Game {
         while(true) {
             loc = new Location(loc.getWorld(), loc.getBlockX(), 0, loc.getBlockZ());
             Random random = new Random();
-            loc.add(random.nextInt(200) + 100, 0, random.nextInt(200) + 100);
+            loc.add(random.nextInt(XRandom) + XBasic, 0, random.nextInt(ZRandom) + ZBasic);
             loc = loc.getWorld().getHighestBlockAt(loc).getLocation();
             loc.getBlock().setType(Material.GLASS);
             loc.setY(loc.getY() + 1);
@@ -139,9 +143,13 @@ public class Game {
         runner.teleport(loc);
     }
 
-    private void initRador() {
-        radar = new SimpleRadar(runner, ManHunt.getInstance().getMainConfig().radorWarnDistance);
-        radar.start();
+    private void initRadar() {
+        if (ManHunt.getInstance().getMainConfig().radarWarnDistance != 0) {
+            radar = new SimpleRadar(runner, ManHunt.getInstance().getMainConfig().radarWarnDistance);
+            radar.start();
+        }else{
+            radar.stop();
+        }
     }
 
     @SneakyThrows
