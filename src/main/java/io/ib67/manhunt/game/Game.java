@@ -66,7 +66,10 @@ public class Game {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_LOCKED);
         }
     }
-
+    public GamePlayer.Role roleOf(Player player){
+        Optional<GamePlayer> gp = isInGame(player);
+        return gp.isPresent()?gp.get().getRole(): GamePlayer.Role.SPECTATOR;
+    }
     public void start(Player runner) {
         vote = null;
         if (runner == null) {

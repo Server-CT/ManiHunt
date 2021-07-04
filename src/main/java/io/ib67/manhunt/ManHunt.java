@@ -8,6 +8,7 @@ import io.ib67.manhunt.game.Game;
 import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.listener.*;
+import io.ib67.manhunt.placeholder.MHPlaceholder;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
@@ -18,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -86,6 +88,11 @@ public final class ManHunt extends JavaPlugin {
         game = new Game(mainConfig.get().maxPlayers,
                         g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
                         g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
+        Plugin pluginPlaceholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+        if(pluginPlaceholderAPI != null){
+            Logging.info("Hooking into PlaceholderAPI");
+            new MHPlaceholder(this).register();
+        }
         loadAdditions();
         loadListeners();
         Logging.info("ManHunt Started! We're waiting for more players.");

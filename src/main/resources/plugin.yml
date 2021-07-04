@@ -2,6 +2,7 @@ name: ManHunt
 version: @version@
 authors: [ "iceBear67","czm" ]
 main: io.ib67.manhunt.ManHunt
+softdepend: ["PlaceholderAPI"]
 api-version: 1.16
 commands:
   vote:
