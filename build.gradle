@@ -75,11 +75,11 @@ tasks.ci.doLast {
     //HttpRequest.get("https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.10.9/PlaceholderAPI-2.10.9.jar").receive(PAPI);
     Process b = new ProcessBuilder().directory(SPIGOT_ROOT)
             .command("java","-jar","spigot.jar",
-                    "-W",new File("./ci").toPath().toString(),
-                    "--bukkit-settings",new File("./ci/bukkit.yml").toString(),
-                    "--config",new File("./ci/server.properties").toString()
+                    "-W","/home/runner/work/ManiHunt/ManiHunt/ci",
+                    "--bukkit-settings","/home/runner/work/ManiHunt/ManiHunt/ci/bukkit.yml",
+                    "--config","/home/runner/work/ManiHunt/ManiHunt/ci/server.properties"
             ).start();
-    b.waitFor(85, TimeUnit.SECONDS);
+    b.waitFor(65, TimeUnit.SECONDS);
 
     //boolean a=Files.readAllLines(new File(SPIGOT_ROOT,"logs/latest.log").toPath()).stream().anyMatch(e->e.contains("ManHunt Started! We're waiting for more players."))?false:true;
     boolean a = new File("./spigot/mh_run_success").exists();
