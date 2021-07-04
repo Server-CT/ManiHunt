@@ -32,11 +32,12 @@ public class TestSpigot {
         HttpRequest.get("https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.10.9/PlaceholderAPI-2.10.9.jar").receive(PAPI);
         Process b = new ProcessBuilder().directory(SPIGOT_ROOT).command("java","-jar","spigot.jar","-W",new File("./ci").toPath().toString()).start();
         b.waitFor(65, TimeUnit.SECONDS);
-        b.destroy();
+        String log = new String(b.getInputStream().readAllBytes());
       
-        boolean a=Files.readAllLines(new File(SPIGOT_ROOT,"logs/latest.log").toPath()).stream().anyMatch(e->e.contains("ManHunt Started! We're waiting for more players."))?false:true;
+        //boolean a=Files.readAllLines(new File(SPIGOT_ROOT,"logs/latest.log").toPath()).stream().anyMatch(e->e.contains("ManHunt Started! We're waiting for more players."))?false:true;
+        boolean a = log. contains("ManHunt Started! We're waiting for more players.");
         Files.copy(new File(SPIGOT_ROOT,"logs/latest.log").toPath(),new File("./build/libs/CI.log").toPath());
-        if(a){
+        if(!a){
             throw new RuntimeException("ManiHunt didn't load successfully.");
         }
 
