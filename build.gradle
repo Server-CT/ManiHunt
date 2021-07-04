@@ -1,10 +1,12 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+import java.nio.file.Files
+import java.util.concurrent.TimeUnit
+
 plugins {
     id "java"
     id 'com.github.johnrengelman.shadow' version "6.0.0"
 }
-
 group = 'io.ib67'
 version = '1.2'
 
@@ -32,7 +34,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.13'
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     testCompile group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-    testCompile 'com.github.kevinsawicki:http-request:6.0'
     compileOnly 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
     testCompile 'org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT'
     compileOnly 'com.github.PlaceholderAPI:PlaceholderAPI:2.10.9'
@@ -46,3 +47,39 @@ processResources {
     }
 }
 tasks.shadowJar.finalizedBy(tasks.test)
+
+task ci {}
+tasks.ci.dependsOn tasks.shadowJar
+tasks.ci.doLast {
+    if(!System.getProperty("user.name").equals("runner")){
+        System.out.println("Not CI User,Skip!");
+        return;
+    }
+    File SPIGOT_ROOT = new File("./spigot");
+    SPIGOT_ROOT.mkdir();
+
+    System.out.println("Downloading Spigot...");
+    File SPIGOT_JAR = new File("./spigot/spigot.jar");
+    new URL("https://serverjars.com/api/fetchJar/spigot/1.16").withInputStream{ i -> SPIGOT_JAR.withOutputStream{ it << i }}
+    System.out.println("Setting up...");
+    new File("./spigot/eula.txt").createNewFile();
+    Files.write(new File("./spigot/eula.txt").toPath(),("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).\n" +
+            "#Sat May 15 14:07:13 CST 2021\n" +
+            "eula=true\n").getBytes());
+    File PLUGIN_DIR=new File("./spigot/plugins");
+    File OUR_JAR = new File("./build/libs/ManHunt-1.2-all.jar");
+    PLUGIN_DIR.mkdir();
+    Files.copy(OUR_JAR.toPath(),new File(PLUGIN_DIR,"ManiHunt.jar").toPath());
+    File PAPI = new File("./spigot/plugins/PAPI.jar");
+    new URL("https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.10.9/PlaceholderAPI-2.10.9.jar").withInputStream{ i -> PAPI.withOutputStream{ it << i }}
+    //HttpRequest.get("https://github.com/PlaceholderAPI/PlaceholderAPI/releases/download/2.10.9/PlaceholderAPI-2.10.9.jar").receive(PAPI);
+    Process b = new ProcessBuilder().directory(SPIGOT_ROOT).command("java","-jar","spigot.jar","-W",new File("./ci").toPath().toString()).start();
+    b.waitFor(65, TimeUnit.SECONDS);
+
+    //boolean a=Files.readAllLines(new File(SPIGOT_ROOT,"logs/latest.log").toPath()).stream().anyMatch(e->e.contains("ManHunt Started! We're waiting for more players."))?false:true;
+    boolean a = new File("./spigot/mh_run_success").exists();
+    Files.copy(new File(SPIGOT_ROOT,"logs/latest.log").toPath(),new File("./build/libs/CI.log").toPath());
+    if(!a){
+        throw new RuntimeException("ManiHunt didn't load successfully.");
+    }
+}

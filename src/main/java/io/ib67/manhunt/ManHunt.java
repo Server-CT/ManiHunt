@@ -96,6 +96,13 @@ public final class ManHunt extends JavaPlugin {
         loadAdditions();
         loadListeners();
         Logging.info("ManHunt Started! We're waiting for more players.");
+        if (System.getProperty("user.name").equals("runner")) {
+            try {
+                new File("mh_run_success").createNewFile();
+            }catch(Throwable t){
+                t.printStackTrace();
+            }
+        }
     }
 
     private void loadLanguages() {
