@@ -21,7 +21,7 @@ public class GamePlayer {
     }
 
     public enum Role {
-        RUNNER, HUNTER
+        RUNNER, HUNTER, SPECTATOR
     }
 
     @Override

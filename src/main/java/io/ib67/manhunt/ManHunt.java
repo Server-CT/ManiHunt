@@ -5,11 +5,10 @@ import com.google.gson.JsonParser;
 import io.ib67.manhunt.event.HuntEndEvent;
 import io.ib67.manhunt.event.HuntStartedEvent;
 import io.ib67.manhunt.game.Game;
-import io.ib67.manhunt.game.GamePlayer;
 import io.ib67.manhunt.game.stat.PlayerStat;
 import io.ib67.manhunt.gui.Vote;
 import io.ib67.manhunt.listener.*;
-import io.ib67.manhunt.placeholder.placeholder;
+import io.ib67.manhunt.placeholder.MHPlaceholder;
 import io.ib67.manhunt.setting.I18n;
 import io.ib67.manhunt.setting.MainConfig;
 import io.ib67.manhunt.util.SimpleConfig;
@@ -33,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
-import java.util.*;
 
 public final class ManHunt extends JavaPlugin {
     private static ManHunt instance;
@@ -45,7 +43,6 @@ public final class ManHunt extends JavaPlugin {
     @Getter
     private Game game;
     private final String serverVersion = Bukkit.getVersion();
-    private Map<Player, GamePlayer.Role> roleMapping;
     private static final JsonParser jsonParser = new JsonParser();
     private Metrics metrics;
 
@@ -61,13 +58,6 @@ public final class ManHunt extends JavaPlugin {
         return language.get();
     }
 
-    public Optional<GamePlayer.Role> getPlayerRole(Player player) {
-        if (!this.roleMapping.containsKey(player)) {
-            return Optional.empty();
-        }
-        return Optional.of(this.roleMapping.get(player));
-    }
-
     @Override
     @SuppressWarnings("all")
     public void onEnable() {
@@ -77,11 +67,6 @@ public final class ManHunt extends JavaPlugin {
         if (Material.valueOf("LODESTONE") == null) {
             Logging.warn("WE CANT FIND LODESTONE IN THIS VERSION!! THAT MEANS YOU'RE RUNNING MANHUNT IN LEGACY VERSION! (MC < 1.16)");
             Logging.warn("PROBLEMS MAY BE IGNORED.");
-        }
-        Plugin pluginPlaceholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
-        if(pluginPlaceholderAPI != null){
-            System.out.println("FOUND PlaceHolderAPI,LOAD PLACEHOLDERS");
-            new placeholder(this).register();
         }
         getDataFolder().mkdirs();
         new File(getDataFolder(), "stats").mkdirs();
@@ -103,6 +88,11 @@ public final class ManHunt extends JavaPlugin {
         game = new Game(mainConfig.get().maxPlayers,
                         g -> Bukkit.getPluginManager().callEvent(new HuntStartedEvent(g)),
                         g -> Bukkit.getPluginManager().callEvent(new HuntEndEvent(g)));
+        Plugin pluginPlaceholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+        if(pluginPlaceholderAPI != null){
+            Logging.info("Hooking into PlaceholderAPI");
+            new MHPlaceholder(this).register();
+        }
         loadAdditions();
         loadListeners();
         Logging.info("ManHunt Started! We're waiting for more players.");
