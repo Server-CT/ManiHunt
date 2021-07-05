@@ -79,7 +79,7 @@ tasks.ci.doLast {
                     "--bukkit-settings","/home/runner/work/ManiHunt/ManiHunt/ci/bukkit.yml",
                     "--config","/home/runner/work/ManiHunt/ManiHunt/ci/server.properties"
             ).start();
-    b.waitFor(65, TimeUnit.SECONDS);
+    b.waitFor(12, TimeUnit.SECONDS)
 
     //boolean a=Files.readAllLines(new File(SPIGOT_ROOT,"logs/latest.log").toPath()).stream().anyMatch(e->e.contains("ManHunt Started! We're waiting for more players."))?false:true;
     boolean a = new File("./spigot/mh_run_success").exists();
