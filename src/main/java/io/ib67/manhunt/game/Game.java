@@ -33,11 +33,12 @@ public class Game {
     @Getter
     private final GameStat gameStat = new GameStat();
     @Getter
-    private boolean compassEnabled = ManHunt.getInstance().getMainConfig().EnableCompass;
-    private final int XBasic = ManHunt.getInstance().getMainConfig().XBasic;
-    private final int ZBasic = ManHunt.getInstance().getMainConfig().ZBasic;
-    private final int XRandom = ManHunt.getInstance().getMainConfig().XRandom;
-    private final int ZRandom = ManHunt.getInstance().getMainConfig().ZRandom;
+    private boolean compassEnabled = false;
+    private boolean isCompassEnabled = ManHunt.getInstance().getMainConfig().enableCompassOnStart;
+    private final int airDropBasicOnX = ManHunt.getInstance().getMainConfig().airDropBasicOnX;
+    private final int airDropBasicOnZ = ManHunt.getInstance().getMainConfig().airDropBasicOnZ;
+    private final int airDropRandomOnX = ManHunt.getInstance().getMainConfig().airDropRandomOnX;
+    private final int airDropRandomOnZ = ManHunt.getInstance().getMainConfig().airDropRandomOnZ;
     public boolean runnerNether = false;
     public boolean runnerEnd = false;
     @Getter
@@ -53,6 +54,7 @@ public class Game {
     }
 
     public void setCompassEnabled(boolean status) {
+        if(isCompassEnabled = true){this.compassEnabled = true;}
         this.compassEnabled = status;
         if (status) {
             Bukkit.broadcastMessage(ManHunt.getInstance().getLanguage().GAMING.HUNTER.UNLIMITED_COMPASS_UNLOCKED);
@@ -122,10 +124,18 @@ public class Game {
         while(true) {
             loc = new Location(loc.getWorld(), loc.getBlockX(), 0, loc.getBlockZ());
             Random random = new Random();
-            loc.add(random.nextInt(XRandom) + XBasic, 0, random.nextInt(ZRandom) + ZBasic);
+            loc.add(random.nextInt(airDropRandomOnX)+ airDropBasicOnX, 0, random.nextInt(airDropRandomOnZ) + airDropBasicOnZ);
             loc = loc.getWorld().getHighestBlockAt(loc).getLocation();
             loc.getBlock().setType(Material.GLASS);
             loc.setY(loc.getY() + 1);
+            int chooseCoefficientOnX = random.nextInt(2);
+            int chooseCoefficientOnZ = random.nextInt(2);
+            if (chooseCoefficientOnX == 1){
+                loc.setX(loc.getX() * -1);
+            }
+            if (chooseCoefficientOnZ == 1){
+                loc.setZ(loc.getZ() * -1);
+            }
             if(ManHunt.getInstance().getMainConfig().tryToAvoidOcean){
                 if(loc.getWorld().getBiome(loc.getBlockX(),loc.getBlockY(),loc.getBlockZ()).name().endsWith("OCEAN")){
                     counter++;
@@ -147,8 +157,6 @@ public class Game {
         if (ManHunt.getInstance().getMainConfig().radarWarnDistance != 0) {
             radar = new SimpleRadar(runner, ManHunt.getInstance().getMainConfig().radarWarnDistance);
             radar.start();
-        }else{
-            radar.stop();
         }
     }
 
