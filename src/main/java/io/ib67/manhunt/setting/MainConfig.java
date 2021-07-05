@@ -6,7 +6,11 @@ public class MainConfig {
     public boolean muteSpectatorInGlobalChannel = false;
     public String serverLanguage = "zh_CN";
     public String difficulty = "NORMAL";
-    public int radorWarnDistance = 30;
+    public int radarWarnDistance = 30;
+    public int airDropBasicOnX = 100;
+    public int airDropBasicOnZ = 100;
+    public int airDropRandomOnX = 200;
+    public int airDropRandomOnZ = 200;
     public Scores playerScores = new Scores();
     public boolean blockCompassWhenDifferentWorld = false;
     public boolean disableTeamMateDamage = false;
@@ -15,6 +19,7 @@ public class MainConfig {
     public boolean uploadStats = true;
     public boolean enableAirDrop = true;
     public boolean tryToAvoidOcean = true;
+    public boolean enableCompassOnStart = false;
     public Servers mojangServers = new Servers();
 
     public static class Servers {

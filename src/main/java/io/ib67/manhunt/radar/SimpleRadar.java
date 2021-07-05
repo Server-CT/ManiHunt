@@ -30,12 +30,12 @@ public class SimpleRadar implements Radar {
         keeper = Bukkit.getScheduler().runTaskTimer(ManHunt.getInstance(), () -> {
             I18n i18n = ManHunt.getInstance().getLanguage();
             if (nearbyPlayers.size() != 0) {
-                TextComponent textComponent = new TextComponent(String.format(i18n.GAMING.SIMPLE_RADOR.NEAR,
+                TextComponent textComponent = new TextComponent(String.format(i18n.GAMING.SIMPLE_RADAR.NEAR,
                                                                               setAsStr(),
                                                                               warnDistance));
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR,textComponent);
             } else {
-                TextComponent textComponent = new TextComponent(String.format(i18n.GAMING.SIMPLE_RADOR.SAFE,
+                TextComponent textComponent = new TextComponent(String.format(i18n.GAMING.SIMPLE_RADAR.SAFE,
                                                                               warnDistance));
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR,textComponent);
             }
@@ -68,16 +68,16 @@ public class SimpleRadar implements Radar {
         if (distance <= warnDistance) {
             if (!nearbyPlayers.contains(p)) {
                 nearbyPlayers.add(p);
-                player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADOR.HINT_CHAT_COMING, p.getName()));
+                player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADAR.HINT_CHAT_COMING, p.getName()));
                 if (Arrays.stream(p.getInventory().getContents()).anyMatch(e -> e.getType().name().endsWith("BED"))
                         && ManHunt.getInstance().getMainConfig().enableBedHint) {
-                    player.sendMessage(i18n.GAMING.SIMPLE_RADOR.HUNTER_HAS_BED);
+                    player.sendMessage(i18n.GAMING.SIMPLE_RADAR.HUNTER_HAS_BED);
                 }
             }
         } else {
             if (nearbyPlayers.contains(p)) {
                 nearbyPlayers.remove(p);
-                player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADOR.HINT_CHAT_LEAVE, p.getName()));
+                player.sendMessage(String.format(i18n.GAMING.SIMPLE_RADAR.HINT_CHAT_LEAVE, p.getName()));
             }
         }
     }

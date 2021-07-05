@@ -48,10 +48,10 @@ public class Interact implements Listener {
                     .map(Player::getInventory)
                     .ifPresent(i -> {
                         Player runner = game.getRunner();
-                        TextComponent actBarMsg = new TextComponent(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR, runner.getDisplayName()));
+                        TextComponent actBarMsg = new TextComponent(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADAR, runner.getDisplayName()));
                         if (event.getPlayer().getWorld() == runner.getLocation().getWorld()) {
                             if (runner.getLocation().distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
-                                actBarMsg.addExtra(" "+String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
+                                actBarMsg.addExtra(" "+String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADAR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                             }
                             setItem.accept(i, LodestoneCompass.allocate(event.getPlayer(), runner.getLocation()));
                             event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, actBarMsg);
@@ -64,7 +64,7 @@ public class Interact implements Listener {
                                     Location loc = lastLoc.get(event.getPlayer().getWorld().getName());
                                     setItem.accept(i, LodestoneCompass.allocate(event.getPlayer(), loc));
                                     if (loc.distance(event.getPlayer().getLocation()) >= ManHunt.getInstance().getMainConfig().distanceFar) {
-                                        actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADOR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
+                                        actBarMsg.addExtra(String.format(ManHunt.getInstance().getLanguage().GAMING.HUNTER.ACTION_BAR_RADAR_PART_FAR, ManHunt.getInstance().getMainConfig().distanceFar));
                                     }
                                     event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, actBarMsg);
                                 } else {
